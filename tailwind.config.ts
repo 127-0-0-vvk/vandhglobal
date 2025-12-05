@@ -10,11 +10,14 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          cream: '#FAF3E1',
-          beige: '#F5E7C6',
-          orange: '#FF6D1F',
-          dark: '#222222',
+          cream: '#EFECE3',
+          lightblue: '#8FABD4',
+          blue: '#4A70A9',
+          dark: '#000000',
         },
+      },
+      fontFamily: {
+        sans: ['Post Grotesk', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

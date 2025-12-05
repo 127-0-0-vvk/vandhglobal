@@ -68,7 +68,7 @@ export default function HeroSlider() {
               <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
                 {slide.title}
               </h1>
-              <p className="text-2xl md:text-3xl mb-3 text-primary-orange font-semibold drop-shadow-md">
+              <p className="text-2xl md:text-3xl mb-3 text-primary-lightblue font-semibold drop-shadow-md">
                 {slide.subtitle}
               </p>
               <p className="text-xl md:text-2xl mb-8 drop-shadow-md text-primary-cream">
@@ -76,7 +76,7 @@ export default function HeroSlider() {
               </p>
               <Link
                 href={slide.link}
-                className="inline-block bg-primary-orange text-white px-8 py-4 rounded-lg hover:bg-opacity-90 transform hover:scale-110 transition-all duration-300 shadow-2xl font-semibold text-lg"
+                className="inline-block bg-primary-blue text-white px-8 py-4 rounded-lg hover:bg-primary-lightblue transform hover:scale-110 transition-all duration-300 shadow-2xl font-semibold text-lg"
               >
                 {slide.cta}
               </Link>
@@ -93,7 +93,7 @@ export default function HeroSlider() {
             onClick={() => setCurrentSlide(index)}
             className={`w-3 h-3 rounded-full transition-all duration-300 ${
               index === currentSlide
-                ? 'bg-primary-orange w-8'
+                ? 'bg-primary-blue w-8'
                 : 'bg-white bg-opacity-50 hover:bg-opacity-75'
             }`}
             aria-label={`Go to slide ${index + 1}`}

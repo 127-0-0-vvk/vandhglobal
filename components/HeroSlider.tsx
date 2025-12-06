@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const heroSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1611348524140-53c9a25263d6?w=1920&q=80',
+    image: 'https://images.pexels.com/photos/60008/pexels-photo-60008.jpeg?auto=compress&cs=tinysrgb&w=1920',
     title: 'Premium Minerals Trading',
     subtitle: 'Iron Ore, Bauxite, Coal & More',
     description: 'Sourced from verified mines across India',
@@ -13,7 +13,7 @@ const heroSlides = [
     link: '/minerals'
   },
   {
-    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=1920&q=80',
+    image: 'https://images.pexels.com/photos/4110256/pexels-photo-4110256.jpeg?auto=compress&cs=tinysrgb&w=1920',
     title: 'Premium Basmati Rice',
     subtitle: '1121, Pusa, Sugandha & More Varieties',
     description: 'Export quality from certified mills',
@@ -21,7 +21,7 @@ const heroSlides = [
     link: '/agro/rice'
   },
   {
-    image: 'https://images.unsplash.com/photo-1596040033229-a0b8722b62c7?w=1920&q=80',
+    image: 'https://images.pexels.com/photos/5336701/pexels-photo-5336701.jpeg?auto=compress&cs=tinysrgb&w=1920',
     title: 'Premium Spices & Powders',
     subtitle: 'Turmeric, Cumin, Dehydrated Vegetables',
     description: 'Direct from India&apos;s spice belt',
@@ -29,7 +29,7 @@ const heroSlides = [
     link: '/agro/spices'
   },
   {
-    image: 'https://images.unsplash.com/photo-1578037628938-5c2c45e07c1e?w=1920&q=80',
+    image: 'https://images.pexels.com/photos/4110256/pexels-photo-4110256.jpeg?auto=compress&cs=tinysrgb&w=1920',
     title: 'Rice Mills & Processing',
     subtitle: 'State-of-the-art facilities',
     description: 'Modern processing with quality assurance',

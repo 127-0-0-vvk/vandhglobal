@@ -22,6 +22,17 @@ export interface AgriPrice {
   lastUpdated: string;
 }
 
+export interface Mine {
+  name: string;
+  location: string;
+  state: string;
+  minerals: string[];
+  capacity?: string;
+  established?: string;
+  lat: number;
+  lng: number;
+}
+
 export const mineralPrices: MineralPrice[] = [
   {
     name: "Iron Ore",
@@ -174,6 +185,457 @@ export const mineralPrices: MineralPrice[] = [
       "Chemical industry"
     ],
     lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Zinc Ore",
+    price: 2850,
+    unit: "USD/MT",
+    description: "High-grade zinc concentrate for galvanizing and alloy production.",
+    specifications: [
+      "Zn Content: 45-55%",
+      "Fe: Max 10%",
+      "SiO2: Max 8%",
+      "Pb: 1-3%"
+    ],
+    applications: [
+      "Galvanizing steel",
+      "Brass production",
+      "Die casting",
+      "Chemical industry"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Lead Ore",
+    price: 2100,
+    unit: "USD/MT",
+    description: "Lead concentrate for battery and alloy manufacturing.",
+    specifications: [
+      "Pb Content: 60-70%",
+      "Zn: Max 5%",
+      "SiO2: Max 10%",
+      "Ag: 100-200 g/t"
+    ],
+    applications: [
+      "Battery manufacturing",
+      "Radiation shielding",
+      "Cable sheathing",
+      "Alloys production"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Gypsum",
+    price: 35,
+    unit: "USD/MT",
+    description: "Natural gypsum for cement and plaster production.",
+    specifications: [
+      "CaSO4.2H2O: >85%",
+      "Moisture: Max 8%",
+      "Purity: >90%",
+      "Whiteness: >80%"
+    ],
+    applications: [
+      "Cement retarder",
+      "Plaster of Paris",
+      "Wallboard production",
+      "Agricultural gypsum"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Dolomite",
+    price: 55,
+    unit: "USD/MT",
+    description: "High-grade dolomite for steel and glass industries.",
+    specifications: [
+      "MgCO3: 40-45%",
+      "CaCO3: 50-55%",
+      "SiO2: Max 3%",
+      "Moisture: Max 5%"
+    ],
+    applications: [
+      "Steel production",
+      "Glass manufacturing",
+      "Refractory materials",
+      "Construction aggregate"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Silica Sand",
+    price: 65,
+    unit: "USD/MT",
+    description: "Premium quality silica sand for glass and foundry applications.",
+    specifications: [
+      "SiO2: >98%",
+      "Fe2O3: <0.05%",
+      "Moisture: Max 2%",
+      "Grain Size: 0.1-0.6 mm"
+    ],
+    applications: [
+      "Glass manufacturing",
+      "Foundry casting",
+      "Silicon production",
+      "Water filtration"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Feldspar",
+    price: 85,
+    unit: "USD/MT",
+    description: "Potassium feldspar for ceramic and glass industries.",
+    specifications: [
+      "K2O + Na2O: 10-12%",
+      "Al2O3: 16-18%",
+      "Fe2O3: <0.1%",
+      "Brightness: >90%"
+    ],
+    applications: [
+      "Ceramic manufacturing",
+      "Glass production",
+      "Enamel and glazes",
+      "Filler applications"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Mica",
+    price: 420,
+    unit: "USD/MT",
+    description: "High-quality muscovite mica for electrical and cosmetic applications.",
+    specifications: [
+      "Purity: >85%",
+      "Moisture: Max 1%",
+      "Sheet size: Various grades",
+      "Dielectric strength: High"
+    ],
+    applications: [
+      "Electrical insulation",
+      "Cosmetics industry",
+      "Paints and coatings",
+      "Plastics filler"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Talc",
+    price: 180,
+    unit: "USD/MT",
+    description: "Premium talc powder for pharmaceutical and cosmetic use.",
+    specifications: [
+      "Purity: >95%",
+      "Whiteness: >90%",
+      "Mesh Size: 200-325 mesh",
+      "Moisture: Max 0.5%"
+    ],
+    applications: [
+      "Pharmaceuticals",
+      "Cosmetics",
+      "Paints and coatings",
+      "Plastics industry"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Graphite",
+    price: 950,
+    unit: "USD/MT",
+    description: "Natural flake graphite for battery and industrial applications.",
+    specifications: [
+      "Carbon Content: 90-95%",
+      "Flake Size: Various grades",
+      "Moisture: Max 1%",
+      "Ash: Max 5%"
+    ],
+    applications: [
+      "Battery manufacturing",
+      "Lubricants",
+      "Refractories",
+      "Pencil production"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Bentonite",
+    price: 95,
+    unit: "USD/MT",
+    description: "Sodium/Calcium bentonite for drilling and foundry applications.",
+    specifications: [
+      "Montmorillonite: >85%",
+      "Moisture: Max 12%",
+      "Swelling Index: >24 ml/2g",
+      "Mesh: 200 mesh"
+    ],
+    applications: [
+      "Drilling mud",
+      "Foundry molding",
+      "Iron ore pelletizing",
+      "Civil engineering"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "China Clay (Kaolin)",
+    price: 150,
+    unit: "USD/MT",
+    description: "Premium kaolin clay for ceramics and paper industries.",
+    specifications: [
+      "Al2O3: 36-38%",
+      "SiO2: 45-48%",
+      "Whiteness: >85%",
+      "Moisture: Max 10%"
+    ],
+    applications: [
+      "Ceramic manufacturing",
+      "Paper coating",
+      "Rubber filler",
+      "Paints and coatings"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Quartz",
+    price: 125,
+    unit: "USD/MT",
+    description: "High-purity quartz for electronics and solar applications.",
+    specifications: [
+      "SiO2: >99.5%",
+      "Fe2O3: <0.02%",
+      "Moisture: Max 1%",
+      "Particle Size: Various grades"
+    ],
+    applications: [
+      "Solar panel production",
+      "Electronics manufacturing",
+      "Glass making",
+      "Semiconductor industry"
+    ],
+    lastUpdated: "2025-12-04"
+  }
+];
+
+// Partner Mines Network
+export const partnerMines: Mine[] = [
+  {
+    name: "Bailadila Iron Ore Mines",
+    location: "Bailadila, Dantewada",
+    state: "Chhattisgarh",
+    minerals: ["Iron Ore"],
+    capacity: "4 MTPA",
+    established: "1968",
+    lat: 18.6333,
+    lng: 81.3167
+  },
+  {
+    name: "Keonjhar Iron Ore Complex",
+    location: "Keonjhar District",
+    state: "Odisha",
+    minerals: ["Iron Ore", "Manganese"],
+    capacity: "15 MTPA",
+    lat: 21.6294,
+    lng: 85.5815
+  },
+  {
+    name: "Bellary-Hospet Iron Ore Belt",
+    location: "Bellary District",
+    state: "Karnataka",
+    minerals: ["Iron Ore"],
+    capacity: "20 MTPA",
+    lat: 15.1394,
+    lng: 76.9214
+  },
+  {
+    name: "Panchpatmali Bauxite Mines",
+    location: "Koraput District",
+    state: "Odisha",
+    minerals: ["Bauxite"],
+    capacity: "6.3 MTPA",
+    established: "1980",
+    lat: 18.8130,
+    lng: 82.7109
+  },
+  {
+    name: "Jharia Coalfield",
+    location: "Dhanbad District",
+    state: "Jharkhand",
+    minerals: ["Coal (Thermal)", "Coal (Metallurgical)"],
+    capacity: "28 MTPA",
+    lat: 23.7417,
+    lng: 86.4150
+  },
+  {
+    name: "Singrauli Coalfield",
+    location: "Singrauli District",
+    state: "Madhya Pradesh",
+    minerals: ["Coal (Thermal)"],
+    capacity: "60 MTPA",
+    lat: 24.0864,
+    lng: 82.6761
+  },
+  {
+    name: "Talcher Coalfield",
+    location: "Angul District",
+    state: "Odisha",
+    minerals: ["Coal (Thermal)"],
+    capacity: "30 MTPA",
+    lat: 20.9517,
+    lng: 85.2261
+  },
+  {
+    name: "Malanjkhand Copper Project",
+    location: "Balaghat District",
+    state: "Madhya Pradesh",
+    minerals: ["Copper Ore"],
+    capacity: "2 MTPA",
+    lat: 21.8061,
+    lng: 80.1864
+  },
+  {
+    name: "Khetri Copper Complex",
+    location: "Jhunjhunu District",
+    state: "Rajasthan",
+    minerals: ["Copper Ore"],
+    capacity: "3.1 MTPA",
+    lat: 28.0000,
+    lng: 75.8000
+  },
+  {
+    name: "Satna Limestone Belt",
+    location: "Satna District",
+    state: "Madhya Pradesh",
+    minerals: ["Limestone"],
+    capacity: "50 MTPA",
+    lat: 24.6005,
+    lng: 80.8322
+  },
+  {
+    name: "Cuddapah Limestone Mines",
+    location: "YSR District",
+    state: "Andhra Pradesh",
+    minerals: ["Limestone"],
+    capacity: "25 MTPA",
+    lat: 14.4674,
+    lng: 78.8241
+  },
+  {
+    name: "Nagpur Manganese Belt",
+    location: "Nagpur District",
+    state: "Maharashtra",
+    minerals: ["Manganese Ore"],
+    capacity: "1.5 MTPA",
+    lat: 21.1458,
+    lng: 79.0882
+  },
+  {
+    name: "Sukinda Chromite Mines",
+    location: "Jajpur District",
+    state: "Odisha",
+    minerals: ["Chromite"],
+    capacity: "4 MTPA",
+    lat: 20.8500,
+    lng: 85.6500
+  },
+  {
+    name: "Rajpura-Dariba Zinc Mines",
+    location: "Rajsamand District",
+    state: "Rajasthan",
+    minerals: ["Zinc Ore", "Lead Ore"],
+    capacity: "5 MTPA",
+    lat: 25.0000,
+    lng: 73.9000
+  },
+  {
+    name: "Zawar Mines",
+    location: "Udaipur District",
+    state: "Rajasthan",
+    minerals: ["Zinc Ore", "Lead Ore"],
+    capacity: "4.2 MTPA",
+    established: "1970",
+    lat: 24.3600,
+    lng: 73.7200
+  },
+  {
+    name: "Bikaner Gypsum Mines",
+    location: "Bikaner District",
+    state: "Rajasthan",
+    minerals: ["Gypsum"],
+    capacity: "3 MTPA",
+    lat: 28.0229,
+    lng: 73.3119
+  },
+  {
+    name: "Gujarat Silica Sand Mines",
+    location: "Bharuch District",
+    state: "Gujarat",
+    minerals: ["Silica Sand"],
+    capacity: "2 MTPA",
+    lat: 21.7051,
+    lng: 72.9959
+  },
+  {
+    name: "Ajmer Feldspar Mines",
+    location: "Ajmer District",
+    state: "Rajasthan",
+    minerals: ["Feldspar", "Quartz"],
+    capacity: "0.5 MTPA",
+    lat: 26.4499,
+    lng: 74.6399
+  },
+  {
+    name: "Jharkhand Mica Belt",
+    location: "Koderma District",
+    state: "Jharkhand",
+    minerals: ["Mica"],
+    capacity: "0.3 MTPA",
+    lat: 24.4674,
+    lng: 85.5996
+  },
+  {
+    name: "Udaipur Talc Mines",
+    location: "Udaipur District",
+    state: "Rajasthan",
+    minerals: ["Talc"],
+    capacity: "0.8 MTPA",
+    lat: 24.5854,
+    lng: 73.7125
+  },
+  {
+    name: "Tamil Nadu Graphite Mines",
+    location: "Sivaganga District",
+    state: "Tamil Nadu",
+    minerals: ["Graphite"],
+    capacity: "0.2 MTPA",
+    lat: 9.8433,
+    lng: 78.4808
+  },
+  {
+    name: "Gujarat Bentonite Mines",
+    location: "Kutch District",
+    state: "Gujarat",
+    minerals: ["Bentonite"],
+    capacity: "1.5 MTPA",
+    lat: 23.7337,
+    lng: 69.8597
+  },
+  {
+    name: "Kerala China Clay Mines",
+    location: "Thiruvananthapuram",
+    state: "Kerala",
+    minerals: ["China Clay (Kaolin)"],
+    capacity: "0.6 MTPA",
+    lat: 8.5241,
+    lng: 76.9366
+  },
+  {
+    name: "Rajasthan Dolomite Mines",
+    location: "Jaipur District",
+    state: "Rajasthan",
+    minerals: ["Dolomite"],
+    capacity: "2.5 MTPA",
+    lat: 26.9124,
+    lng: 75.7873
   }
 ];
 

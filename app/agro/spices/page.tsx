@@ -8,12 +8,12 @@ export const metadata = {
 
 export default function SpicesPage() {
   return (
-    <div className="bg-primary-light min-h-screen">
+    <div className="bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest min-h-screen pt-28">
       {/* Spices Catalog - Now at the top */}
-      <section className="py-12 md:py-16 bg-primary-light">
+      <section className="py-12 md:py-16 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-6xl font-light text-center mb-4 text-primary-dark animate-slide-up">Our Spices &amp; Powders</h1>
-          <p className="text-center text-primary-dark font-light mb-12 max-w-2xl mx-auto animate-slide-up">
+          <h1 className="text-4xl md:text-6xl font-light text-center mb-4 bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent animate-slide-up">Our Spices &amp; Powders</h1>
+          <p className="text-center text-gladia-white/70 font-light mb-12 max-w-2xl mx-auto animate-slide-up">
             Premium quality spices and dehydrated powders from certified processors across India&apos;s spice belt
           </p>
 
@@ -21,11 +21,11 @@ export default function SpicesPage() {
             {spicePrices.map((spice, index) => (
               <div
                 key={spice.name}
-                className="bg-white rounded-2xl shadow-md hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-primary-light overflow-hidden animate-zoom-in"
+                className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-2xl shadow-md hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-gladia-purple/20 overflow-hidden animate-zoom-in"
                 style={{animationDelay: `${index * 0.05}s`}}
               >
                 {/* Price Header */}
-                <div className="bg-gradient-to-r from-primary-cyan to-primary-medium p-6">
+                <div className="bg-gradient-to-r from-gladia-purple to-gladia-purpleBlue p-6">
                   <h3 className="text-2xl md:text-3xl font-light text-white mb-2">{spice.name}</h3>
                   {spice.variety && (
                     <p className="text-sm font-light text-white opacity-90 mb-2">{spice.variety}</p>
@@ -40,20 +40,20 @@ export default function SpicesPage() {
 
                 <div className="p-6">
                   {/* Description */}
-                  <p className="text-primary-dark font-light text-sm mb-4 leading-relaxed">
+                  <p className="text-gladia-white font-light text-sm mb-4 leading-relaxed">
                     {spice.description}
                   </p>
 
                   {/* Specifications */}
                   <div className="mb-4">
-                    <h4 className="font-normal text-primary-dark mb-2 text-sm">Key Specifications</h4>
+                    <h4 className="font-normal text-gladia-white mb-2 text-sm">Key Specifications</h4>
                     <ul className="space-y-1">
                       {spice.specifications.slice(0, 3).map((spec, idx) => (
                         <li key={idx} className="flex items-start text-xs font-light">
-                          <svg className="w-4 h-4 text-primary-cyan mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-4 h-4 text-gladia-lightBlue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                           </svg>
-                          <span className="text-primary-dark">{spec}</span>
+                          <span className="text-gladia-white">{spec}</span>
                         </li>
                       ))}
                     </ul>
@@ -61,12 +61,12 @@ export default function SpicesPage() {
 
                   {/* Packaging Options */}
                   <div className="mb-4">
-                    <h4 className="font-normal text-primary-dark mb-2 text-sm">Packaging Options</h4>
+                    <h4 className="font-normal text-gladia-white mb-2 text-sm">Packaging Options</h4>
                     <div className="flex flex-wrap gap-2">
                       {spice.packagingOptions.slice(0, 3).map((pkg, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 bg-primary-light text-primary-dark rounded-full text-xs font-light border border-primary-cyan"
+                          className="px-3 py-1 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest text-gladia-white rounded-full text-xs font-light border border-primary-cyan"
                         >
                           {pkg}
                         </span>
@@ -75,8 +75,8 @@ export default function SpicesPage() {
                   </div>
 
                   {/* CTA */}
-                  <div className="mt-4 pt-4 border-t border-primary-light">
-                    <a href="#calculator" className="block text-center bg-primary-cyan text-white px-4 py-2 rounded-lg hover:bg-primary-medium transition-all duration-300 text-sm font-normal">
+                  <div className="mt-4 pt-4 border-t border-gladia-purple/20">
+                    <a href="#calculator" className="block text-center bg-gradient-to-r from-gladia-purple to-gladia-purpleBlue text-white px-4 py-2 rounded-lg hover:shadow-lg hover:shadow-gladia-purple/30 transition-all duration-300 text-sm font-normal">
                       Get Quote
                     </a>
                   </div>
@@ -90,53 +90,53 @@ export default function SpicesPage() {
       {/* Price Calculator Section - Moved below spices catalog */}
       <section id="calculator" className="py-12 md:py-16 bg-gradient-to-br from-white to-primary-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-primary-cyan">
-            <h2 className="text-3xl md:text-4xl font-light text-center mb-8 text-primary-dark">Get FOB Price</h2>
+          <div className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 border border-primary-cyan">
+            <h2 className="text-3xl md:text-4xl font-light text-center mb-8 text-gladia-white">Get FOB Price</h2>
             <AgroPricingCalculator productType="spices" />
           </div>
         </div>
       </section>
 
       {/* Quality Assurance Section */}
-      <section className="py-12 md:py-16 bg-primary-light">
+      <section className="py-12 md:py-16 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-primary-dark animate-slide-up">Quality Assurance &amp; Certifications</h2>
-          <p className="text-center text-primary-dark font-light mb-12 max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-gladia-white animate-slide-up">Quality Assurance &amp; Certifications</h2>
+          <p className="text-center text-gladia-white font-light mb-12 max-w-2xl mx-auto">
             Every shipment meets international quality standards with complete documentation
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-primary-light transform hover:-translate-y-2">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-cyan to-primary-medium rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-gladia-purple/20 transform hover:-translate-y-2">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-gladia-purple to-gladia-purpleBlue rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl md:text-2xl font-normal mb-3 text-primary-dark">Spices Board Certified</h3>
-              <p className="text-primary-dark font-light text-sm md:text-base">
+              <h3 className="text-xl md:text-2xl font-normal mb-3 text-gladia-white">Spices Board Certified</h3>
+              <p className="text-gladia-white font-light text-sm md:text-base">
                 All our spice processors are certified by the Spices Board of India and comply with international standards.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-primary-light transform hover:-translate-y-2">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-cyan to-primary-medium rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-gladia-purple/20 transform hover:-translate-y-2">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-gladia-purple to-gladia-purpleBlue rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 008 10.586V5L7 4z" />
                 </svg>
               </div>
-              <h3 className="text-xl md:text-2xl font-normal mb-3 text-primary-dark">Pesticide Residue Testing</h3>
-              <p className="text-primary-dark font-light text-sm md:text-base">
+              <h3 className="text-xl md:text-2xl font-normal mb-3 text-gladia-white">Pesticide Residue Testing</h3>
+              <p className="text-gladia-white font-light text-sm md:text-base">
                 Every batch undergoes comprehensive pesticide residue testing to ensure food safety.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-primary-light transform hover:-translate-y-2">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-cyan to-primary-medium rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-gladia-purple/20 transform hover:-translate-y-2">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-gladia-purple to-gladia-purpleBlue rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h3 className="text-xl md:text-2xl font-normal mb-3 text-primary-dark">Complete Documentation</h3>
-              <p className="text-primary-dark font-light text-sm md:text-base">
+              <h3 className="text-xl md:text-2xl font-normal mb-3 text-gladia-white">Complete Documentation</h3>
+              <p className="text-gladia-white font-light text-sm md:text-base">
                 Full export documentation support including phytosanitary and laboratory test certificates.
               </p>
             </div>
@@ -145,10 +145,10 @@ export default function SpicesPage() {
       </section>
 
       {/* Partner Spice Sources Network */}
-      <section className="py-12 md:py-16 bg-white">
+      <section className="py-12 md:py-16 bg-gladia-darkBlue/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-primary-dark animate-slide-up">Our Spice Sourcing Network</h2>
-          <p className="text-center text-primary-dark font-light mb-12 max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-gladia-white animate-slide-up">Our Spice Sourcing Network</h2>
+          <p className="text-center text-gladia-white font-light mb-12 max-w-3xl mx-auto">
             We have established partnerships with premium spice processors and sourcing hubs across India&apos;s spice belt, ensuring consistent supply of high-quality products.
           </p>
 
@@ -156,16 +156,16 @@ export default function SpicesPage() {
             {partnerSpiceSources.map((source, index) => (
               <div
                 key={source.name}
-                className="bg-white rounded-2xl p-4 md:p-6 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border border-primary-light animate-slide-up"
+                className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-2xl p-4 md:p-6 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border border-gladia-purple/20 animate-slide-up"
                 style={{animationDelay: `${index * 0.03}s`}}
               >
                 <div className="flex items-start mb-3">
-                  <svg className="w-5 h-5 text-primary-cyan mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-gladia-lightBlue mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                   </svg>
                   <div className="flex-1">
-                    <h3 className="font-normal text-primary-dark text-base md:text-lg mb-1">{source.name}</h3>
-                    <p className="text-sm text-primary-dark font-light opacity-75">{source.location}, {source.state}</p>
+                    <h3 className="font-normal text-gladia-white text-base md:text-lg mb-1">{source.name}</h3>
+                    <p className="text-sm text-gladia-white font-light opacity-70">{source.location}, {source.state}</p>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -173,14 +173,14 @@ export default function SpicesPage() {
                     {source.products.map((product, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-1 bg-gradient-to-r from-primary-cyan to-primary-medium text-white rounded text-xs font-light"
+                        className="px-2 py-1 bg-gradient-to-r from-gladia-purple to-gladia-purpleBlue text-white rounded text-xs font-light"
                       >
                         {product}
                       </span>
                     ))}
                   </div>
                   {source.specialty && (
-                    <p className="text-xs text-primary-dark font-light">
+                    <p className="text-xs text-gladia-white font-light">
                       <span className="font-normal">Specialty:</span> {source.specialty}
                     </p>
                   )}
@@ -192,10 +192,10 @@ export default function SpicesPage() {
       </section>
 
       {/* Export Ports Section */}
-      <section className="py-12 md:py-16 bg-primary-light">
+      <section className="py-12 md:py-16 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-primary-dark animate-slide-up">Export Ports Network</h2>
-          <p className="text-center text-primary-dark font-light mb-12 max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-gladia-white animate-slide-up">Export Ports Network</h2>
+          <p className="text-center text-gladia-white font-light mb-12 max-w-2xl mx-auto">
             Strategic access to major Indian ports for seamless international shipping
           </p>
 
@@ -214,14 +214,14 @@ export default function SpicesPage() {
             ].map((port, index) => (
               <div
                 key={port.name}
-                className="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-primary-light text-center animate-zoom-in"
+                className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-2xl p-4 shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-gladia-purple/20 text-center animate-zoom-in"
                 style={{animationDelay: `${index * 0.05}s`}}
               >
-                <svg className="w-8 h-8 md:w-10 md:h-10 text-primary-cyan mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-8 h-8 md:w-10 md:h-10 text-gladia-lightBlue mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
-                <h3 className="font-normal text-primary-dark text-sm mb-1">{port.name}</h3>
-                <p className="text-xs text-primary-dark font-light opacity-75">{port.state}</p>
+                <h3 className="font-normal text-gladia-white text-sm mb-1">{port.name}</h3>
+                <p className="text-xs text-gladia-white font-light opacity-70">{port.state}</p>
               </div>
             ))}
           </div>
@@ -229,17 +229,17 @@ export default function SpicesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary-medium to-primary-dark text-white">
+      <section className="py-16 md:py-20 bg-gradient-to-br from-gladia-darkBlue via-gladia-darkest to-gladia-darkBlue text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-5xl font-light mb-6">Ready to Start Trading?</h2>
           <p className="text-lg md:text-xl mb-8 font-light">
             Contact us for detailed quotations, sample requests, or partnership inquiries.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/#contact" className="bg-primary-cyan text-white px-8 py-3 rounded-lg hover:bg-white hover:text-primary-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-normal">
+            <a href="/#contact" className="bg-gradient-to-r from-gladia-purple to-gladia-purpleBlue text-white px-8 py-3 rounded-lg hover:bg-gladia-darkBlue/50 backdrop-blur-sm hover:text-gladia-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-normal">
               Get a Quote
             </a>
-            <a href="/#contact" className="bg-white text-primary-dark px-8 py-3 rounded-lg hover:bg-primary-cyan hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-normal">
+            <a href="/#contact" className="bg-gladia-darkBlue/50 backdrop-blur-sm text-gladia-white px-8 py-3 rounded-lg hover:bg-gradient-to-r from-gladia-purple to-gladia-purpleBlue hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-normal">
               Request Samples
             </a>
           </div>

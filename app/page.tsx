@@ -3,111 +3,12 @@ import HeroSlider from '@/components/HeroSlider';
 
 export default function Home() {
   return (
-    <div className="bg-primary-cream">
+    <div className="pt-20">
       {/* Hero Slider Section */}
       <HeroSlider />
 
-      {/* Our Commodities Section */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading text-center mb-12">Our Commodities</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Minerals */}
-            <div className="bg-gradient-to-br from-primary-blue to-primary-dark rounded-xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
-              <h3 className="text-3xl font-bold mb-4">Minerals Trading</h3>
-              <p className="mb-6 text-primary-cream">
-                Premium quality minerals from verified mines across India and globally.
-              </p>
-              <ul className="space-y-2 mb-6">
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-lightblue" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Iron Ore (Fe 62-65%)
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-lightblue" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Bauxite (Al2O3 50-55%)
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-lightblue" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Copper Ore & Refined Copper
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-lightblue" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Thermal & Metallurgical Coal
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-lightblue" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Manganese, Chromite & More
-                </li>
-              </ul>
-              <Link href="/minerals" className="btn-secondary inline-block">
-                View All Minerals
-              </Link>
-            </div>
-
-            {/* Agricultural Commodities */}
-            <div className="bg-gradient-to-br from-primary-lightblue to-primary-blue rounded-xl p-8 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
-              <h3 className="text-3xl font-bold mb-4">Agricultural Commodities</h3>
-              <p className="mb-6">
-                Premium quality rice, spices, and dehydrated powders from certified suppliers.
-              </p>
-              <ul className="space-y-2 mb-6">
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-cream" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  1121 Basmati Rice (Premium)
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-cream" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Non-Basmati Varieties
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-cream" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Turmeric, Cumin, Coriander
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-cream" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Dehydrated Powders
-                </li>
-                <li className="flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-primary-cream" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  Export Quality Packaging
-                </li>
-              </ul>
-              <div className="space-y-3">
-                <Link href="/agro/rice" className="btn-secondary inline-block mr-3">
-                  View Rice
-                </Link>
-                <Link href="/agro/spices" className="btn-secondary inline-block">
-                  View Spices
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Our Services Section */}
-      <section className="py-16 md:py-24 bg-primary-cream">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-primary-light via-white to-primary-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="section-heading text-center mb-4">Our Services</h2>
           <p className="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
@@ -190,7 +91,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose VandhGlobal Section */}
-      <section className="py-16 md:py-24 bg-white">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-white via-primary-light/30 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="section-heading text-center mb-12">Why Choose VandhGlobal?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -234,7 +135,7 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-16 md:py-24 bg-primary-cream">
+      <section id="about" className="py-16 md:py-24 bg-gradient-to-br from-primary-light via-white to-primary-light/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="animate-slide-in-left">
@@ -286,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 md:py-24 bg-white">
+      <section id="contact" className="py-16 md:py-24 bg-gradient-to-br from-white via-primary-light/20 to-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="section-heading text-center mb-4">Get In Touch</h2>
           <p className="text-center text-gray-600 mb-12 text-lg">

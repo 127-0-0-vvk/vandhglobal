@@ -7,7 +7,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50 border-b-2 border-primary-light">
+    <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-lg border-b border-primary-light/20 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
@@ -17,40 +17,40 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden md:flex items-center space-x-1">
             <Link
               href="/"
-              className="px-4 py-2 rounded-full hover:bg-white text-primary-dark hover:text-primary-cyan transition-all duration-200 font-normal transform hover:scale-105"
+              className="px-4 py-2 rounded-lg text-primary-dark hover:text-primary-cyan hover:bg-primary-light/50 transition-all duration-200 font-normal"
             >
               Home
             </Link>
             <Link
               href="/minerals"
-              className="px-4 py-2 rounded-full hover:bg-white text-primary-dark hover:text-primary-cyan transition-all duration-200 font-normal transform hover:scale-105"
+              className="px-4 py-2 rounded-lg text-primary-dark hover:text-primary-cyan hover:bg-primary-light/50 transition-all duration-200 font-normal"
             >
               Minerals
             </Link>
             <Link
               href="/agro/rice"
-              className="px-4 py-2 rounded-full hover:bg-white text-primary-dark hover:text-primary-cyan transition-all duration-200 font-normal transform hover:scale-105"
+              className="px-4 py-2 rounded-lg text-primary-dark hover:text-primary-cyan hover:bg-primary-light/50 transition-all duration-200 font-normal"
             >
               Rice
             </Link>
             <Link
               href="/agro/spices"
-              className="px-4 py-2 rounded-full hover:bg-white text-primary-dark hover:text-primary-cyan transition-all duration-200 font-normal transform hover:scale-105"
+              className="px-4 py-2 rounded-lg text-primary-dark hover:text-primary-cyan hover:bg-primary-light/50 transition-all duration-200 font-normal"
             >
-              Spices & Powders
+              Spices
             </Link>
             <Link
               href="/#about"
-              className="px-4 py-2 rounded-full hover:bg-white text-primary-dark hover:text-primary-cyan transition-all duration-200 font-normal transform hover:scale-105"
+              className="px-4 py-2 rounded-lg text-primary-dark hover:text-primary-cyan hover:bg-primary-light/50 transition-all duration-200 font-normal"
             >
-              About Us
+              About
             </Link>
             <Link
               href="/#contact"
-              className="ml-2 bg-primary-cyan text-white px-6 py-2 rounded-full hover:bg-primary-medium transform hover:scale-105 transition-all duration-200 font-normal shadow-lg hover:shadow-xl"
+              className="ml-2 bg-primary-cyan text-white px-6 py-2.5 rounded-lg hover:bg-primary-medium transform hover:scale-105 transition-all duration-200 font-normal shadow-lg hover:shadow-xl"
             >
               Contact
             </Link>
@@ -84,46 +84,46 @@ export default function Navbar() {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-t border-primary-light animate-slide-up shadow-lg">
+        <div className="md:hidden bg-white/95 backdrop-blur-lg border-t border-primary-light/20 animate-slide-up shadow-lg">
           <div className="px-4 pt-2 pb-3 space-y-2">
             <Link
               href="/"
-              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light hover:text-primary-cyan transition-all font-normal"
+              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light/50 hover:text-primary-cyan transition-all font-normal"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Home
             </Link>
             <Link
               href="/minerals"
-              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light hover:text-primary-cyan transition-all font-normal"
+              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light/50 hover:text-primary-cyan transition-all font-normal"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Minerals Trading
+              Minerals
             </Link>
             <Link
               href="/agro/rice"
-              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light hover:text-primary-cyan transition-all font-normal"
+              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light/50 hover:text-primary-cyan transition-all font-normal"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Rice Trading
+              Rice
             </Link>
             <Link
               href="/agro/spices"
-              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light hover:text-primary-cyan transition-all font-normal"
+              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light/50 hover:text-primary-cyan transition-all font-normal"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              Spices & Powders
+              Spices
             </Link>
             <Link
               href="/#about"
-              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light hover:text-primary-cyan transition-all font-normal"
+              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light/50 hover:text-primary-cyan transition-all font-normal"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              About Us
+              About
             </Link>
             <Link
               href="/#contact"
-              className="block px-4 py-3 rounded-lg bg-primary-cyan text-white hover:bg-primary-medium transition-all font-normal text-center"
+              className="block px-4 py-3 rounded-lg bg-primary-cyan text-white hover:bg-primary-medium transition-all font-normal text-center shadow-md"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact

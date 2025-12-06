@@ -9,13 +9,13 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full z-50 bg-gladia-darkest/95 backdrop-blur-lg border-b border-gladia-purple/20 shadow-lg rounded-b-3xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-24">
-          <div className="flex items-center ml-8">
-            <Link href="/" className="flex items-center group">
+        <div className="flex justify-between items-center h-28">
+          <div className="flex items-center justify-center ml-8">
+            <Link href="/" className="flex items-center justify-center group">
               <img
                 src="/images/logo.png"
                 alt="VandhGlobal Logo"
-                className="h-18 w-18 md:h-22 md:w-22 transform group-hover:scale-110 transition-transform duration-300 object-contain"
+                className="h-20 w-20 md:h-24 md:w-24 transform group-hover:scale-110 transition-transform duration-300 object-contain"
               />
             </Link>
           </div>

@@ -12,15 +12,15 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-3 group">
+            <Link href="/" className="flex items-center group">
               <Image
                 src="/images/logo.png"
                 alt="VandhGlobal Logo"
-                width={50}
-                height={50}
-                className="transform group-hover:scale-110 transition-transform duration-300"
+                width={80}
+                height={80}
+                className="transform group-hover:scale-110 transition-transform duration-300 object-contain"
+                priority
               />
-              <span className="text-2xl md:text-3xl font-normal bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent transform group-hover:scale-105 transition-transform duration-300">VandhGlobal</span>
             </Link>
           </div>
 
@@ -29,31 +29,31 @@ export default function Navbar() {
             <div className="flex items-center gap-1 bg-gladia-darkBlue/40 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-1.5 shadow-lg">
               <Link
                 href="/minerals"
-                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
               >
                 Minerals
               </Link>
               <Link
                 href="/agro/rice"
-                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
               >
                 Rice
               </Link>
               <Link
                 href="/agro/spices"
-                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
               >
                 Spices
               </Link>
               <Link
                 href="/#about"
-                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
               >
                 About
               </Link>
               <Link
                 href="/#contact"
-                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
               >
                 Contact
               </Link>
@@ -94,13 +94,6 @@ export default function Navbar() {
         <div className="md:hidden bg-gladia-darkBlue/98 backdrop-blur-lg border-t border-gladia-purple/20 animate-slide-up shadow-lg">
           <div className="px-4 pt-2 pb-3 space-y-2">
             <Link
-              href="/"
-              className="block px-4 py-3 rounded-lg text-gladia-white/90 hover:bg-gladia-purple/20 hover:text-gladia-white transition-all font-light"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
               href="/minerals"
               className="block px-4 py-3 rounded-lg text-gladia-white/90 hover:bg-gladia-purple/20 hover:text-gladia-white transition-all font-light"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -130,7 +123,7 @@ export default function Navbar() {
             </Link>
             <Link
               href="/#contact"
-              className="block px-4 py-3 rounded-lg bg-gladia-white text-gladia-darkest hover:bg-gladia-white/90 transition-all font-normal text-center shadow-md"
+              className="block px-4 py-3 rounded-lg text-gladia-white/90 hover:bg-gladia-purple/20 hover:text-gladia-white transition-all font-light"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact

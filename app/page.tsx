@@ -1,9 +1,15 @@
 import Link from 'next/link';
 import HeroSlider from '@/components/HeroSlider';
+import PriceTicker from '@/components/PriceTicker';
 
 export default function Home() {
   return (
     <div className="bg-gladia-darkest">
+      {/* Price Ticker */}
+      <div className="pt-28">
+        <PriceTicker />
+      </div>
+
       {/* Hero Slider Section */}
       <HeroSlider />
 

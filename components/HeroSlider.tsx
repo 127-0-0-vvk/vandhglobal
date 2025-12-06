@@ -21,7 +21,7 @@ export default function HeroSlider() {
   }, []);
 
   return (
-    <div className="relative min-h-[50vh] md:min-h-screen overflow-hidden bg-gladia-darkest pt-28">
+    <div className="relative min-h-[50vh] md:min-h-screen overflow-hidden bg-gladia-darkest">
       {/* Video Background */}
       <video
         autoPlay
@@ -37,7 +37,7 @@ export default function HeroSlider() {
       <div className="absolute inset-0 bg-black/50"></div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[50vh] md:min-h-screen px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-[50vh] md:min-h-screen px-4 sm:px-6 lg:px-8 md:-mt-20">
         {/* Tagline with Typing Effect */}
         <h1 className="text-2xl md:text-5xl lg:text-6xl xl:text-7xl text-center text-white font-light leading-tight max-w-6xl" style={{fontFamily: "'Space Grotesk', sans-serif"}}>
           {displayedText}

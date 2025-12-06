@@ -9,48 +9,50 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full z-50 bg-gladia-darkest/95 backdrop-blur-lg border-b border-gladia-purple/20 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20">
+        <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
             <Link href="/" className="flex items-center group">
               <span className="text-3xl font-normal bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent transform group-hover:scale-110 transition-transform duration-300">VandhGlobal</span>
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            <Link
-              href="/"
-              className="px-4 py-2 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/10 transition-all duration-200 font-light"
-            >
-              Home
-            </Link>
-            <Link
-              href="/minerals"
-              className="px-4 py-2 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/10 transition-all duration-200 font-light"
-            >
-              Minerals
-            </Link>
-            <Link
-              href="/agro/rice"
-              className="px-4 py-2 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/10 transition-all duration-200 font-light"
-            >
-              Rice
-            </Link>
-            <Link
-              href="/agro/spices"
-              className="px-4 py-2 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/10 transition-all duration-200 font-light"
-            >
-              Spices
-            </Link>
-            <Link
-              href="/#about"
-              className="px-4 py-2 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/10 transition-all duration-200 font-light"
-            >
-              About
-            </Link>
+          {/* Desktop Navigation - Horizontal Card Style */}
+          <div className="hidden md:flex items-center gap-2">
+            <div className="flex items-center gap-1 bg-gladia-darkBlue/40 backdrop-blur-sm border border-gladia-purple/20 rounded-xl p-1.5 shadow-lg">
+              <Link
+                href="/"
+                className="px-5 py-2.5 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+              >
+                Home
+              </Link>
+              <Link
+                href="/minerals"
+                className="px-5 py-2.5 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+              >
+                Minerals
+              </Link>
+              <Link
+                href="/agro/rice"
+                className="px-5 py-2.5 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+              >
+                Rice
+              </Link>
+              <Link
+                href="/agro/spices"
+                className="px-5 py-2.5 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+              >
+                Spices
+              </Link>
+              <Link
+                href="/#about"
+                className="px-5 py-2.5 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+              >
+                About
+              </Link>
+            </div>
             <Link
               href="/#contact"
-              className="ml-2 bg-gladia-white text-gladia-darkest px-6 py-2.5 rounded-lg hover:bg-gladia-white/90 transform hover:scale-105 transition-all duration-200 font-normal shadow-lg hover:shadow-xl hover:shadow-gladia-purple/50"
+              className="bg-gladia-white text-gladia-darkest px-6 py-2.5 rounded-xl hover:bg-gladia-white/90 transform hover:scale-105 transition-all duration-200 font-normal shadow-lg hover:shadow-xl hover:shadow-gladia-purple/50"
             >
               Contact
             </Link>

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -11,8 +12,15 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center group">
-              <span className="text-3xl font-normal bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent transform group-hover:scale-110 transition-transform duration-300">VandhGlobal</span>
+            <Link href="/" className="flex items-center gap-3 group">
+              <Image
+                src="/images/logo.png"
+                alt="VandhGlobal Logo"
+                width={50}
+                height={50}
+                className="transform group-hover:scale-110 transition-transform duration-300"
+              />
+              <span className="text-2xl md:text-3xl font-normal bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent transform group-hover:scale-105 transition-transform duration-300">VandhGlobal</span>
             </Link>
           </div>
 

@@ -9,19 +9,19 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full z-50 bg-gladia-darkest/95 backdrop-blur-lg border-b border-gladia-purple/20 shadow-lg rounded-b-3xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-24">
           <div className="flex items-center ml-8">
             <Link href="/" className="flex items-center group">
               <img
                 src="/images/logo.png"
                 alt="VandhGlobal Logo"
-                className="h-16 w-16 md:h-20 md:w-20 transform group-hover:scale-110 transition-transform duration-300 object-contain"
+                className="h-18 w-18 md:h-22 md:w-22 transform group-hover:scale-110 transition-transform duration-300 object-contain"
               />
             </Link>
           </div>
 
-          {/* Desktop Navigation - Centered-Right Card Style */}
-          <div className="hidden md:flex items-center absolute left-[55%] transform -translate-x-1/2">
+          {/* Desktop Navigation - Right-Positioned Card Style */}
+          <div className="hidden md:flex items-center absolute left-[60%] transform -translate-x-1/2">
             <div className="flex items-center gap-1 bg-gladia-darkBlue/40 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-1.5 shadow-lg">
               <Link
                 href="/minerals"

@@ -3,7 +3,7 @@ import HeroSlider from '@/components/HeroSlider';
 
 export default function Home() {
   return (
-    <div className="pt-20 bg-gladia-darkest">
+    <div className="pt-24 bg-gladia-darkest">
       {/* Hero Slider Section */}
       <HeroSlider />
 

@@ -13,7 +13,7 @@ export default function Navbar() {
           <div className="flex items-center justify-center ml-8">
             <Link href="/" className="flex items-center justify-center group">
               <img
-                src="/images/logo.png"
+                src="/images/logoname.svg"
                 alt="VandhGlobal Logo"
                 className="h-20 w-20 md:h-24 md:w-24 transform group-hover:scale-110 transition-transform duration-300 object-contain"
               />

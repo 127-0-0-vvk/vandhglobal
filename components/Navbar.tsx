@@ -9,8 +9,8 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full z-50 bg-gladia-darkest/95 backdrop-blur-lg border-b border-gladia-purple/20 shadow-lg rounded-b-3xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-28">
-          <div className="flex items-center justify-center ml-8">
+        <div className="flex items-center h-28">
+          <div className="flex items-center justify-start pl-4">
             <Link href="/" className="flex items-center justify-center group">
               <img
                 src="/images/logo.png"
@@ -20,8 +20,8 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Navigation - Right-Positioned Card Style */}
-          <div className="hidden md:flex items-center absolute left-[65%] transform -translate-x-1/2">
+          {/* Desktop Navigation - Centered Card Style */}
+          <div className="hidden md:flex items-center justify-center flex-1">
             <div className="flex items-center gap-1 bg-gladia-darkBlue/40 backdrop-blur-sm border border-gladia-purple/20 rounded-full p-2 shadow-lg">
               <Link
                 href="/minerals"
@@ -56,11 +56,8 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Spacer for layout balance */}
-          <div className="hidden md:block w-32"></div>
-
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center ml-auto">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-gladia-white focus:outline-none hover:text-gladia-purple transition-colors p-2"

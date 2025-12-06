@@ -13,7 +13,7 @@ export default function Navbar() {
           <div className="flex items-center justify-center ml-8">
             <Link href="/" className="flex items-center justify-center group">
               <img
-                src="/images/logoname.svg"
+                src="/images/logo.png"
                 alt="VandhGlobal Logo"
                 className="h-20 w-20 md:h-24 md:w-24 transform group-hover:scale-110 transition-transform duration-300 object-contain"
               />
@@ -21,7 +21,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation - Right-Positioned Card Style */}
-          <div className="hidden md:flex items-center absolute left-[60%] transform -translate-x-1/2">
+          <div className="hidden md:flex items-center absolute left-[65%] transform -translate-x-1/2">
             <div className="flex items-center gap-1 bg-gladia-darkBlue/40 backdrop-blur-sm border border-gladia-purple/20 rounded-full p-2 shadow-lg">
               <Link
                 href="/minerals"

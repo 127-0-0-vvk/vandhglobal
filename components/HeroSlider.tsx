@@ -2,7 +2,7 @@
 
 export default function HeroSlider() {
   return (
-    <div className="relative min-h-[70vh] md:min-h-screen overflow-hidden bg-gladia-darkest">
+    <div className="relative min-h-[50vh] md:min-h-screen overflow-hidden bg-gladia-darkest pt-28">
       {/* Video Background */}
       <video
         autoPlay
@@ -18,7 +18,7 @@ export default function HeroSlider() {
       <div className="absolute inset-0 bg-black/40"></div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[70vh] md:min-h-screen px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-[50vh] md:min-h-screen px-4 sm:px-6 lg:px-8">
         {/* Blinking Logo */}
         <img
           src="/images/logoname.svg"

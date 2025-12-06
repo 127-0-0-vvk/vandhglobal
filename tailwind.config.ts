@@ -10,15 +10,22 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          cream: '#FAF7F0',
-          tan: '#D8D2C2',
-          brown: '#B17457',
-          dark: '#4A4947',
+          white: '#F8FAFC',
+          light: '#D9EAFD',
+          blue: '#BCCCDC',
+          dark: '#9AA6B2',
         },
       },
       fontFamily: {
         sans: ['Montserrat', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         heading: ['Montserrat', 'sans-serif'],
+      },
+      fontWeight: {
+        thin: '100',
+        extralight: '200',
+        light: '300',
+        normal: '400',
+        medium: '500',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

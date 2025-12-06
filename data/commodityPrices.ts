@@ -9,6 +9,7 @@ export interface MineralPrice {
   specifications: string[];
   applications: string[];
   lastUpdated: string;
+  imageUrl: string;
 }
 
 export interface AgriPrice {
@@ -73,7 +74,8 @@ export const mineralPrices: MineralPrice[] = [
       "Direct reduction iron (DRI)",
       "Pellet production"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1586891522271-f5b5f7e11913?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Bauxite",
@@ -93,7 +95,8 @@ export const mineralPrices: MineralPrice[] = [
       "Cement manufacturing",
       "Chemical industry"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1611070026005-c6e67be2a2d1?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Copper Ore",
@@ -112,7 +115,8 @@ export const mineralPrices: MineralPrice[] = [
       "Construction materials",
       "Industrial machinery"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Coal (Thermal)",
@@ -131,7 +135,8 @@ export const mineralPrices: MineralPrice[] = [
       "Cement manufacturing",
       "Industrial heating"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1548186310-6bb4c1b19632?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Coal (Metallurgical)",
@@ -150,7 +155,8 @@ export const mineralPrices: MineralPrice[] = [
       "Coke manufacturing",
       "Blast furnace operations"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Limestone",
@@ -169,7 +175,8 @@ export const mineralPrices: MineralPrice[] = [
       "Agricultural lime",
       "Chemical industry"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1564689157417-3f2784e13e5e?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Manganese Ore",
@@ -187,7 +194,8 @@ export const mineralPrices: MineralPrice[] = [
       "Battery manufacturing",
       "Chemical industry"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1609766975227-8316cd84d8fb?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Chromite",
@@ -205,7 +213,8 @@ export const mineralPrices: MineralPrice[] = [
       "Refractory materials",
       "Chemical industry"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Zinc Ore",
@@ -224,7 +233,8 @@ export const mineralPrices: MineralPrice[] = [
       "Die casting",
       "Chemical industry"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1610056494052-6a4f83f76c3f?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Lead Ore",
@@ -243,7 +253,8 @@ export const mineralPrices: MineralPrice[] = [
       "Cable sheathing",
       "Alloys production"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Gypsum",
@@ -262,7 +273,8 @@ export const mineralPrices: MineralPrice[] = [
       "Wallboard production",
       "Agricultural gypsum"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1568607689150-17e625c1586e?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Dolomite",
@@ -281,7 +293,8 @@ export const mineralPrices: MineralPrice[] = [
       "Refractory materials",
       "Construction aggregate"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1601574334580-3ab0e4be4fa1?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Silica Sand",
@@ -300,7 +313,8 @@ export const mineralPrices: MineralPrice[] = [
       "Silicon production",
       "Water filtration"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Feldspar",
@@ -319,7 +333,8 @@ export const mineralPrices: MineralPrice[] = [
       "Enamel and glazes",
       "Filler applications"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1588672495706-b4ec0a00a49f?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Mica",
@@ -338,7 +353,8 @@ export const mineralPrices: MineralPrice[] = [
       "Paints and coatings",
       "Plastics filler"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1618477247222-acbdb0e159b3?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Talc",
@@ -357,7 +373,8 @@ export const mineralPrices: MineralPrice[] = [
       "Paints and coatings",
       "Plastics industry"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1583324113626-70df0f4deaab?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Graphite",
@@ -376,7 +393,8 @@ export const mineralPrices: MineralPrice[] = [
       "Refractories",
       "Pencil production"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1598452963314-b09f397a5c48?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Bentonite",
@@ -395,7 +413,8 @@ export const mineralPrices: MineralPrice[] = [
       "Iron ore pelletizing",
       "Civil engineering"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1611689342806-0863700ce1e4?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "China Clay (Kaolin)",
@@ -414,7 +433,8 @@ export const mineralPrices: MineralPrice[] = [
       "Rubber filler",
       "Paints and coatings"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1604762512354-009984d2baf9?auto=format&fit=crop&w=800&q=80"
   },
   {
     name: "Quartz",
@@ -433,7 +453,8 @@ export const mineralPrices: MineralPrice[] = [
       "Glass making",
       "Semiconductor industry"
     ],
-    lastUpdated: "2025-12-04"
+    lastUpdated: "2025-12-04",
+    imageUrl: "https://images.unsplash.com/photo-1518709594023-6eab9bab7b23?auto=format&fit=crop&w=800&q=80"
   }
 ];
 

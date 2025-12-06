@@ -21,17 +21,26 @@ export default function MineralsPage() {
             {mineralPrices.map((mineral, index) => (
               <div
                 key={mineral.name}
-                className="bg-white rounded-2xl shadow-md hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-primary-light overflow-hidden animate-zoom-in"
+                className="bg-white rounded-2xl shadow-md hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-primary-light overflow-hidden animate-zoom-in group"
                 style={{animationDelay: `${index * 0.05}s`}}
               >
-                {/* Price Header */}
-                <div className="bg-gradient-to-r from-primary-cyan to-primary-medium p-6">
-                  <h3 className="text-2xl md:text-3xl font-light text-white mb-2">{mineral.name}</h3>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl md:text-4xl font-normal text-white">
-                      ${mineral.price.toLocaleString()}
-                    </span>
-                    <span className="text-sm font-light text-white opacity-90">{mineral.unit}</span>
+                {/* Mineral Image */}
+                <div className="relative h-48 md:h-56 overflow-hidden">
+                  <img
+                    src={mineral.imageUrl}
+                    alt={mineral.name}
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/60 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <h3 className="text-2xl md:text-3xl font-light text-white mb-1">{mineral.name}</h3>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl md:text-3xl font-normal text-white">
+                        ${mineral.price.toLocaleString()}
+                      </span>
+                      <span className="text-xs font-light text-white opacity-90">{mineral.unit}</span>
+                    </div>
                   </div>
                 </div>
 
@@ -73,7 +82,7 @@ export default function MineralsPage() {
 
                   {/* CTA */}
                   <div className="mt-4 pt-4 border-t border-primary-light">
-                    <a href="#calculator" className="block text-center bg-primary-cyan text-white px-4 py-2 rounded-lg hover:bg-primary-medium transition-all duration-300 text-sm font-normal">
+                    <a href="#calculator" className="block text-center bg-primary-cyan text-white px-4 py-2 rounded-lg hover:bg-primary-medium transition-all duration-300 text-sm font-normal shadow-md hover:shadow-lg">
                       Get Quote
                     </a>
                   </div>

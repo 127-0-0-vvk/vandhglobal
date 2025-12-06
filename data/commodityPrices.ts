@@ -33,6 +33,27 @@ export interface Mine {
   lng: number;
 }
 
+export interface RiceMill {
+  name: string;
+  location: string;
+  state: string;
+  varieties: string[];
+  capacity?: string;
+  certifications?: string[];
+  lat: number;
+  lng: number;
+}
+
+export interface SpiceSource {
+  name: string;
+  location: string;
+  state: string;
+  products: string[];
+  specialty?: string;
+  lat: number;
+  lng: number;
+}
+
 export const mineralPrices: MineralPrice[] = [
   {
     name: "Iron Ore",
@@ -639,6 +660,146 @@ export const partnerMines: Mine[] = [
   }
 ];
 
+// Partner Rice Mills Network
+export const partnerRiceMills: RiceMill[] = [
+  {
+    name: "Punjab Basmati Mills",
+    location: "Karnal, Karnal District",
+    state: "Haryana",
+    varieties: ["1121 Basmati", "Pusa Basmati", "Sugandha"],
+    capacity: "200 MT/Day",
+    certifications: ["FSSAI", "ISO 22000", "APEDA"],
+    lat: 29.6857,
+    lng: 76.9905
+  },
+  {
+    name: "Amritsar Rice Exports",
+    location: "Amritsar, Amritsar District",
+    state: "Punjab",
+    varieties: ["1121 Basmati", "Pusa Basmati", "Sharbati"],
+    capacity: "300 MT/Day",
+    certifications: ["FSSAI", "ISO 22000", "Halal"],
+    lat: 31.6340,
+    lng: 74.8723
+  },
+  {
+    name: "Godavari Rice Processing",
+    location: "West Godavari District",
+    state: "Andhra Pradesh",
+    varieties: ["Sona Masoori", "BPT 5204", "Swarna"],
+    capacity: "250 MT/Day",
+    certifications: ["FSSAI", "ISO 22000"],
+    lat: 16.7150,
+    lng: 81.7303
+  },
+  {
+    name: "Karnataka Premium Mills",
+    location: "Raichur District",
+    state: "Karnataka",
+    varieties: ["Kolam", "Sona Masoori", "IR-64"],
+    capacity: "180 MT/Day",
+    certifications: ["FSSAI", "APEDA"],
+    lat: 16.2160,
+    lng: 77.3566
+  },
+  {
+    name: "Tamil Nadu Rice Industries",
+    location: "Thanjavur District",
+    state: "Tamil Nadu",
+    varieties: ["Ponni", "Sona Masoori", "IR-36"],
+    capacity: "220 MT/Day",
+    certifications: ["FSSAI", "ISO 22000"],
+    lat: 10.7870,
+    lng: 79.1378
+  },
+  {
+    name: "Telangana Quality Mills",
+    location: "Warangal District",
+    state: "Telangana",
+    varieties: ["BPT 5204", "Swarna", "IR-64"],
+    capacity: "200 MT/Day",
+    certifications: ["FSSAI", "APEDA"],
+    lat: 17.9784,
+    lng: 79.6006
+  }
+];
+
+// Partner Spice Sources Network
+export const partnerSpiceSources: SpiceSource[] = [
+  {
+    name: "Kerala Spice Gardens",
+    location: "Idukki District",
+    state: "Kerala",
+    products: ["Cardamom", "Black Pepper", "Clove", "Cinnamon"],
+    specialty: "Organic Cardamom & Pepper",
+    lat: 9.9312,
+    lng: 76.9709
+  },
+  {
+    name: "Guntur Chilli Market",
+    location: "Guntur District",
+    state: "Andhra Pradesh",
+    products: ["Red Chilli", "Turmeric", "Coriander"],
+    specialty: "Premium Red Chilli (Teja/S17)",
+    lat: 16.3067,
+    lng: 80.4365
+  },
+  {
+    name: "Erode Turmeric Belt",
+    location: "Erode District",
+    state: "Tamil Nadu",
+    products: ["Turmeric", "Ginger", "Cumin"],
+    specialty: "High Curcumin Turmeric",
+    lat: 11.3410,
+    lng: 77.7172
+  },
+  {
+    name: "Gujarat Spice Hub",
+    location: "Unjha, Mehsana District",
+    state: "Gujarat",
+    products: ["Cumin", "Fennel", "Fenugreek", "Mustard"],
+    specialty: "Export Quality Cumin",
+    lat: 23.8033,
+    lng: 72.3916
+  },
+  {
+    name: "Rajasthan Spice Traders",
+    location: "Jodhpur District",
+    state: "Rajasthan",
+    products: ["Coriander", "Cumin", "Fenugreek", "Ajwain"],
+    specialty: "Machine Cleaned Spices",
+    lat: 26.2389,
+    lng: 73.0243
+  },
+  {
+    name: "Karnataka Dehydration Unit",
+    location: "Bengaluru Rural",
+    state: "Karnataka",
+    products: ["Dehydrated Onion", "Dehydrated Garlic", "Dehydrated Vegetables"],
+    specialty: "Spray Dried Powders",
+    lat: 13.0827,
+    lng: 77.5877
+  },
+  {
+    name: "Maharashtra Agro Processing",
+    location: "Nashik District",
+    state: "Maharashtra",
+    products: ["Dehydrated Onion", "Dehydrated Tomato", "Dehydrated Beetroot"],
+    specialty: "Onion & Tomato Powders",
+    lat: 19.9975,
+    lng: 73.7898
+  },
+  {
+    name: "Tamil Nadu Organics",
+    location: "Coimbatore District",
+    state: "Tamil Nadu",
+    products: ["Moringa Powder", "Curry Leaves", "Mint", "Spinach Powder"],
+    specialty: "Organic Superfoods",
+    lat: 11.0168,
+    lng: 76.9558
+  }
+];
+
 export const ricePrices: AgriPrice[] = [
   {
     name: "1121 Basmati Rice (White)",
@@ -748,6 +909,153 @@ export const ricePrices: AgriPrice[] = [
       "Purity: 95% minimum",
       "Broken: 3% maximum",
       "Moisture: 13% maximum"
+    ],
+    packagingOptions: [
+      "50 KG PP Bags",
+      "25 KG PP Bags"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Pusa Basmati Rice",
+    variety: "Traditional Basmati",
+    price: 980,
+    unit: "USD/MT FOB",
+    description: "Traditional Pusa Basmati rice, aromatic long grain variety. Excellent cooking elongation and aroma.",
+    specifications: [
+      "Average Grain Length: 7.0-7.5 mm",
+      "Purity: 95% minimum",
+      "Broken: 2% maximum",
+      "Moisture: 12-13%",
+      "Aging: 1 year"
+    ],
+    packagingOptions: [
+      "50 KG PP Bags",
+      "25 KG PP Bags",
+      "Custom packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Sugandha Basmati Rice",
+    variety: "Premium Basmati",
+    price: 920,
+    unit: "USD/MT FOB",
+    description: "Sugandha Basmati rice with strong aroma and excellent taste. Popular export variety.",
+    specifications: [
+      "Average Grain Length: 7.5-8.0 mm",
+      "Purity: 95% minimum",
+      "Broken: 2% maximum",
+      "Moisture: 12-13%"
+    ],
+    packagingOptions: [
+      "50 KG PP Bags",
+      "25 KG PP Bags"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Sharbati Basmati Rice",
+    variety: "Premium Basmati",
+    price: 900,
+    unit: "USD/MT FOB",
+    description: "Sharbati Basmati rice, sweet taste and distinct aroma. Medium-long grain variety.",
+    specifications: [
+      "Average Grain Length: 6.8-7.2 mm",
+      "Purity: 95% minimum",
+      "Broken: 2% maximum",
+      "Moisture: 12-13%"
+    ],
+    packagingOptions: [
+      "50 KG PP Bags",
+      "25 KG PP Bags"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Sona Masoori Rice",
+    variety: "Premium Non-Basmati",
+    price: 490,
+    unit: "USD/MT FOB",
+    description: "Sona Masoori rice, lightweight and aromatic. Popular South Indian variety for daily consumption.",
+    specifications: [
+      "Average Grain Length: 5.0-6.0 mm",
+      "Purity: 95% minimum",
+      "Broken: 5% maximum",
+      "Moisture: 14% maximum"
+    ],
+    packagingOptions: [
+      "50 KG PP Bags",
+      "25 KG PP Bags",
+      "Bulk packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Kolam Rice",
+    variety: "Non-Basmati Medium Grain",
+    price: 460,
+    unit: "USD/MT FOB",
+    description: "Kolam rice, pearl-white grains with mild aroma. Ideal for daily meals and South Indian dishes.",
+    specifications: [
+      "Average Grain Length: 5.0-5.5 mm",
+      "Purity: 95% minimum",
+      "Broken: 5% maximum",
+      "Moisture: 14% maximum"
+    ],
+    packagingOptions: [
+      "50 KG PP Bags",
+      "25 KG PP Bags"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "IR-36 Raw Rice",
+    variety: "Non-Basmati Long Grain",
+    price: 440,
+    unit: "USD/MT FOB",
+    description: "IR-36 raw rice, high-yielding variety. Suitable for Asian and African markets.",
+    specifications: [
+      "Average Grain Length: 6.0-6.5 mm",
+      "Purity: 95% minimum",
+      "Broken: 5% maximum",
+      "Moisture: 14% maximum"
+    ],
+    packagingOptions: [
+      "50 KG PP Bags",
+      "Bulk packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Ponni Boiled Rice",
+    variety: "South Indian Variety",
+    price: 470,
+    unit: "USD/MT FOB",
+    description: "Ponni boiled rice, popular Tamil Nadu variety. Soft texture and excellent taste.",
+    specifications: [
+      "Average Grain Length: 5.5-6.0 mm",
+      "Purity: 95% minimum",
+      "Broken: 5% maximum",
+      "Moisture: 14% maximum"
+    ],
+    packagingOptions: [
+      "50 KG PP Bags",
+      "25 KG PP Bags"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "BPT 5204 (Samba Mahsuri)",
+    variety: "Non-Basmati Medium Grain",
+    price: 450,
+    unit: "USD/MT FOB",
+    description: "BPT 5204 rice, also known as Samba Mahsuri. Premium quality from Andhra Pradesh.",
+    specifications: [
+      "Average Grain Length: 5.5-6.0 mm",
+      "Purity: 95% minimum",
+      "Broken: 5% maximum",
+      "Moisture: 14% maximum"
     ],
     packagingOptions: [
       "50 KG PP Bags",
@@ -973,6 +1281,294 @@ export const spicePrices: AgriPrice[] = [
     packagingOptions: [
       "25 KG PP Bags with liner",
       "Aluminum foil packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Green Cardamom",
+    variety: "Premium Quality",
+    price: 45,
+    unit: "USD/KG FOB",
+    description: "Premium green cardamom pods from Kerala. Strong aroma and flavor, export quality.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 12%",
+      "Pod Size: Bold/Medium/Small",
+      "Color: Bright Green"
+    ],
+    packagingOptions: [
+      "25 KG Cartons with liner",
+      "Custom packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Clove Whole",
+    variety: "Premium Quality",
+    price: 12,
+    unit: "USD/KG FOB",
+    description: "Premium whole cloves with high oil content. Strong aroma and medicinal properties.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 12%",
+      "Essential Oil: 15-18%",
+      "Stems: Max 5%"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags",
+      "50 KG Jute Bags"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Cinnamon Sticks",
+    variety: "Premium Quality",
+    price: 8.5,
+    unit: "USD/KG FOB",
+    description: "Premium cinnamon sticks (Ceylon/Cassia variety). Sweet aroma and flavor.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 12%",
+      "Length: 3-6 inches",
+      "Essential Oil: 1-2%"
+    ],
+    packagingOptions: [
+      "25 KG Cartons",
+      "Custom packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Fennel Seeds",
+    variety: "Premium Quality",
+    price: 3.8,
+    unit: "USD/KG FOB",
+    description: "Premium fennel seeds, machine cleaned. Sweet aromatic flavor.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 8%",
+      "Volatile Oil: 2-6%",
+      "Admixture: Max 1%"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags",
+      "50 KG Jute Bags"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Fenugreek Seeds",
+    variety: "Premium Quality",
+    price: 2.2,
+    unit: "USD/KG FOB",
+    description: "Premium fenugreek seeds (Methi), machine cleaned. Rich in protein and fiber.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 8%",
+      "Protein: 25-30%",
+      "Admixture: Max 1%"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags",
+      "50 KG Jute Bags"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Mustard Seeds (Yellow)",
+    variety: "Premium Quality",
+    price: 1.8,
+    unit: "USD/KG FOB",
+    description: "Premium yellow mustard seeds, machine cleaned. High oil content.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 8%",
+      "Oil Content: 38-42%",
+      "Admixture: Max 1%"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags",
+      "50 KG Jute Bags"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Ajwain (Carom Seeds)",
+    variety: "Premium Quality",
+    price: 4.5,
+    unit: "USD/KG FOB",
+    description: "Premium ajwain seeds, strong pungent flavor. Medicinal and culinary use.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 8%",
+      "Essential Oil: 2-4%",
+      "Admixture: Max 1%"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags",
+      "Custom packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Dried Red Chilli Whole",
+    variety: "Premium Quality (S17/Teja)",
+    price: 4.0,
+    unit: "USD/KG FOB",
+    description: "Premium whole dried red chillies, high heat and color. Teja/S17 variety.",
+    specifications: [
+      "ASTA Color: 120-140",
+      "Moisture: Max 10%",
+      "Capsaicin: 0.4-0.6%",
+      "Length: 5-7 cm"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags",
+      "Custom packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Beetroot Powder (Dehydrated)",
+    variety: "Premium Dehydrated",
+    price: 6.2,
+    unit: "USD/KG FOB",
+    description: "Premium dehydrated beetroot powder, natural red color. Rich in nutrients.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 5%",
+      "Mesh Size: 60-80 mesh",
+      "Color: Deep Red"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags with liner",
+      "Aluminum foil packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Carrot Powder (Dehydrated)",
+    variety: "Premium Dehydrated",
+    price: 5.8,
+    unit: "USD/KG FOB",
+    description: "Premium dehydrated carrot powder, spray dried. Rich in beta-carotene.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 5%",
+      "Mesh Size: 60-100 mesh",
+      "Color: Orange"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags with liner",
+      "Aluminum foil packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Spinach Powder (Dehydrated)",
+    variety: "Premium Dehydrated",
+    price: 7.5,
+    unit: "USD/KG FOB",
+    description: "Premium dehydrated spinach powder. High iron and nutrient content.",
+    specifications: [
+      "Purity: 98% minimum",
+      "Moisture: Max 5%",
+      "Mesh Size: 40-60 mesh",
+      "Color: Green"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags with liner",
+      "Aluminum foil packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Moringa Powder (Drumstick Leaves)",
+    variety: "Premium Organic",
+    price: 8.5,
+    unit: "USD/KG FOB",
+    description: "Premium organic moringa leaf powder. Superfood with high nutritional value.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 5%",
+      "Mesh Size: 60-80 mesh",
+      "Protein: 25-30%"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags with liner",
+      "Aluminum foil packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Curry Leaves Powder (Dehydrated)",
+    variety: "Premium Dehydrated",
+    price: 6.8,
+    unit: "USD/KG FOB",
+    description: "Premium dehydrated curry leaves powder. Strong aroma and medicinal properties.",
+    specifications: [
+      "Purity: 98% minimum",
+      "Moisture: Max 5%",
+      "Mesh Size: 40-60 mesh",
+      "Color: Dark Green"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags with liner",
+      "Aluminum foil packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Mint Powder (Dehydrated)",
+    variety: "Premium Dehydrated",
+    price: 7.2,
+    unit: "USD/KG FOB",
+    description: "Premium dehydrated mint powder. Strong menthol aroma and cooling properties.",
+    specifications: [
+      "Purity: 98% minimum",
+      "Moisture: Max 5%",
+      "Mesh Size: 40-60 mesh",
+      "Menthol Content: Present"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags with liner",
+      "Aluminum foil packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Green Chilli Powder (Dehydrated)",
+    variety: "Premium Dehydrated",
+    price: 6.5,
+    unit: "USD/KG FOB",
+    description: "Premium dehydrated green chilli powder. Retains fresh green color and heat.",
+    specifications: [
+      "Purity: 98% minimum",
+      "Moisture: Max 5%",
+      "Mesh Size: 40-60 mesh",
+      "Color: Green"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags with liner",
+      "Aluminum foil packaging"
+    ],
+    lastUpdated: "2025-12-04"
+  },
+  {
+    name: "Potato Powder (Dehydrated)",
+    variety: "Premium Dehydrated",
+    price: 4.8,
+    unit: "USD/KG FOB",
+    description: "Premium dehydrated potato powder/flakes. Instant use for food industry.",
+    specifications: [
+      "Purity: 99% minimum",
+      "Moisture: Max 6%",
+      "Mesh Size: 40-80 mesh",
+      "Color: Cream White"
+    ],
+    packagingOptions: [
+      "25 KG PP Bags with liner",
+      "Bulk packaging"
     ],
     lastUpdated: "2025-12-04"
   }

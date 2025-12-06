@@ -1,108 +1,83 @@
-import { spicePrices } from '@/data/commodityPrices';
+import { spicePrices, partnerSpiceSources } from '@/data/commodityPrices';
 import AgroPricingCalculator from '@/components/AgroPricingCalculator';
 
 export const metadata = {
-  title: 'Spices & Dehydrated Powders Export | Turmeric, Cumin, Coriander | VandhGlobal',
-  description: 'Premium quality spices and dehydrated powders export. Turmeric, cumin, coriander, chilli, and dehydrated vegetables. FOB pricing with export documentation.',
+  title: 'Spices & Dehydrated Powders Export | Premium Indian Spices | VandhGlobal',
+  description: 'Trade in 28+ premium quality spices and dehydrated powders from certified processors across India. Turmeric, cumin, coriander, cardamom, and more. FOB pricing with complete export documentation.',
 };
 
 export default function SpicesPage() {
-  const wholeSpices = spicePrices.filter(spice =>
-    spice.name.includes('Whole') || spice.name.includes('Seeds')
-  );
-
-  const powderedSpices = spicePrices.filter(spice =>
-    spice.name.includes('Powder') && !spice.name.includes('Dehydrated')
-  );
-
-  const dehydratedPowders = spicePrices.filter(spice =>
-    spice.name.includes('Dehydrated')
-  );
-
   return (
-    <div className="bg-primary-lighter min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary-accent to-primary-medium text-primary-dark py-16 md:py-24">
+    <div className="bg-primary-light min-h-screen">
+      {/* Spices Catalog - Now at the top */}
+      <section className="py-12 md:py-16 bg-primary-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Spices & Dehydrated Powders</h1>
-          <p className="text-xl md:text-2xl mb-4">
-            Premium Quality Spices and Dehydrated Products from Certified Processors
-          </p>
-          <p className="text-lg max-w-3xl">
-            We source premium quality spices and dehydrated products from certified processors in India&apos;s spice belt - Kerala, Tamil Nadu, Gujarat, and Andhra Pradesh. All products are export quality with complete certifications.
-          </p>
-        </div>
-      </section>
-
-      {/* Price Calculator Section */}
-      <section className="py-12 md:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AgroPricingCalculator productType="spices" />
-        </div>
-      </section>
-
-      {/* Whole Spices Section */}
-      <section className="py-12 md:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading mb-4">Whole Spices & Seeds</h2>
-          <p className="text-center text-primary-medium mb-12 max-w-3xl mx-auto">
-            Premium whole spices, machine cleaned and sortex quality. Available in various grades to meet international standards.
+          <h1 className="text-4xl md:text-6xl font-light text-center mb-4 text-primary-dark animate-slide-up">Our Spices &amp; Powders</h1>
+          <p className="text-center text-primary-dark font-light mb-12 max-w-2xl mx-auto animate-slide-up">
+            Premium quality spices and dehydrated powders from certified processors across India&apos;s spice belt
           </p>
 
-          <div className="grid grid-cols-1 gap-6">
-            {wholeSpices.map((spice) => (
-              <div key={spice.name} className="card">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Left Column - Basic Info */}
-                  <div className="md:col-span-1">
-                    <h3 className="text-xl font-bold text-primary-dark mb-2">{spice.name}</h3>
-                    {spice.variety && (
-                      <p className="text-sm text-primary-accent mb-3">{spice.variety}</p>
-                    )}
-                    <div className="bg-primary-accent bg-opacity-20 rounded-lg p-4 mb-4">
-                      <div className="text-2xl font-bold text-primary-dark mb-1">
-                        ${spice.price}
-                      </div>
-                      <div className="text-sm text-primary-medium">{spice.unit}</div>
-                      <div className="text-xs text-primary-medium mt-2">
-                        Updated: {spice.lastUpdated}
-                      </div>
-                    </div>
-                    <p className="text-primary-medium text-sm">
-                      {spice.description}
-                    </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {spicePrices.map((spice, index) => (
+              <div
+                key={spice.name}
+                className="bg-white rounded-2xl shadow-md hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 border border-primary-light overflow-hidden animate-zoom-in"
+                style={{animationDelay: `${index * 0.05}s`}}
+              >
+                {/* Price Header */}
+                <div className="bg-gradient-to-r from-primary-cyan to-primary-medium p-6">
+                  <h3 className="text-2xl md:text-3xl font-light text-white mb-2">{spice.name}</h3>
+                  {spice.variety && (
+                    <p className="text-sm font-light text-white opacity-90 mb-2">{spice.variety}</p>
+                  )}
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl md:text-4xl font-normal text-white">
+                      ${spice.price.toLocaleString()}
+                    </span>
+                    <span className="text-sm font-light text-white opacity-90">{spice.unit}</span>
                   </div>
+                </div>
 
-                  {/* Middle Column - Specifications */}
-                  <div className="md:col-span-1">
-                    <h4 className="font-semibold text-primary-dark mb-3">Specifications</h4>
-                    <ul className="space-y-2">
-                      {spice.specifications.map((spec, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <svg className="w-4 h-4 text-primary-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <div className="p-6">
+                  {/* Description */}
+                  <p className="text-primary-dark font-light text-sm mb-4 leading-relaxed">
+                    {spice.description}
+                  </p>
+
+                  {/* Specifications */}
+                  <div className="mb-4">
+                    <h4 className="font-normal text-primary-dark mb-2 text-sm">Key Specifications</h4>
+                    <ul className="space-y-1">
+                      {spice.specifications.slice(0, 3).map((spec, idx) => (
+                        <li key={idx} className="flex items-start text-xs font-light">
+                          <svg className="w-4 h-4 text-primary-cyan mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                           </svg>
-                          <span className="text-sm text-primary-dark">{spec}</span>
+                          <span className="text-primary-dark">{spec}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  {/* Right Column - Packaging */}
-                  <div className="md:col-span-1">
-                    <h4 className="font-semibold text-primary-dark mb-3">Packaging Options</h4>
-                    <ul className="space-y-2 mb-6">
-                      {spice.packagingOptions.map((pkg, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <svg className="w-4 h-4 text-primary-dark mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span className="text-sm text-primary-medium">{pkg}</span>
-                        </li>
+                  {/* Packaging Options */}
+                  <div className="mb-4">
+                    <h4 className="font-normal text-primary-dark mb-2 text-sm">Packaging Options</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {spice.packagingOptions.slice(0, 3).map((pkg, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-primary-light text-primary-dark rounded-full text-xs font-light border border-primary-cyan"
+                        >
+                          {pkg}
+                        </span>
                       ))}
-                    </ul>
-                    <a href="#calculator" className="btn-primary text-sm inline-block">
-                      Calculate FOB Price
+                    </div>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="mt-4 pt-4 border-t border-primary-light">
+                    <a href="#calculator" className="block text-center bg-primary-cyan text-white px-4 py-2 rounded-lg hover:bg-primary-medium transition-all duration-300 text-sm font-normal">
+                      Get Quote
                     </a>
                   </div>
                 </div>
@@ -112,70 +87,103 @@ export default function SpicesPage() {
         </div>
       </section>
 
-      {/* Powdered Spices Section */}
-      <section className="py-12 md:py-16 bg-primary-lighter">
+      {/* Price Calculator Section - Moved below spices catalog */}
+      <section id="calculator" className="py-12 md:py-16 bg-gradient-to-br from-white to-primary-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading mb-4">Powdered Spices</h2>
-          <p className="text-center text-primary-medium mb-12 max-w-3xl mx-auto">
-            Freshly ground spice powders with high essential oil content. Available in various mesh sizes.
+          <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-primary-cyan">
+            <h2 className="text-3xl md:text-4xl font-light text-center mb-8 text-primary-dark">Get FOB Price</h2>
+            <AgroPricingCalculator productType="spices" />
+          </div>
+        </div>
+      </section>
+
+      {/* Quality Assurance Section */}
+      <section className="py-12 md:py-16 bg-primary-light">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-primary-dark animate-slide-up">Quality Assurance &amp; Certifications</h2>
+          <p className="text-center text-primary-dark font-light mb-12 max-w-2xl mx-auto">
+            Every shipment meets international quality standards with complete documentation
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-primary-light transform hover:-translate-y-2">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-cyan to-primary-medium rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl md:text-2xl font-normal mb-3 text-primary-dark">Spices Board Certified</h3>
+              <p className="text-primary-dark font-light text-sm md:text-base">
+                All our spice processors are certified by the Spices Board of India and comply with international standards.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-primary-light transform hover:-translate-y-2">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-cyan to-primary-medium rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 008 10.586V5L7 4z" />
+                </svg>
+              </div>
+              <h3 className="text-xl md:text-2xl font-normal mb-3 text-primary-dark">Pesticide Residue Testing</h3>
+              <p className="text-primary-dark font-light text-sm md:text-base">
+                Every batch undergoes comprehensive pesticide residue testing to ensure food safety.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-primary-light transform hover:-translate-y-2">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-cyan to-primary-medium rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl md:text-2xl font-normal mb-3 text-primary-dark">Complete Documentation</h3>
+              <p className="text-primary-dark font-light text-sm md:text-base">
+                Full export documentation support including phytosanitary and laboratory test certificates.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Partner Spice Sources Network */}
+      <section className="py-12 md:py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-primary-dark animate-slide-up">Our Spice Sourcing Network</h2>
+          <p className="text-center text-primary-dark font-light mb-12 max-w-3xl mx-auto">
+            We have established partnerships with premium spice processors and sourcing hubs across India&apos;s spice belt, ensuring consistent supply of high-quality products.
           </p>
 
-          <div className="grid grid-cols-1 gap-6">
-            {powderedSpices.map((spice) => (
-              <div key={spice.name} className="card">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Left Column - Basic Info */}
-                  <div className="md:col-span-1">
-                    <h3 className="text-xl font-bold text-primary-dark mb-2">{spice.name}</h3>
-                    {spice.variety && (
-                      <p className="text-sm text-primary-accent mb-3">{spice.variety}</p>
-                    )}
-                    <div className="bg-primary-accent bg-opacity-20 rounded-lg p-4 mb-4">
-                      <div className="text-2xl font-bold text-primary-dark mb-1">
-                        ${spice.price}
-                      </div>
-                      <div className="text-sm text-primary-medium">{spice.unit}</div>
-                      <div className="text-xs text-primary-medium mt-2">
-                        Updated: {spice.lastUpdated}
-                      </div>
-                    </div>
-                    <p className="text-primary-medium text-sm">
-                      {spice.description}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {partnerSpiceSources.map((source, index) => (
+              <div
+                key={source.name}
+                className="bg-white rounded-2xl p-4 md:p-6 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 border border-primary-light animate-slide-up"
+                style={{animationDelay: `${index * 0.03}s`}}
+              >
+                <div className="flex items-start mb-3">
+                  <svg className="w-5 h-5 text-primary-cyan mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                  </svg>
+                  <div className="flex-1">
+                    <h3 className="font-normal text-primary-dark text-base md:text-lg mb-1">{source.name}</h3>
+                    <p className="text-sm text-primary-dark font-light opacity-75">{source.location}, {source.state}</p>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-1">
+                    {source.products.map((product, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-1 bg-gradient-to-r from-primary-cyan to-primary-medium text-white rounded text-xs font-light"
+                      >
+                        {product}
+                      </span>
+                    ))}
+                  </div>
+                  {source.specialty && (
+                    <p className="text-xs text-primary-dark font-light">
+                      <span className="font-normal">Specialty:</span> {source.specialty}
                     </p>
-                  </div>
-
-                  {/* Middle Column - Specifications */}
-                  <div className="md:col-span-1">
-                    <h4 className="font-semibold text-primary-dark mb-3">Specifications</h4>
-                    <ul className="space-y-2">
-                      {spice.specifications.map((spec, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <svg className="w-4 h-4 text-primary-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                          </svg>
-                          <span className="text-sm text-primary-dark">{spec}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Right Column - Packaging */}
-                  <div className="md:col-span-1">
-                    <h4 className="font-semibold text-primary-dark mb-3">Packaging Options</h4>
-                    <ul className="space-y-2 mb-6">
-                      {spice.packagingOptions.map((pkg, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <svg className="w-4 h-4 text-primary-dark mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span className="text-sm text-primary-medium">{pkg}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <a href="#calculator" className="btn-primary text-sm inline-block">
-                      Calculate FOB Price
-                    </a>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -183,223 +191,55 @@ export default function SpicesPage() {
         </div>
       </section>
 
-      {/* Dehydrated Powders Section */}
-      <section className="py-12 md:py-16 bg-white">
+      {/* Export Ports Section */}
+      <section className="py-12 md:py-16 bg-primary-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading mb-4">Dehydrated Vegetable Powders</h2>
-          <p className="text-center text-primary-medium mb-12 max-w-3xl mx-auto">
-            Premium spray-dried and dehydrated vegetable powders with maximum nutrient retention. Food-grade quality.
+          <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-primary-dark animate-slide-up">Export Ports Network</h2>
+          <p className="text-center text-primary-dark font-light mb-12 max-w-2xl mx-auto">
+            Strategic access to major Indian ports for seamless international shipping
           </p>
 
-          <div className="grid grid-cols-1 gap-6">
-            {dehydratedPowders.map((spice) => (
-              <div key={spice.name} className="card">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Left Column - Basic Info */}
-                  <div className="md:col-span-1">
-                    <h3 className="text-xl font-bold text-primary-dark mb-2">{spice.name}</h3>
-                    {spice.variety && (
-                      <p className="text-sm text-primary-accent mb-3">{spice.variety}</p>
-                    )}
-                    <div className="bg-primary-accent bg-opacity-20 rounded-lg p-4 mb-4">
-                      <div className="text-2xl font-bold text-primary-dark mb-1">
-                        ${spice.price}
-                      </div>
-                      <div className="text-sm text-primary-medium">{spice.unit}</div>
-                      <div className="text-xs text-primary-medium mt-2">
-                        Updated: {spice.lastUpdated}
-                      </div>
-                    </div>
-                    <p className="text-primary-medium text-sm">
-                      {spice.description}
-                    </p>
-                  </div>
-
-                  {/* Middle Column - Specifications */}
-                  <div className="md:col-span-1">
-                    <h4 className="font-semibold text-primary-dark mb-3">Specifications</h4>
-                    <ul className="space-y-2">
-                      {spice.specifications.map((spec, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <svg className="w-4 h-4 text-primary-accent mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                          </svg>
-                          <span className="text-sm text-primary-dark">{spec}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Right Column - Packaging */}
-                  <div className="md:col-span-1">
-                    <h4 className="font-semibold text-primary-dark mb-3">Packaging Options</h4>
-                    <ul className="space-y-2 mb-6">
-                      {spice.packagingOptions.map((pkg, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <svg className="w-4 h-4 text-primary-dark mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span className="text-sm text-primary-medium">{pkg}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <a href="#calculator" className="btn-primary text-sm inline-block">
-                      Calculate FOB Price
-                    </a>
-                  </div>
-                </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
+            {[
+              { name: "Mundra Port", state: "Gujarat" },
+              { name: "JNPT (Nhava Sheva)", state: "Maharashtra" },
+              { name: "Cochin Port", state: "Kerala" },
+              { name: "Chennai Port", state: "Tamil Nadu" },
+              { name: "Tuticorin Port", state: "Tamil Nadu" },
+              { name: "Visakhapatnam Port", state: "Andhra Pradesh" },
+              { name: "Kandla Port", state: "Gujarat" },
+              { name: "Kolkata Port", state: "West Bengal" },
+              { name: "Paradip Port", state: "Odisha" },
+              { name: "Mormugao Port", state: "Goa" }
+            ].map((port, index) => (
+              <div
+                key={port.name}
+                className="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-primary-light text-center animate-zoom-in"
+                style={{animationDelay: `${index * 0.05}s`}}
+              >
+                <svg className="w-8 h-8 md:w-10 md:h-10 text-primary-cyan mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+                <h3 className="font-normal text-primary-dark text-sm mb-1">{port.name}</h3>
+                <p className="text-xs text-primary-dark font-light opacity-75">{port.state}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Quality Assurance */}
-      <section className="py-12 md:py-16 bg-primary-lighter">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading text-center mb-12">Quality Assurance & Certifications</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="bg-white rounded-lg p-6 text-center">
-              <div className="w-14 h-14 bg-primary-accent rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-7 h-7 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h4 className="font-semibold mb-2 text-primary-dark">FSSAI Certified</h4>
-              <p className="text-sm text-primary-medium">Food safety compliance</p>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 text-center">
-              <div className="w-14 h-14 bg-primary-accent rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-7 h-7 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h4 className="font-semibold mb-2 text-primary-dark">Spices Board Certified</h4>
-              <p className="text-sm text-primary-medium">Government approved exporters</p>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 text-center">
-              <div className="w-14 h-14 bg-primary-accent rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-7 h-7 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h4 className="font-semibold mb-2 text-primary-dark">Pesticide Free</h4>
-              <p className="text-sm text-primary-medium">Residue tested and certified</p>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 text-center">
-              <div className="w-14 h-14 bg-primary-accent rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg className="w-7 h-7 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h4 className="font-semibold mb-2 text-primary-dark">Lab Tested</h4>
-              <p className="text-sm text-primary-medium">Quality parameters verified</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Export Documentation */}
-      <section className="py-12 md:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading text-center mb-12">Export Support & Documentation</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-primary-lighter rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-4 text-primary-dark">Complete Export Documentation</h3>
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <svg className="w-5 h-5 text-primary-accent mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Certificate of Origin</span>
-                </li>
-                <li className="flex items-start">
-                  <svg className="w-5 h-5 text-primary-accent mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Phytosanitary Certificate</span>
-                </li>
-                <li className="flex items-start">
-                  <svg className="w-5 h-5 text-primary-accent mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Laboratory Analysis Report</span>
-                </li>
-                <li className="flex items-start">
-                  <svg className="w-5 h-5 text-primary-accent mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Fumigation Certificate</span>
-                </li>
-                <li className="flex items-start">
-                  <svg className="w-5 h-5 text-primary-accent mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span>Pesticide Residue Test Report</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="bg-primary-lighter rounded-lg p-6">
-              <h3 className="text-xl font-semibold mb-4 text-primary-dark">Major Sourcing Regions</h3>
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <svg className="w-5 h-5 text-primary-accent mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
-                  <div>
-                    <span className="font-medium">Gujarat:</span>
-                    <span className="text-primary-medium"> Cumin Seeds</span>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <svg className="w-5 h-5 text-primary-accent mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
-                  <div>
-                    <span className="font-medium">Tamil Nadu:</span>
-                    <span className="text-primary-medium"> Turmeric (Erode)</span>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <svg className="w-5 h-5 text-primary-accent mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
-                  <div>
-                    <span className="font-medium">Andhra Pradesh:</span>
-                    <span className="text-primary-medium"> Red Chilli (Guntur)</span>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <svg className="w-5 h-5 text-primary-accent mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                  </svg>
-                  <div>
-                    <span className="font-medium">Kerala:</span>
-                    <span className="text-primary-medium"> Black Pepper, Cardamom</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary-accent to-primary-medium text-primary-dark">
+      <section className="py-16 md:py-20 bg-gradient-to-r from-primary-medium to-primary-dark text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Import Premium Spices?</h2>
-          <p className="text-xl mb-8">
+          <h2 className="text-3xl md:text-5xl font-light mb-6">Ready to Start Trading?</h2>
+          <p className="text-lg md:text-xl mb-8 font-light">
             Contact us for detailed quotations, sample requests, or partnership inquiries.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/#contact" className="btn-primary">
+            <a href="/#contact" className="bg-primary-cyan text-white px-8 py-3 rounded-lg hover:bg-white hover:text-primary-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-normal">
               Get a Quote
             </a>
-            <a href="/#contact" className="bg-white text-primary-dark px-8 py-3 rounded-lg hover:bg-primary-lighter transition-colors duration-300">
+            <a href="/#contact" className="bg-white text-primary-dark px-8 py-3 rounded-lg hover:bg-primary-cyan hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-normal">
               Request Samples
             </a>
           </div>

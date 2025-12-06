@@ -9,8 +9,8 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 w-full z-50 bg-gladia-darkest/95 backdrop-blur-lg border-b border-gladia-purple/20 shadow-lg rounded-b-3xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-28">
-          <div className="flex items-center justify-start pl-4">
+        <div className="flex items-center justify-center h-28 relative">
+          <div className="absolute left-0 flex items-center justify-start">
             <Link href="/" className="flex items-center justify-center group">
               <img
                 src="/images/logo.png"
@@ -21,7 +21,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation - Centered Card Style */}
-          <div className="hidden md:flex items-center justify-center flex-1">
+          <div className="hidden md:flex items-center justify-center">
             <div className="flex items-center gap-1 bg-gladia-darkBlue/40 backdrop-blur-sm border border-gladia-purple/20 rounded-full p-2 shadow-lg">
               <Link
                 href="/minerals"

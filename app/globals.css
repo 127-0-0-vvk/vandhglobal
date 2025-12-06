@@ -5,24 +5,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500&display=swap');
 
 :root {
-  --color-primary-white: #F8FAFC;
-  --color-primary-light: #D9EAFD;
-  --color-primary-blue: #BCCCDC;
-  --color-primary-dark: #9AA6B2;
+  --color-primary-light: #EEEEEE;
+  --color-primary-cyan: #00ADB5;
+  --color-primary-medium: #3A4750;
+  --color-primary-dark: #303841;
 }
 
 body {
-  @apply bg-primary-white text-primary-dark;
+  @apply bg-primary-light text-primary-dark;
   font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 400;
 }
 
 .btn-primary {
-  @apply bg-primary-blue text-white px-6 py-3 rounded-lg hover:bg-primary-dark transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl font-normal;
+  @apply bg-primary-cyan text-white px-6 py-3 rounded-lg hover:bg-primary-medium transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl font-normal;
 }
 
 .btn-secondary {
-  @apply bg-primary-dark text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl font-normal;
+  @apply bg-primary-medium text-white px-6 py-3 rounded-lg hover:bg-primary-dark transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl font-normal;
 }
 
 .card {
@@ -30,7 +30,7 @@ body {
 }
 
 .card-interactive {
-  @apply bg-gradient-to-br from-white to-primary-white rounded-xl shadow-xl p-8 hover:shadow-2xl transform hover:-translate-y-3 hover:scale-105 transition-all duration-500 border-2 border-transparent hover:border-primary-blue;
+  @apply bg-gradient-to-br from-white to-primary-light rounded-xl shadow-xl p-8 hover:shadow-2xl transform hover:-translate-y-3 hover:scale-105 transition-all duration-500 border-2 border-transparent hover:border-primary-cyan;
 }
 
 .section-heading {

@@ -10,10 +10,10 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          white: '#F8FAFC',
-          light: '#D9EAFD',
-          blue: '#BCCCDC',
-          dark: '#9AA6B2',
+          light: '#EEEEEE',
+          cyan: '#00ADB5',
+          medium: '#3A4750',
+          dark: '#303841',
         },
       },
       fontFamily: {

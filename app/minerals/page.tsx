@@ -8,9 +8,9 @@ export const metadata = {
 
 export default function MineralsPage() {
   return (
-    <div className="bg-primary-white min-h-screen">
+    <div className="bg-primary-light min-h-screen">
       {/* Minerals Catalog - Now at the top */}
-      <section className="py-12 md:py-16 bg-primary-white">
+      <section className="py-12 md:py-16 bg-primary-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-6xl font-light text-center mb-4 text-primary-dark animate-slide-up">Our Minerals</h1>
           <p className="text-center text-primary-dark font-light mb-12 max-w-2xl mx-auto animate-slide-up">
@@ -25,13 +25,13 @@ export default function MineralsPage() {
                 style={{animationDelay: `${index * 0.05}s`}}
               >
                 {/* Price Header */}
-                <div className="bg-gradient-to-r from-primary-light to-primary-blue p-6">
-                  <h3 className="text-2xl md:text-3xl font-light text-primary-dark mb-2">{mineral.name}</h3>
+                <div className="bg-gradient-to-r from-primary-cyan to-primary-medium p-6">
+                  <h3 className="text-2xl md:text-3xl font-light text-white mb-2">{mineral.name}</h3>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl md:text-4xl font-normal text-primary-dark">
+                    <span className="text-3xl md:text-4xl font-normal text-white">
                       ${mineral.price.toLocaleString()}
                     </span>
-                    <span className="text-sm font-light text-primary-dark opacity-75">{mineral.unit}</span>
+                    <span className="text-sm font-light text-white opacity-90">{mineral.unit}</span>
                   </div>
                 </div>
 
@@ -47,7 +47,7 @@ export default function MineralsPage() {
                     <ul className="space-y-1">
                       {mineral.specifications.slice(0, 3).map((spec, idx) => (
                         <li key={idx} className="flex items-start text-xs font-light">
-                          <svg className="w-4 h-4 text-primary-blue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-4 h-4 text-primary-cyan mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                           </svg>
                           <span className="text-primary-dark">{spec}</span>
@@ -63,7 +63,7 @@ export default function MineralsPage() {
                       {mineral.applications.slice(0, 3).map((app, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 bg-primary-light text-primary-dark rounded-full text-xs font-light"
+                          className="px-3 py-1 bg-primary-light text-primary-dark rounded-full text-xs font-light border border-primary-cyan"
                         >
                           {app}
                         </span>
@@ -73,7 +73,7 @@ export default function MineralsPage() {
 
                   {/* CTA */}
                   <div className="mt-4 pt-4 border-t border-primary-light">
-                    <a href="#calculator" className="block text-center bg-primary-blue text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-all duration-300 text-sm font-normal">
+                    <a href="#calculator" className="block text-center bg-primary-cyan text-white px-4 py-2 rounded-lg hover:bg-primary-medium transition-all duration-300 text-sm font-normal">
                       Get Quote
                     </a>
                   </div>
@@ -85,9 +85,9 @@ export default function MineralsPage() {
       </section>
 
       {/* Price Calculator Section - Moved below minerals */}
-      <section id="calculator" className="py-12 md:py-16 bg-gradient-to-br from-primary-light to-primary-white">
+      <section id="calculator" className="py-12 md:py-16 bg-gradient-to-br from-white to-primary-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-primary-light">
+          <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-primary-cyan">
             <h2 className="text-3xl md:text-4xl font-light text-center mb-8 text-primary-dark">Get FOB Price</h2>
             <MineralPricingCalculator />
           </div>
@@ -95,7 +95,7 @@ export default function MineralsPage() {
       </section>
 
       {/* Quality Assurance Section */}
-      <section className="py-12 md:py-16 bg-primary-white">
+      <section className="py-12 md:py-16 bg-primary-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-primary-dark animate-slide-up">Quality Assurance &amp; Certifications</h2>
           <p className="text-center text-primary-dark font-light mb-12 max-w-2xl mx-auto">
@@ -103,8 +103,8 @@ export default function MineralsPage() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <div className="bg-white rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-primary-light transform hover:-translate-y-2">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-light to-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 md:w-10 md:h-10 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-cyan to-primary-medium rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
@@ -115,8 +115,8 @@ export default function MineralsPage() {
             </div>
 
             <div className="bg-white rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-primary-light transform hover:-translate-y-2">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-light to-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 md:w-10 md:h-10 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-cyan to-primary-medium rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 008 10.586V5L7 4z" />
                 </svg>
               </div>
@@ -127,8 +127,8 @@ export default function MineralsPage() {
             </div>
 
             <div className="bg-white rounded-2xl shadow-md hover:shadow-xl p-8 text-center transition-all duration-300 border border-primary-light transform hover:-translate-y-2">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-light to-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 md:w-10 md:h-10 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-primary-cyan to-primary-medium rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 md:w-10 md:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
@@ -142,7 +142,7 @@ export default function MineralsPage() {
       </section>
 
       {/* Partner Mines Network */}
-      <section className="py-12 md:py-16 bg-gradient-to-br from-primary-light to-primary-white">
+      <section className="py-12 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-primary-dark animate-slide-up">Our Mining Network</h2>
           <p className="text-center text-primary-dark font-light mb-12 max-w-3xl mx-auto">
@@ -157,7 +157,7 @@ export default function MineralsPage() {
                 style={{animationDelay: `${index * 0.03}s`}}
               >
                 <div className="flex items-start mb-3">
-                  <svg className="w-5 h-5 text-primary-blue mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-primary-cyan mr-2 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                   </svg>
                   <div className="flex-1">
@@ -170,7 +170,7 @@ export default function MineralsPage() {
                     {mine.minerals.map((mineral, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-1 bg-gradient-to-r from-primary-light to-primary-blue text-primary-dark rounded text-xs font-light"
+                        className="px-2 py-1 bg-gradient-to-r from-primary-cyan to-primary-medium text-white rounded text-xs font-light"
                       >
                         {mineral}
                       </span>
@@ -194,7 +194,7 @@ export default function MineralsPage() {
       </section>
 
       {/* Export Ports Section */}
-      <section className="py-12 md:py-16 bg-primary-white">
+      <section className="py-12 md:py-16 bg-primary-light">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-5xl font-light text-center mb-4 text-primary-dark animate-slide-up">Export Ports Network</h2>
           <p className="text-center text-primary-dark font-light mb-12 max-w-2xl mx-auto">
@@ -219,7 +219,7 @@ export default function MineralsPage() {
                 className="bg-white rounded-2xl p-4 shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 border border-primary-light text-center animate-zoom-in"
                 style={{animationDelay: `${index * 0.05}s`}}
               >
-                <svg className="w-8 h-8 md:w-10 md:h-10 text-primary-blue mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-8 h-8 md:w-10 md:h-10 text-primary-cyan mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
                 <h3 className="font-normal text-primary-dark text-sm mb-1">{port.name}</h3>
@@ -231,17 +231,17 @@ export default function MineralsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary-blue to-primary-dark text-white">
+      <section className="py-16 md:py-20 bg-gradient-to-r from-primary-medium to-primary-dark text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-5xl font-light mb-6">Ready to Start Trading?</h2>
           <p className="text-lg md:text-xl mb-8 font-light">
             Contact us for detailed quotations, sample requests, or partnership inquiries.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/#contact" className="bg-white text-primary-dark px-8 py-3 rounded-lg hover:bg-primary-light transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-normal">
+            <a href="/#contact" className="bg-primary-cyan text-white px-8 py-3 rounded-lg hover:bg-white hover:text-primary-dark transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-normal">
               Get a Quote
             </a>
-            <a href="/#contact" className="bg-primary-light text-primary-dark px-8 py-3 rounded-lg hover:bg-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-normal">
+            <a href="/#contact" className="bg-white text-primary-dark px-8 py-3 rounded-lg hover:bg-primary-cyan hover:text-white transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-normal">
               Request Samples
             </a>
           </div>

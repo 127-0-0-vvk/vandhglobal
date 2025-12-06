@@ -3,86 +3,86 @@ import HeroSlider from '@/components/HeroSlider';
 
 export default function Home() {
   return (
-    <div className="pt-20">
+    <div className="pt-20 bg-gladia-darkest">
       {/* Hero Slider Section */}
       <HeroSlider />
 
       {/* Our Services Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-primary-light via-white to-primary-light">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading text-center mb-4">Our Services</h2>
-          <p className="text-center text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-light text-center mb-4 bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent">Our Services</h2>
+          <p className="text-center text-lg text-gladia-white/70 mb-12 max-w-3xl mx-auto">
             Comprehensive commodity trading solutions with end-to-end support
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="card-interactive text-center">
-              <div className="w-16 h-16 bg-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-gladia-darkBlue/50 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-8 text-center hover:border-gladia-purple/50 transition-all duration-300 hover:shadow-lg hover:shadow-gladia-purple/20">
+              <div className="w-16 h-16 bg-gradient-to-br from-gladia-purple to-gladia-purpleBlue rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-primary-dark">Commodity Sourcing & Procurement</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-normal mb-3 text-gladia-white">Commodity Sourcing & Procurement</h3>
+              <p className="text-gladia-white/60 font-light">
                 Direct sourcing from verified mines, mills, and processing units with quality assurance
               </p>
             </div>
 
-            <div className="card-interactive text-center">
-              <div className="w-16 h-16 bg-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-gladia-darkBlue/50 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-8 text-center hover:border-gladia-purple/50 transition-all duration-300 hover:shadow-lg hover:shadow-gladia-purple/20">
+              <div className="w-16 h-16 bg-gradient-to-br from-gladia-lightBlue to-gladia-blue rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-primary-dark">Quality Testing & Certification</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-normal mb-3 text-gladia-white">Quality Testing & Certification</h3>
+              <p className="text-gladia-white/60 font-light">
                 Third-party laboratory testing and international quality certifications
               </p>
             </div>
 
-            <div className="card-interactive text-center">
-              <div className="w-16 h-16 bg-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-gladia-darkBlue/50 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-8 text-center hover:border-gladia-purple/50 transition-all duration-300 hover:shadow-lg hover:shadow-gladia-purple/20">
+              <div className="w-16 h-16 bg-gradient-to-br from-gladia-purpleBlue to-gladia-purple rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-primary-dark">Logistics & Supply Chain Management</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-normal mb-3 text-gladia-white">Logistics & Supply Chain Management</h3>
+              <p className="text-gladia-white/60 font-light">
                 End-to-end logistics from source to port with real-time tracking
               </p>
             </div>
 
-            <div className="card-interactive text-center">
-              <div className="w-16 h-16 bg-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-gladia-darkBlue/50 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-8 text-center hover:border-gladia-purple/50 transition-all duration-300 hover:shadow-lg hover:shadow-gladia-purple/20">
+              <div className="w-16 h-16 bg-gradient-to-br from-gladia-purple to-gladia-lightPurple rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-primary-dark">FOB & CIF Pricing Solutions</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-normal mb-3 text-gladia-white">FOB & CIF Pricing Solutions</h3>
+              <p className="text-gladia-white/60 font-light">
                 Transparent pricing calculators with logistics cost breakdowns
               </p>
             </div>
 
-            <div className="card-interactive text-center">
-              <div className="w-16 h-16 bg-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-gladia-darkBlue/50 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-8 text-center hover:border-gladia-purple/50 transition-all duration-300 hover:shadow-lg hover:shadow-gladia-purple/20">
+              <div className="w-16 h-16 bg-gradient-to-br from-gladia-lightBlue to-gladia-purpleBlue rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-primary-dark">Documentation & Export Support</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-normal mb-3 text-gladia-white">Documentation & Export Support</h3>
+              <p className="text-gladia-white/60 font-light">
                 Complete export documentation including certificates and compliance support
               </p>
             </div>
 
-            <div className="card-interactive text-center">
-              <div className="w-16 h-16 bg-primary-blue rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="bg-gladia-darkBlue/50 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-8 text-center hover:border-gladia-purple/50 transition-all duration-300 hover:shadow-lg hover:shadow-gladia-purple/20">
+              <div className="w-16 h-16 bg-gradient-to-br from-gladia-blue to-gladia-lightBlue rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-primary-dark">Market Intelligence & Price Analysis</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-normal mb-3 text-gladia-white">Market Intelligence & Price Analysis</h3>
+              <p className="text-gladia-white/60 font-light">
                 Real-time market insights and pricing trends for informed decisions
               </p>
             </div>
@@ -91,42 +91,42 @@ export default function Home() {
       </section>
 
       {/* Why Choose VandhGlobal Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-white via-primary-light/30 to-white">
+      <section className="py-16 md:py-24 bg-gradient-to-br from-gladia-darkBlue via-gladia-darkest to-gladia-darkBlue">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading text-center mb-12">Why Choose VandhGlobal?</h2>
+          <h2 className="text-4xl md:text-5xl font-light text-center mb-12 bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent">Why Choose VandhGlobal?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="card text-center">
-              <div className="w-16 h-16 bg-primary-lightblue rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-gladia-darkest/60 backdrop-blur-sm border border-gladia-lightBlue/20 rounded-2xl p-8 text-center hover:border-gladia-lightBlue/50 transition-all duration-300">
+              <div className="w-16 h-16 bg-gradient-to-br from-gladia-lightBlue to-gladia-blue rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-primary-dark">Verified Partnerships</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-normal mb-3 text-gladia-white">Verified Partnerships</h3>
+              <p className="text-gladia-white/60 font-light">
                 Tied up with leading mines and agro-based industries. Every partner undergoes rigorous due diligence.
               </p>
             </div>
 
-            <div className="card text-center">
-              <div className="w-16 h-16 bg-primary-lightblue rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-gladia-darkest/60 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-8 text-center hover:border-gladia-purple/50 transition-all duration-300">
+              <div className="w-16 h-16 bg-gradient-to-br from-gladia-purple to-gladia-lightPurple rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-primary-dark">Transparent Pricing</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-normal mb-3 text-gladia-white">Transparent Pricing</h3>
+              <p className="text-gladia-white/60 font-light">
                 Real-time pricing calculators with FOB rates, logistics costs, and complete transparency in every transaction.
               </p>
             </div>
 
-            <div className="card text-center">
-              <div className="w-16 h-16 bg-primary-lightblue rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-primary-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="bg-gladia-darkest/60 backdrop-blur-sm border border-gladia-purpleBlue/20 rounded-2xl p-8 text-center hover:border-gladia-purpleBlue/50 transition-all duration-300">
+              <div className="w-16 h-16 bg-gradient-to-br from-gladia-purpleBlue to-gladia-purple rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-primary-dark">Global Reach</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-normal mb-3 text-gladia-white">Global Reach</h3>
+              <p className="text-gladia-white/60 font-light">
                 Connecting buyers and sellers worldwide with comprehensive logistics support from source to port.
               </p>
             </div>
@@ -135,7 +135,7 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-16 md:py-24 bg-gradient-to-br from-primary-light via-white to-primary-light/50">
+      <section id="about" className="py-16 md:py-24 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="animate-slide-in-left">
@@ -187,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 md:py-24 bg-gradient-to-br from-white via-primary-light/20 to-white">
+      <section id="contact" className="py-16 md:py-24 bg-gradient-to-br from-gladia-darkBlue via-gladia-darkest to-gladia-darkBlue">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="section-heading text-center mb-4">Get In Touch</h2>
           <p className="text-center text-gray-600 mb-12 text-lg">

@@ -7,12 +7,12 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-lg border-b border-primary-light/20 shadow-sm">
+    <nav className="fixed top-0 w-full z-50 bg-gladia-darkest/95 backdrop-blur-lg border-b border-gladia-purple/20 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
             <Link href="/" className="flex items-center group">
-              <span className="text-3xl font-normal text-primary-cyan transform group-hover:scale-110 transition-transform duration-300">VandhGlobal</span>
+              <span className="text-3xl font-normal bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent transform group-hover:scale-110 transition-transform duration-300">VandhGlobal</span>
             </Link>
           </div>
 
@@ -20,37 +20,37 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-1">
             <Link
               href="/"
-              className="px-4 py-2 rounded-lg text-primary-dark hover:text-primary-cyan hover:bg-primary-light/50 transition-all duration-200 font-normal"
+              className="px-4 py-2 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/10 transition-all duration-200 font-light"
             >
               Home
             </Link>
             <Link
               href="/minerals"
-              className="px-4 py-2 rounded-lg text-primary-dark hover:text-primary-cyan hover:bg-primary-light/50 transition-all duration-200 font-normal"
+              className="px-4 py-2 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/10 transition-all duration-200 font-light"
             >
               Minerals
             </Link>
             <Link
               href="/agro/rice"
-              className="px-4 py-2 rounded-lg text-primary-dark hover:text-primary-cyan hover:bg-primary-light/50 transition-all duration-200 font-normal"
+              className="px-4 py-2 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/10 transition-all duration-200 font-light"
             >
               Rice
             </Link>
             <Link
               href="/agro/spices"
-              className="px-4 py-2 rounded-lg text-primary-dark hover:text-primary-cyan hover:bg-primary-light/50 transition-all duration-200 font-normal"
+              className="px-4 py-2 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/10 transition-all duration-200 font-light"
             >
               Spices
             </Link>
             <Link
               href="/#about"
-              className="px-4 py-2 rounded-lg text-primary-dark hover:text-primary-cyan hover:bg-primary-light/50 transition-all duration-200 font-normal"
+              className="px-4 py-2 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/10 transition-all duration-200 font-light"
             >
               About
             </Link>
             <Link
               href="/#contact"
-              className="ml-2 bg-primary-cyan text-white px-6 py-2.5 rounded-lg hover:bg-primary-medium transform hover:scale-105 transition-all duration-200 font-normal shadow-lg hover:shadow-xl"
+              className="ml-2 bg-gladia-white text-gladia-darkest px-6 py-2.5 rounded-lg hover:bg-gladia-white/90 transform hover:scale-105 transition-all duration-200 font-normal shadow-lg hover:shadow-xl hover:shadow-gladia-purple/50"
             >
               Contact
             </Link>
@@ -60,7 +60,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-primary-dark focus:outline-none hover:text-primary-cyan transition-colors p-2"
+              className="text-gladia-white focus:outline-none hover:text-gladia-purple transition-colors p-2"
             >
               <svg
                 className="h-6 w-6"
@@ -84,46 +84,46 @@ export default function Navbar() {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white/95 backdrop-blur-lg border-t border-primary-light/20 animate-slide-up shadow-lg">
+        <div className="md:hidden bg-gladia-darkBlue/98 backdrop-blur-lg border-t border-gladia-purple/20 animate-slide-up shadow-lg">
           <div className="px-4 pt-2 pb-3 space-y-2">
             <Link
               href="/"
-              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light/50 hover:text-primary-cyan transition-all font-normal"
+              className="block px-4 py-3 rounded-lg text-gladia-white/90 hover:bg-gladia-purple/20 hover:text-gladia-white transition-all font-light"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Home
             </Link>
             <Link
               href="/minerals"
-              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light/50 hover:text-primary-cyan transition-all font-normal"
+              className="block px-4 py-3 rounded-lg text-gladia-white/90 hover:bg-gladia-purple/20 hover:text-gladia-white transition-all font-light"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Minerals
             </Link>
             <Link
               href="/agro/rice"
-              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light/50 hover:text-primary-cyan transition-all font-normal"
+              className="block px-4 py-3 rounded-lg text-gladia-white/90 hover:bg-gladia-purple/20 hover:text-gladia-white transition-all font-light"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Rice
             </Link>
             <Link
               href="/agro/spices"
-              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light/50 hover:text-primary-cyan transition-all font-normal"
+              className="block px-4 py-3 rounded-lg text-gladia-white/90 hover:bg-gladia-purple/20 hover:text-gladia-white transition-all font-light"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Spices
             </Link>
             <Link
               href="/#about"
-              className="block px-4 py-3 rounded-lg text-primary-dark hover:bg-primary-light/50 hover:text-primary-cyan transition-all font-normal"
+              className="block px-4 py-3 rounded-lg text-gladia-white/90 hover:bg-gladia-purple/20 hover:text-gladia-white transition-all font-light"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               About
             </Link>
             <Link
               href="/#contact"
-              className="block px-4 py-3 rounded-lg bg-primary-cyan text-white hover:bg-primary-medium transition-all font-normal text-center shadow-md"
+              className="block px-4 py-3 rounded-lg bg-gladia-white text-gladia-darkest hover:bg-gladia-white/90 transition-all font-normal text-center shadow-md"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact

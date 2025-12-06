@@ -15,6 +15,17 @@ const config: Config = {
           medium: '#3A4750',
           dark: '#303841',
         },
+        gladia: {
+          purple: '#947afc',
+          gray: '#99a6b2',
+          darkest: '#020405',
+          lightBlue: '#64b7e3',
+          white: '#ffffff',
+          blue: '#3266a6',
+          darkBlue: '#112e46',
+          lightPurple: '#bd85f0',
+          purpleBlue: '#9380ff',
+        },
       },
       fontFamily: {
         sans: ['Montserrat', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],

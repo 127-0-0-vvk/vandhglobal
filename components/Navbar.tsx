@@ -22,34 +22,34 @@ export default function Navbar() {
 
           {/* Desktop Navigation - Right-Positioned Card Style */}
           <div className="hidden md:flex items-center absolute left-[60%] transform -translate-x-1/2">
-            <div className="flex items-center gap-1 bg-gladia-darkBlue/40 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-1.5 shadow-lg">
+            <div className="flex items-center gap-1 bg-gladia-darkBlue/40 backdrop-blur-sm border border-gladia-purple/20 rounded-full p-2 shadow-lg">
               <Link
                 href="/minerals"
-                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
+                className="px-6 py-3 rounded-full text-gray-400 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
               >
                 Minerals
               </Link>
               <Link
                 href="/agro/rice"
-                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
+                className="px-6 py-3 rounded-full text-gray-400 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
               >
                 Rice
               </Link>
               <Link
                 href="/agro/spices"
-                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
+                className="px-6 py-3 rounded-full text-gray-400 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
               >
                 Spices
               </Link>
               <Link
                 href="/#about"
-                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
+                className="px-6 py-3 rounded-full text-gray-400 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
               >
                 About
               </Link>
               <Link
                 href="/#contact"
-                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
+                className="px-6 py-3 rounded-full text-gray-400 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light transform hover:scale-105 hover:shadow-lg hover:shadow-gladia-purple/30"
               >
                 Contact
               </Link>

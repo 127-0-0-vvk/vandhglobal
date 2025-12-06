@@ -15,21 +15,14 @@ export default function HeroSlider() {
       </video>
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="absolute inset-0 bg-black/50"></div>
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-[50vh] md:min-h-screen px-4 sm:px-6 lg:px-8">
-        {/* Blinking Logo */}
-        <img
-          src="/images/logoname.svg"
-          alt="VandhGlobal"
-          className="logo-blink w-48 md:w-80 lg:w-[500px] mb-6 md:mb-8 object-contain"
-        />
-
         {/* Tagline */}
-        <p className="text-base md:text-xl lg:text-2xl text-center text-white font-light leading-relaxed max-w-4xl px-4">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl text-center text-white font-light leading-tight max-w-6xl px-4">
           Leading supplier of high-grade industrial minerals, Rice, Spices and dehydrated powders with reliable B2B solutions
-        </p>
+        </h1>
       </div>
     </div>
   );

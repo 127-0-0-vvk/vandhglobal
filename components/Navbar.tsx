@@ -7,7 +7,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-gladia-darkest/95 backdrop-blur-lg border-b border-gladia-purple/20 shadow-lg">
+    <nav className="fixed top-0 w-full z-50 bg-gladia-darkest/95 backdrop-blur-lg border-b border-gladia-purple/20 shadow-lg rounded-b-3xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
@@ -16,47 +16,44 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Navigation - Horizontal Card Style */}
-          <div className="hidden md:flex items-center gap-2">
-            <div className="flex items-center gap-1 bg-gladia-darkBlue/40 backdrop-blur-sm border border-gladia-purple/20 rounded-xl p-1.5 shadow-lg">
-              <Link
-                href="/"
-                className="px-5 py-2.5 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
-              >
-                Home
-              </Link>
+          {/* Desktop Navigation - Centered Card Style */}
+          <div className="hidden md:flex items-center absolute left-1/2 transform -translate-x-1/2">
+            <div className="flex items-center gap-1 bg-gladia-darkBlue/40 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-1.5 shadow-lg">
               <Link
                 href="/minerals"
-                className="px-5 py-2.5 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
               >
                 Minerals
               </Link>
               <Link
                 href="/agro/rice"
-                className="px-5 py-2.5 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
               >
                 Rice
               </Link>
               <Link
                 href="/agro/spices"
-                className="px-5 py-2.5 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
               >
                 Spices
               </Link>
               <Link
                 href="/#about"
-                className="px-5 py-2.5 rounded-lg text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
               >
                 About
               </Link>
+              <Link
+                href="/#contact"
+                className="px-5 py-2.5 rounded-xl text-gladia-white/90 hover:text-gladia-white hover:bg-gladia-purple/20 transition-all duration-200 font-light"
+              >
+                Contact
+              </Link>
             </div>
-            <Link
-              href="/#contact"
-              className="bg-gladia-white text-gladia-darkest px-6 py-2.5 rounded-xl hover:bg-gladia-white/90 transform hover:scale-105 transition-all duration-200 font-normal shadow-lg hover:shadow-xl hover:shadow-gladia-purple/50"
-            >
-              Contact
-            </Link>
           </div>
+
+          {/* Spacer for layout balance */}
+          <div className="hidden md:block w-32"></div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">

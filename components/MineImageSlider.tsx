@@ -19,7 +19,7 @@ export default function MineImageSlider() {
   }, [images.length]);
 
   return (
-    <div className="relative w-full h-[400px] md:h-[500px] overflow-hidden bg-gladia-darkest">
+    <div className="relative w-full h-[200px] md:h-[250px] overflow-hidden bg-gladia-darkest">
       {images.map((image, index) => (
         <div
           key={index}

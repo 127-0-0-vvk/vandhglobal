@@ -13,25 +13,23 @@ interface Quotation {
   totalPrice: number;
   basePrice: number;
   transportCost: number;
-  otherCosts: number;
   route: string;
   estimatedDays: number;
   distance: number;
   destinationType: 'india' | 'fob' | 'cif';
 
-  // Base Price Breakdown
+  // Simplified base price breakdown
   basePriceBreakdown: {
-    miningCost: number;
-    extractionCost: number;
-    processingCost: number;
-    qualityTesting: number;
-    profitMargin: number;
+    pricePerMT: number;
+    quantity: number;
+    total: number;
   };
 
-  // Transport Breakdown (for India-to-India)
+  // Transport breakdown
   transportBreakdown: {
     numTrucks: number;
-    truckCapacity: number; // in tons
+    truckCapacity: number;
+    distance: number;
     fuelCostPerTruck: number;
     fuelCost: number;
     driverCostPerTruck: number;
@@ -42,37 +40,36 @@ interface Quotation {
     vehicleRent: number;
   };
 
-  // Other Expenses
-  otherExpenses: {
-    handlingCharges: number;
-    documentation: number;
-    insurance: number;
-    packaging: number;
-    loading: number;
-    unloading: number;
-  };
+  // Individual cost components
+  loadingCharges: number;
+  unloadingCharges: number;
+  documentation: number;
+  insurance: number;
+  customsEntry: number;
+  containerStuffing: number;
+  portDues: number;
+  exportDocumentation: number;
+  handlingCharges: number;
 
-  // FOB-specific charges
+  // FOB-specific charges (for exports)
   fobCharges?: {
-    portHandling: number;
-    customsClearance: number;
+    customsEntry: number;
     exportDocumentation: number;
-    fumigation: number;
-    inlandTransport: number;
-    terminalCharges: number;
+    containerStuffing: number;
+    numContainers: number;
+    portDues: number;
     totalFOB: number;
     originPort: string;
   };
 
-  // CIF-specific charges (includes FOB + Ocean Freight + Insurance)
+  // CIF-specific charges (FOB + Ocean + Insurance)
   cifCharges?: {
     fobTotal: number;
-    portHandling: number;
-    customsClearance: number;
+    customsEntry: number;
     exportDocumentation: number;
-    fumigation: number;
-    inlandTransport: number;
-    terminalCharges: number;
+    containerStuffing: number;
+    numContainers: number;
+    portDues: number;
     oceanFreight: number;
     marineInsurance: number;
     destinationPortCharges: number;
@@ -229,22 +226,27 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
       const qty = parseFloat(quantity);
       const distance = Math.floor(Math.random() * 1500) + 500; // 500-2000 km
 
-      // ===== BASE PRICE BREAKDOWN =====
-      // Transparent pricing: Ex-mine price with NO markup/margin
-      // VandhGlobal revenue comes ONLY from handling charges
-      const miningCost = mineral.price * qty * 0.42; // 42% mining & extraction from ground
-      const extractionCost = mineral.price * qty * 0.26; // 26% refining & separation
-      const processingCost = mineral.price * qty * 0.22; // 22% processing & grading
-      const qualityTesting = mineral.price * qty * 0.10; // 10% quality assurance & testing
-      const profitMargin = 0; // ZERO margin - transparent pricing model
+      // ===== SIMPLIFIED BASE PRICE =====
+      // Ex-mine price per MT × Quantity (simple multiplication, no breakdown)
+      const pricePerMT = mineral.price;
+      const basePrice = pricePerMT * qty;
 
-      const basePrice = miningCost + extractionCost + processingCost + qualityTesting; // = 100% of mineral.price
+      // Store for display (for showing the calculation)
+      const basePriceBreakdown = {
+        pricePerMT,
+        quantity: qty,
+        total: basePrice
+      };
 
-      // ===== TRANSPORT CALCULATIONS (India-to-India or India-to-Port) =====
+      // ===== LOADING CHARGES AT MINE =====
+      const loadingCharges = qty * 75; // ₹75 per ton for heavy machinery loading
+
+      // ===== TRANSPORT CALCULATIONS =====
       let transportCost = 0;
       let transportBreakdown: any = {
         numTrucks: 0,
         truckCapacity: 0,
+        distance: distance,
         fuelCostPerTruck: 0,
         fuelCost: 0,
         driverCostPerTruck: 0,
@@ -257,12 +259,12 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
 
       if (destinationType === 'india' || destinationType === 'fob' || destinationType === 'cif') {
         if (transportMode === 'truck') {
-          // Standard bulk mineral truck capacity: 25 tons (based on research)
-          const truckCapacity = 25; // tons
+          // Standard bulk mineral truck capacity: 25 tons
+          const truckCapacity = 25;
           const numTrucks = Math.ceil(qty / truckCapacity);
 
-          // Per-truck costs based on research: ₹35/km average for bulk cargo
-          const fuelCostPerTruck = distance * 15; // ₹15/km fuel per truck (researched rates)
+          // Per-truck costs
+          const fuelCostPerTruck = distance * 15; // ₹15/km fuel per truck
           const driverCostPerTruck = Math.ceil(distance / 400) * 2200; // ₹2200/day, 400km/day
           const tollFeesPerTruck = Math.floor(distance / 100) * 300; // ₹300 per 100km
           const vehicleRentPerTruck = Math.ceil(distance / 400) * 5500; // ₹5500/day truck rent
@@ -278,6 +280,7 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
           transportBreakdown = {
             numTrucks,
             truckCapacity,
+            distance,
             fuelCostPerTruck,
             fuelCost,
             driverCostPerTruck,
@@ -288,17 +291,18 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
             vehicleRent
           };
         } else {
-          // Rail transport (cheaper per ton-km)
+          // Rail transport
           const wagonsNeeded = Math.ceil(qty / 40); // 40 tons per wagon
           const fuelCost = distance * 0.25 * qty; // ₹0.25 per ton-km for rail
-          const operatorCost = Math.ceil(distance / 300) * 1800 * wagonsNeeded; // ₹1800/day per wagon
-          const vehicleRent = Math.ceil(distance / 300) * 8000 * wagonsNeeded; // ₹8000/day wagon rent
+          const operatorCost = Math.ceil(distance / 300) * 1800 * wagonsNeeded;
+          const vehicleRent = Math.ceil(distance / 300) * 8000 * wagonsNeeded;
 
           transportCost = fuelCost + operatorCost + vehicleRent;
 
           transportBreakdown = {
             numTrucks: wagonsNeeded,
             truckCapacity: 40,
+            distance,
             fuelCostPerTruck: distance * 0.25 * 40,
             fuelCost,
             driverCostPerTruck: Math.ceil(distance / 300) * 1800,
@@ -311,42 +315,48 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
         }
       }
 
-      // ===== OTHER EXPENSES =====
-      const handlingCharges = basePrice * 0.012; // 1.2% handling (VandhGlobal's only revenue)
-      const documentation = 1200; // Fixed documentation cost (competitive)
-      const insurance = basePrice * 0.008; // 0.8% insurance (low margin)
-      const packaging = 0; // No packaging for bulk minerals (shipped in bulk carriers/containers)
-      const loading = qty * 25; // ₹25 per ton loading
-      const unloading = qty * 25; // ₹25 per ton unloading
+      // ===== UNLOADING CHARGES =====
+      const unloadingCharges = qty * 75; // ₹75 per ton for heavy machinery unloading
 
-      const otherCosts = handlingCharges + documentation + insurance + packaging + loading + unloading;
+      // ===== OTHER COSTS (India-to-India specific) =====
+      let documentation = 0;
+      let insurance = 0;
+      let customsEntry = 0;
+      let containerStuffing = 0;
+      let portDues = 0;
+      let exportDocumentation = 0;
+
+      if (destinationType === 'india') {
+        // Domestic India trade documentation
+        documentation = 800; // E-way bill, delivery challan, GST invoice
+        insurance = basePrice * 0.005; // 0.5% transit insurance for domestic
+      }
+
+      // ===== HANDLING CHARGES (VandhGlobal Revenue) =====
+      const handlingCharges = basePrice * 0.012; // 1.2% - our ONLY revenue source
 
       // ===== FOB CHARGES (if FOB or CIF) =====
       let fobCharges = undefined;
       if (destinationType === 'fob' || destinationType === 'cif') {
-        // Distance from mine to port
-        const portDistance = Math.floor(Math.random() * 800) + 300; // 300-1100 km to port
+        // For exports, we need different costs
+        customsEntry = 4000; // Customs clearance charges
+        exportDocumentation = 2500; // Shipping bill, bill of lading, certificate of origin
 
-        const portHandling = qty * 80; // ₹80 per ton port handling
-        const customsClearance = basePrice * 0.01 + 2500; // 1% + fixed fee
-        const exportDocumentation = 3500; // Fixed export doc cost
+        // Container stuffing (minerals shipped in containers)
+        const numContainers = Math.ceil(qty / 20); // ~20 tons per 20ft container
+        containerStuffing = numContainers * 4000; // ₹4000 per container stuffing
 
-        // Fumigation based on quantity (researched rates)
-        const fumigation = qty < 50 ? 3000 : qty < 200 ? 4500 : 6000;
+        portDues = 3500; // Port entry/exit dues
+        insurance = basePrice * 0.01; // 1% insurance for export (higher risk)
 
-        const inlandTransport = portDistance * (transportMode === 'truck' ? 35 : 25); // Per km rate (mine to port)
-        const terminalCharges = 4500; // Port terminal charges
-
-        const totalFOB = portHandling + customsClearance + exportDocumentation + fumigation +
-                         inlandTransport + terminalCharges;
+        const totalFOB = customsEntry + exportDocumentation + containerStuffing + portDues;
 
         fobCharges = {
-          portHandling,
-          customsClearance,
+          customsEntry,
           exportDocumentation,
-          fumigation,
-          inlandTransport,
-          terminalCharges,
+          containerStuffing,
+          numContainers,
+          portDues,
           totalFOB,
           originPort: selectedPort
         };
@@ -355,37 +365,35 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
       // ===== CIF CHARGES (if CIF) =====
       let cifCharges = undefined;
       if (destinationType === 'cif' && fobCharges) {
-        // Ocean freight based on destination (researched 2024 rates)
-        let oceanFreight = 50000; // Base ocean freight in rupees
+        // Ocean freight based on destination
+        let oceanFreight = 50000; // Base ocean freight
 
         // Adjust based on destination port
         if (destinationPort.includes('China') || destinationPort.includes('Singapore')) {
-          oceanFreight = 55000; // Closer Asian ports
+          oceanFreight = 55000;
         } else if (destinationPort.includes('Dubai') || destinationPort.includes('UAE')) {
-          oceanFreight = 75000; // Middle East
+          oceanFreight = 75000;
         } else if (destinationPort.includes('Europe') || destinationPort.includes('UK')) {
-          oceanFreight = 125000; // Europe
+          oceanFreight = 125000;
         } else if (destinationPort.includes('USA')) {
-          oceanFreight = 145000; // USA
+          oceanFreight = 145000;
         }
 
-        // Scale by quantity (per TEU equivalent)
-        const teuEquivalent = Math.ceil(qty / 20); // ~20 tons per TEU for minerals
-        oceanFreight = oceanFreight * teuEquivalent;
+        // Scale by containers
+        oceanFreight = oceanFreight * fobCharges.numContainers;
 
         const marineInsurance = (basePrice + fobCharges.totalFOB) * 0.015; // 1.5% marine insurance
-        const destinationPortCharges = qty * 120; // ₹120 per ton destination charges
+        const destinationPortCharges = qty * 120; // ₹120 per ton basic destination charges
 
         const totalCIF = fobCharges.totalFOB + oceanFreight + marineInsurance + destinationPortCharges;
 
         cifCharges = {
           fobTotal: fobCharges.totalFOB,
-          portHandling: fobCharges.portHandling,
-          customsClearance: fobCharges.customsClearance,
+          customsEntry: fobCharges.customsEntry,
           exportDocumentation: fobCharges.exportDocumentation,
-          fumigation: fobCharges.fumigation,
-          inlandTransport: fobCharges.inlandTransport,
-          terminalCharges: fobCharges.terminalCharges,
+          containerStuffing: fobCharges.containerStuffing,
+          numContainers: fobCharges.numContainers,
+          portDues: fobCharges.portDues,
           oceanFreight,
           marineInsurance,
           destinationPortCharges,
@@ -396,14 +404,13 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
       }
 
       // ===== TOTAL PRICE CALCULATION =====
-      let totalPrice = basePrice + otherCosts;
+      let totalPrice = basePrice + loadingCharges + transportCost + unloadingCharges +
+                       documentation + insurance + handlingCharges;
 
-      if (destinationType === 'india') {
-        totalPrice += transportCost;
-      } else if (destinationType === 'fob' && fobCharges) {
-        totalPrice += transportCost + fobCharges.totalFOB;
+      if (destinationType === 'fob' && fobCharges) {
+        totalPrice += fobCharges.totalFOB;
       } else if (destinationType === 'cif' && cifCharges) {
-        totalPrice += transportCost + cifCharges.totalCIF;
+        totalPrice += cifCharges.totalCIF;
       }
 
       // ===== DELIVERY TIME =====
@@ -442,27 +449,21 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
         totalPrice,
         basePrice,
         transportCost,
-        otherCosts,
         route,
         estimatedDays,
         distance,
         destinationType,
-        basePriceBreakdown: {
-          miningCost,
-          extractionCost,
-          processingCost,
-          qualityTesting,
-          profitMargin
-        },
+        basePriceBreakdown,
         transportBreakdown,
-        otherExpenses: {
-          handlingCharges,
-          documentation,
-          insurance,
-          packaging,
-          loading,
-          unloading
-        },
+        loadingCharges,
+        unloadingCharges,
+        documentation,
+        insurance,
+        customsEntry,
+        containerStuffing,
+        portDues,
+        exportDocumentation,
+        handlingCharges,
         fobCharges,
         cifCharges
       };

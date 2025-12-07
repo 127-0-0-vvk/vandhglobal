@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { partnerMines } from '@/data/commodityPrices';
 
 interface QuoteGeneratorProps {
@@ -34,6 +34,52 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
+
+  // Google Maps autocomplete ref
+  const autocompleteInputRef = useRef<HTMLInputElement>(null);
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+
+  // Load Google Maps script and initialize autocomplete
+  useEffect(() => {
+    const loadGoogleMapsScript = () => {
+      if (typeof window !== 'undefined' && !window.google) {
+        const script = document.createElement('script');
+        // Replace with your Google Maps API key or use environment variable
+        const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY';
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+        script.async = true;
+        script.defer = true;
+        script.onload = initAutocomplete;
+        document.head.appendChild(script);
+      } else if (window.google && autocompleteInputRef.current && !autocompleteRef.current) {
+        initAutocomplete();
+      }
+    };
+
+    const initAutocomplete = () => {
+      if (autocompleteInputRef.current && window.google) {
+        autocompleteRef.current = new window.google.maps.places.Autocomplete(
+          autocompleteInputRef.current,
+          {
+            componentRestrictions: { country: 'in' },
+            fields: ['formatted_address', 'name'],
+            types: ['geocode', 'establishment']
+          }
+        );
+
+        autocompleteRef.current.addListener('place_changed', () => {
+          const place = autocompleteRef.current?.getPlace();
+          if (place && place.formatted_address) {
+            setDestination(place.formatted_address);
+          }
+        });
+      }
+    };
+
+    if (destinationType === 'india') {
+      loadGoogleMapsScript();
+    }
+  }, [destinationType]);
 
   const ports = [
     "Mundra Port, Gujarat",
@@ -242,10 +288,11 @@ Note: ${note || 'N/A'}
                 </label>
                 {destinationType === 'india' ? (
                   <input
+                    ref={autocompleteInputRef}
                     type="text"
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
-                    placeholder="Enter city or location (e.g., Mumbai, Maharashtra)"
+                    placeholder="Start typing city or location (e.g., Mumbai, Maharashtra)"
                     className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
                   />
                 ) : (

@@ -58,18 +58,26 @@ interface Quotation {
     customsClearance: number;
     exportDocumentation: number;
     fumigation: number;
-    portToPortTransport: number;
+    inlandTransport: number;
     terminalCharges: number;
     totalFOB: number;
+    originPort: string;
   };
 
   // CIF-specific charges (includes FOB + Ocean Freight + Insurance)
   cifCharges?: {
     fobTotal: number;
+    portHandling: number;
+    customsClearance: number;
+    exportDocumentation: number;
+    fumigation: number;
+    inlandTransport: number;
+    terminalCharges: number;
     oceanFreight: number;
-    marinInsurance: number;
+    marineInsurance: number;
     destinationPortCharges: number;
     totalCIF: number;
+    originPort: string;
     destinationPort: string;
   };
 }
@@ -326,20 +334,21 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
         // Fumigation based on quantity (researched rates)
         const fumigation = qty < 50 ? 3000 : qty < 200 ? 4500 : 6000;
 
-        const portToPortTransport = portDistance * (transportMode === 'truck' ? 35 : 25); // Per km rate
+        const inlandTransport = portDistance * (transportMode === 'truck' ? 35 : 25); // Per km rate (mine to port)
         const terminalCharges = 4500; // Port terminal charges
 
         const totalFOB = portHandling + customsClearance + exportDocumentation + fumigation +
-                         portToPortTransport + terminalCharges;
+                         inlandTransport + terminalCharges;
 
         fobCharges = {
           portHandling,
           customsClearance,
           exportDocumentation,
           fumigation,
-          portToPortTransport,
+          inlandTransport,
           terminalCharges,
-          totalFOB
+          totalFOB,
+          originPort: selectedPort
         };
       }
 
@@ -364,17 +373,24 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
         const teuEquivalent = Math.ceil(qty / 20); // ~20 tons per TEU for minerals
         oceanFreight = oceanFreight * teuEquivalent;
 
-        const marinInsurance = (basePrice + fobCharges.totalFOB) * 0.015; // 1.5% marine insurance
+        const marineInsurance = (basePrice + fobCharges.totalFOB) * 0.015; // 1.5% marine insurance
         const destinationPortCharges = qty * 120; // ₹120 per ton destination charges
 
-        const totalCIF = fobCharges.totalFOB + oceanFreight + marinInsurance + destinationPortCharges;
+        const totalCIF = fobCharges.totalFOB + oceanFreight + marineInsurance + destinationPortCharges;
 
         cifCharges = {
           fobTotal: fobCharges.totalFOB,
+          portHandling: fobCharges.portHandling,
+          customsClearance: fobCharges.customsClearance,
+          exportDocumentation: fobCharges.exportDocumentation,
+          fumigation: fobCharges.fumigation,
+          inlandTransport: fobCharges.inlandTransport,
+          terminalCharges: fobCharges.terminalCharges,
           oceanFreight,
-          marinInsurance,
+          marineInsurance,
           destinationPortCharges,
           totalCIF,
+          originPort: fobCharges.originPort,
           destinationPort
         };
       }
@@ -505,16 +521,26 @@ Est. Delivery   : ${quotation.estimatedDays} days`;
 
     } else {
       // Export logistics (FOB/CIF)
-      const destPort = quotation.destinationType === 'fob' ? quotation.fobCharges!.destinationPort : quotation.cifCharges!.destinationPort;
+      const originPort = quotation.fobCharges?.originPort || quotation.cifCharges?.originPort;
 
-      logisticsSection = `
+      if (quotation.destinationType === 'fob') {
+        logisticsSection = `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  LOGISTICS DETAILS (EXPORT)
+  LOGISTICS DETAILS (EXPORT - FOB)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Incoterm        : ${quotation.destinationType.toUpperCase()}
-Origin Port     : ${quotation.fobCharges?.originPort || quotation.cifCharges?.originPort}
-Destination Port: ${destPort}
+Incoterm        : FOB (Free On Board)
+Port            : ${originPort}
 Est. Delivery   : ${quotation.estimatedDays} days`;
+      } else {
+        logisticsSection = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  LOGISTICS DETAILS (EXPORT - CIF)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Incoterm        : CIF (Cost, Insurance & Freight)
+Origin Port     : ${originPort}
+Destination Port: ${quotation.cifCharges!.destinationPort}
+Est. Delivery   : ${quotation.estimatedDays} days`;
+      }
 
       if (quotation.destinationType === 'fob') {
         pricingBreakdown = `
@@ -1136,7 +1162,7 @@ Thank you for considering VandhGlobal for your commodity needs!
                             </div>
                             <div className="flex justify-between">
                               <span className="text-gladia-white/60">• Mine to Port Transport:</span>
-                              <span className="text-gladia-white/90">${quotation.fobCharges.portToPortTransport.toLocaleString()}</span>
+                              <span className="text-gladia-white/90">${quotation.fobCharges.inlandTransport.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between">
                               <span className="text-gladia-white/60">• Terminal Charges:</span>
@@ -1179,7 +1205,7 @@ Thank you for considering VandhGlobal for your commodity needs!
                             </div>
                             <div className="flex justify-between">
                               <span className="text-gladia-white/60">• Marine Insurance:</span>
-                              <span className="text-gladia-white/90">${quotation.cifCharges.marinInsurance.toLocaleString()}</span>
+                              <span className="text-gladia-white/90">${quotation.cifCharges.marineInsurance.toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between">
                               <span className="text-gladia-white/60">• Destination Port Charges:</span>
@@ -1285,7 +1311,7 @@ Thank you for considering VandhGlobal for your commodity needs!
                   <div className="space-y-4">
                     <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
                       <h4 className="text-gladia-lightBlue font-medium mb-1">Step 1: Letter of Interest (LOI)</h4>
-                      <p className="text-sm text-gladia-white/70">Click "Interested" button to submit your inquiry. We'll review your requirements and respond within 24 hours with a formal LOI template.</p>
+                      <p className="text-sm text-gladia-white/70">Click &quot;Interested&quot; button to submit your inquiry. We&apos;ll review your requirements and respond within 24 hours with a formal LOI template.</p>
                     </div>
 
                     <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
@@ -1294,13 +1320,13 @@ Thank you for considering VandhGlobal for your commodity needs!
                     </div>
 
                     <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
-                      <h4 className="text-gladia-lightBlue font-medium mb-1">Step 3: Sample & Testing (Optional)</h4>
-                      <p className="text-sm text-gladia-white/70">We can provide samples for quality verification. Third-party testing at SGS or similar labs can be arranged at buyer's request.</p>
+                      <h4 className="text-gladia-lightBlue font-medium mb-1">Step 3: Sample &amp; Testing (Optional)</h4>
+                      <p className="text-sm text-gladia-white/70">We can provide samples for quality verification. Third-party testing at SGS or similar labs can be arranged at buyer&apos;s request.</p>
                     </div>
 
                     <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
                       <h4 className="text-gladia-lightBlue font-medium mb-1">Step 4: Purchase Order (PO)</h4>
-                      <p className="text-sm text-gladia-white/70">Once terms are agreed, you'll issue a PO with specifications, quantity, delivery schedule, and payment terms. We confirm acceptance within 48 hours.</p>
+                      <p className="text-sm text-gladia-white/70">Once terms are agreed, you&apos;ll issue a PO with specifications, quantity, delivery schedule, and payment terms. We confirm acceptance within 48 hours.</p>
                     </div>
                   </div>
 

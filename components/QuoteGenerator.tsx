@@ -37,7 +37,7 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
 
   // Google Maps autocomplete ref
   const autocompleteInputRef = useRef<HTMLInputElement>(null);
-  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const autocompleteRef = useRef<any>(null);
 
   // Load Google Maps script and initialize autocomplete
   useEffect(() => {

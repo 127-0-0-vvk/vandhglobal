@@ -44,8 +44,17 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   useEffect(() => {
     const loadGoogleMapsScript = () => {
       if (typeof window !== 'undefined' && !document.querySelector('script[src*="maps.googleapis.com"]')) {
+        const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+        // Debug: Check if API key is loaded
+        console.log('API Key loaded:', apiKey ? 'Yes (hidden for security)' : 'No - KEY MISSING!');
+
+        if (!apiKey || apiKey === 'YOUR_GOOGLE_MAPS_API_KEY') {
+          console.error('Google Maps API key is missing or invalid! Check .env.local file');
+          return;
+        }
+
         const script = document.createElement('script');
-        const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY';
         script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
         script.async = true;
         script.defer = true;
@@ -53,6 +62,10 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
         // Define callback function
         (window as any).initAutocomplete = () => {
           console.log('Google Maps loaded successfully');
+        };
+
+        script.onerror = () => {
+          console.error('Failed to load Google Maps script. Check API key and restrictions.');
         };
 
         document.head.appendChild(script);

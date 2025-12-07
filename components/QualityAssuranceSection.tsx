@@ -47,23 +47,23 @@ export default function QualityAssuranceSection() {
 
   return (
     <>
-      <section className="py-12 md:py-16 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest">
+      <section className="py-8 md:py-16 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-5xl font-light text-center mb-4 bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent animate-slide-up">
+          <h2 className="text-2xl md:text-5xl font-light text-center mb-3 md:mb-4 bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent animate-slide-up">
             Quality Assurance &amp; Certifications
           </h2>
-          <p className="text-center text-gladia-white/70 font-light mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-sm md:text-base text-gladia-white/70 font-light mb-6 md:mb-12 max-w-2xl mx-auto">
             Every shipment meets international quality standards with complete documentation
           </p>
-          <div className="flex justify-center gap-4 md:gap-8">
+          <div className="flex flex-col md:flex-row justify-center gap-3 md:gap-8">
             {qualityItems.map((item, index) => (
               <div
                 key={index}
                 onMouseEnter={() => setHoveredCard(item)}
                 onMouseLeave={() => setHoveredCard(null)}
-                className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-2xl shadow-md hover:shadow-xl hover:shadow-gladia-purple/20 p-6 text-center transition-all duration-300 border border-gladia-purple/20 cursor-pointer hover:scale-105"
+                className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-xl md:rounded-2xl shadow-md hover:shadow-xl hover:shadow-gladia-purple/20 p-3 md:p-6 text-center transition-all duration-300 border border-gladia-purple/20 cursor-pointer hover:scale-105"
               >
-                <h3 className="text-base md:text-xl font-normal text-gladia-white">{item.title}</h3>
+                <h3 className="text-sm md:text-xl font-normal text-gladia-white">{item.title}</h3>
               </div>
             ))}
           </div>

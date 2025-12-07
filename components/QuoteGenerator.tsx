@@ -656,7 +656,7 @@ Thank you for considering VandhGlobal for your commodity needs!
                 <label className="block text-sm font-normal text-gladia-white mb-2">
                   Destination Type <span className="text-red-400">*</span>
                 </label>
-                <div className="flex gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
@@ -666,7 +666,7 @@ Thank you for considering VandhGlobal for your commodity needs!
                       onChange={(e) => setDestinationType('india')}
                       className="w-4 h-4 text-gladia-purple"
                     />
-                    <span className="text-gladia-white">India to India</span>
+                    <span className="text-gladia-white text-sm">India to India</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
@@ -677,7 +677,18 @@ Thank you for considering VandhGlobal for your commodity needs!
                       onChange={(e) => setDestinationType('fob')}
                       className="w-4 h-4 text-gladia-purple"
                     />
-                    <span className="text-gladia-white">India to FOB (Port)</span>
+                    <span className="text-gladia-white text-sm">FOB (Indian Port)</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="destinationType"
+                      value="cif"
+                      checked={destinationType === 'cif'}
+                      onChange={(e) => setDestinationType('cif')}
+                      className="w-4 h-4 text-gladia-purple"
+                    />
+                    <span className="text-gladia-white text-sm">CIF (International)</span>
                   </label>
                 </div>
               </div>
@@ -702,8 +713,27 @@ Thank you for considering VandhGlobal for your commodity needs!
                     </select>
                   </div>
 
+                  {/* District Selection */}
+                  {selectedState && availableDistricts.length > 0 && (
+                    <div>
+                      <label className="block text-sm font-normal text-gladia-white mb-2">
+                        District <span className="text-red-400">*</span>
+                      </label>
+                      <select
+                        value={selectedDistrict}
+                        onChange={(e) => handleDistrictChange(e.target.value)}
+                        className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
+                      >
+                        <option value="">Select District</option>
+                        {availableDistricts.map((district, idx) => (
+                          <option key={idx} value={district.name}>{district.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
                   {/* City Selection */}
-                  {selectedState && (
+                  {selectedDistrict && (
                     <div>
                       <label className="block text-sm font-normal text-gladia-white mb-2">
                         City <span className="text-red-400">*</span>
@@ -749,20 +779,42 @@ Thank you for considering VandhGlobal for your commodity needs!
                   )}
                 </div>
               ) : (
-                <div>
-                  <label className="block text-sm font-normal text-gladia-white mb-2">
-                    Port Destination <span className="text-red-400">*</span>
-                  </label>
-                  <select
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
-                  >
-                    <option value="">Select port</option>
-                    {ports.map((port, idx) => (
-                      <option key={idx} value={port}>{port}</option>
-                    ))}
-                  </select>
+                <div className="space-y-4">
+                  {/* Indian Port Selection */}
+                  <div>
+                    <label className="block text-sm font-normal text-gladia-white mb-2">
+                      Indian Port (Origin) <span className="text-red-400">*</span>
+                    </label>
+                    <select
+                      value={selectedPort}
+                      onChange={(e) => setSelectedPort(e.target.value)}
+                      className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
+                    >
+                      <option value="">Select Indian Port</option>
+                      {indianPorts.map((port, idx) => (
+                        <option key={idx} value={port}>{port}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Destination Port for CIF */}
+                  {destinationType === 'cif' && (
+                    <div>
+                      <label className="block text-sm font-normal text-gladia-white mb-2">
+                        Destination Port (International) <span className="text-red-400">*</span>
+                      </label>
+                      <select
+                        value={destinationPort}
+                        onChange={(e) => setDestinationPort(e.target.value)}
+                        className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
+                      >
+                        <option value="">Select Destination Port</option>
+                        {internationalPorts.map((port, idx) => (
+                          <option key={idx} value={port}>{port}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
               )}
 

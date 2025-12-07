@@ -36,7 +36,7 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   const [note, setNote] = useState('');
 
   // Google Maps autocomplete ref
-  const autocompleteInputRef = useRef<HTMLInputElement>(null);
+  const autocompleteElementRef = useRef<HTMLDivElement>(null);
   const [showMapModal, setShowMapModal] = useState(false);
   const [tempDestination, setTempDestination] = useState('');
 
@@ -46,7 +46,7 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
       if (typeof window !== 'undefined' && !document.querySelector('script[src*="maps.googleapis.com"]')) {
         const script = document.createElement('script');
         const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY';
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initAutocomplete`;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
         script.async = true;
         script.defer = true;
 
@@ -62,22 +62,26 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
     loadGoogleMapsScript();
   }, []);
 
-  // Initialize autocomplete when modal opens
+  // Initialize PlaceAutocompleteElement when modal opens
   useEffect(() => {
-    if (showMapModal && autocompleteInputRef.current && (window as any).google?.maps?.places) {
-      const autocomplete = new (window as any).google.maps.places.Autocomplete(
-        autocompleteInputRef.current,
-        {
-          componentRestrictions: { country: 'in' },
-          fields: ['formatted_address', 'name', 'geometry'],
-          types: ['(cities)']
-        }
-      );
+    if (showMapModal && autocompleteElementRef.current && (window as any).google?.maps?.places?.PlaceAutocompleteElement) {
+      // Clear previous content
+      autocompleteElementRef.current.innerHTML = '';
 
-      autocomplete.addListener('place_changed', () => {
-        const place = autocomplete.getPlace();
-        if (place && place.formatted_address) {
-          setTempDestination(place.formatted_address);
+      const autocomplete = new (window as any).google.maps.places.PlaceAutocompleteElement({
+        componentRestrictions: { country: 'in' },
+        fields: ['formatted_address', 'name'],
+        types: ['(cities)']
+      });
+
+      autocompleteElementRef.current.appendChild(autocomplete);
+
+      autocomplete.addEventListener('gmp-placeselect', async (event: any) => {
+        const place = event.place;
+        if (place && place.displayName) {
+          // Get formatted address
+          const address = place.formattedAddress || place.displayName;
+          setTempDestination(address);
         }
       });
     }
@@ -568,13 +572,9 @@ Note: ${note || 'N/A'}
               <label className="block text-sm font-normal text-gladia-white mb-2">
                 Search Location in India
               </label>
-              <input
-                ref={autocompleteInputRef}
-                type="text"
-                value={tempDestination}
-                onChange={(e) => setTempDestination(e.target.value)}
-                placeholder="Start typing city, state, or landmark..."
-                className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
+              <div
+                ref={autocompleteElementRef}
+                className="w-full"
               />
               <p className="text-xs text-gladia-white/60 mt-2">
                 Type to search for cities, states, or landmarks across India

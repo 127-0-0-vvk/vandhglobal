@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { partnerMines } from '@/data/commodityPrices';
+import { indianStates, getAreasForCity } from '@/data/indianLocations';
 
 interface QuoteGeneratorProps {
   mineral: any;
@@ -15,6 +16,22 @@ interface Quotation {
   otherCosts: number;
   route: string;
   estimatedDays: number;
+  // Detailed breakdown
+  transportBreakdown: {
+    fuelCost: number;
+    driverCost: number;
+    tollFees: number;
+    vehicleRent: number;
+  };
+  otherExpenses: {
+    handlingCharges: number;
+    documentation: number;
+    insurance: number;
+    packaging: number;
+    loading: number;
+    unloading: number;
+  };
+  distance: number;
 }
 
 export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
@@ -35,70 +52,12 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
 
-  // Google Maps autocomplete ref
-  const autocompleteElementRef = useRef<HTMLDivElement>(null);
-  const [showMapModal, setShowMapModal] = useState(false);
-  const [tempDestination, setTempDestination] = useState('');
-
-  // Load Google Maps script with Places Library (new version)
-  useEffect(() => {
-    const loadGoogleMapsScript = () => {
-      if (typeof window !== 'undefined' && !document.querySelector('script[src*="maps.googleapis.com"]')) {
-        const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-
-        // Debug: Check if API key is loaded
-        console.log('API Key loaded:', apiKey ? 'Yes (hidden for security)' : 'No - KEY MISSING!');
-
-        if (!apiKey || apiKey === 'YOUR_GOOGLE_MAPS_API_KEY') {
-          console.error('Google Maps API key is missing or invalid! Check .env.local file');
-          return;
-        }
-
-        const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
-        script.async = true;
-        script.defer = true;
-
-        // Define callback function
-        (window as any).initAutocomplete = () => {
-          console.log('Google Maps loaded successfully');
-        };
-
-        script.onerror = () => {
-          console.error('Failed to load Google Maps script. Check API key and restrictions.');
-        };
-
-        document.head.appendChild(script);
-      }
-    };
-
-    loadGoogleMapsScript();
-  }, []);
-
-  // Initialize PlaceAutocompleteElement when modal opens
-  useEffect(() => {
-    if (showMapModal && autocompleteElementRef.current && (window as any).google?.maps?.places?.PlaceAutocompleteElement) {
-      // Clear previous content
-      autocompleteElementRef.current.innerHTML = '';
-
-      const autocomplete = new (window as any).google.maps.places.PlaceAutocompleteElement({
-        componentRestrictions: { country: 'in' },
-        fields: ['formatted_address', 'name'],
-        types: ['(cities)']
-      });
-
-      autocompleteElementRef.current.appendChild(autocomplete);
-
-      autocomplete.addEventListener('gmp-placeselect', async (event: any) => {
-        const place = event.place;
-        if (place && place.displayName) {
-          // Get formatted address
-          const address = place.formattedAddress || place.displayName;
-          setTempDestination(address);
-        }
-      });
-    }
-  }, [showMapModal]);
+  // Location selection for India
+  const [selectedState, setSelectedState] = useState('');
+  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedArea, setSelectedArea] = useState('');
+  const [availableCities, setAvailableCities] = useState<string[]>([]);
+  const [availableAreas, setAvailableAreas] = useState<string[]>([]);
 
   const ports = [
     "Mundra Port, Gujarat",
@@ -108,16 +67,36 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
     "Chennai Port, Tamil Nadu",
   ];
 
-  const openMapModal = () => {
-    setTempDestination(destination);
-    setShowMapModal(true);
+  // Handle state selection
+  const handleStateChange = (state: string) => {
+    setSelectedState(state);
+    setSelectedCity('');
+    setSelectedArea('');
+    const stateData = indianStates.find(s => s.name === state);
+    setAvailableCities(stateData?.cities || []);
+    setAvailableAreas([]);
+    updateDestination(state, '', '');
   };
 
-  const confirmDestination = () => {
-    if (tempDestination) {
-      setDestination(tempDestination);
-    }
-    setShowMapModal(false);
+  // Handle city selection
+  const handleCityChange = (city: string) => {
+    setSelectedCity(city);
+    setSelectedArea('');
+    const areas = getAreasForCity(city);
+    setAvailableAreas(areas);
+    updateDestination(selectedState, city, '');
+  };
+
+  // Handle area selection
+  const handleAreaChange = (area: string) => {
+    setSelectedArea(area);
+    updateDestination(selectedState, selectedCity, area);
+  };
+
+  // Update destination string
+  const updateDestination = (state: string, city: string, area: string) => {
+    const parts = [area, city, state].filter(Boolean);
+    setDestination(parts.join(', '));
   };
 
   const generateQuotations = () => {
@@ -138,10 +117,35 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
       const qty = parseFloat(quantity);
       const basePrice = mineral.price * qty;
       const distance = Math.floor(Math.random() * 1500) + 500; // Random distance 500-2000 km
-      const transportCost = transportMode === 'truck'
-        ? distance * 0.8 * qty
-        : distance * 0.5 * qty;
-      const otherCosts = basePrice * 0.05; // 5% for handling, documentation, etc.
+
+      // Detailed Transport Cost Breakdown
+      const fuelCostPerKm = transportMode === 'truck' ? 0.45 : 0.30;
+      const fuelCost = distance * fuelCostPerKm * qty;
+
+      const driverCost = transportMode === 'truck'
+        ? Math.ceil(distance / 400) * 2000  // ₹2000 per day for truck driver
+        : Math.ceil(distance / 300) * 1500; // ₹1500 per day for rail operator
+
+      const tollFees = transportMode === 'truck'
+        ? Math.floor(distance / 100) * 300  // ₹300 per 100km toll
+        : 0; // No tolls for rail
+
+      const vehicleRent = transportMode === 'truck'
+        ? Math.ceil(distance / 400) * 5000  // ₹5000 per day truck rent
+        : Math.ceil(distance / 300) * 8000; // ₹8000 per day rail wagon rent
+
+      const transportCost = fuelCost + driverCost + tollFees + vehicleRent;
+
+      // Detailed Other Expenses Breakdown
+      const handlingCharges = basePrice * 0.015; // 1.5% of base price
+      const documentation = 1500; // Fixed documentation cost
+      const insurance = basePrice * 0.01; // 1% insurance
+      const packaging = qty * 50; // ₹50 per unit packaging
+      const loading = qty * 30; // ₹30 per unit loading
+      const unloading = qty * 30; // ₹30 per unit unloading
+
+      const otherCosts = handlingCharges + documentation + insurance + packaging + loading + unloading;
+
       const totalPrice = basePrice + transportCost + otherCosts;
       const estimatedDays = transportMode === 'truck'
         ? Math.ceil(distance / 400)
@@ -157,6 +161,21 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
         otherCosts,
         route,
         estimatedDays,
+        transportBreakdown: {
+          fuelCost,
+          driverCost,
+          tollFees,
+          vehicleRent,
+        },
+        otherExpenses: {
+          handlingCharges,
+          documentation,
+          insurance,
+          packaging,
+          loading,
+          unloading,
+        },
+        distance,
       };
     });
 
@@ -313,32 +332,76 @@ Note: ${note || 'N/A'}
               </div>
 
               {/* Destination */}
-              <div>
-                <label className="block text-sm font-normal text-gladia-white mb-2">
-                  Destination <span className="text-red-400">*</span>
-                </label>
-                {destinationType === 'india' ? (
-                  <div className="relative">
-                    <input
-                      type="text"
-                      value={destination}
-                      readOnly
-                      onClick={openMapModal}
-                      placeholder="Click to select location from map"
-                      className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors cursor-pointer"
-                    />
-                    <button
-                      type="button"
-                      onClick={openMapModal}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gladia-purple hover:text-gladia-purpleBlue transition-colors"
+              {destinationType === 'india' ? (
+                <div className="space-y-4">
+                  {/* State Selection */}
+                  <div>
+                    <label className="block text-sm font-normal text-gladia-white mb-2">
+                      State <span className="text-red-400">*</span>
+                    </label>
+                    <select
+                      value={selectedState}
+                      onChange={(e) => handleStateChange(e.target.value)}
+                      className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                    </button>
+                      <option value="">Select State</option>
+                      {indianStates.map((state, idx) => (
+                        <option key={idx} value={state.name}>{state.name}</option>
+                      ))}
+                    </select>
                   </div>
-                ) : (
+
+                  {/* City Selection */}
+                  {selectedState && (
+                    <div>
+                      <label className="block text-sm font-normal text-gladia-white mb-2">
+                        City <span className="text-red-400">*</span>
+                      </label>
+                      <select
+                        value={selectedCity}
+                        onChange={(e) => handleCityChange(e.target.value)}
+                        className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
+                      >
+                        <option value="">Select City</option>
+                        {availableCities.map((city, idx) => (
+                          <option key={idx} value={city}>{city}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Area/Town Selection */}
+                  {selectedCity && (
+                    <div>
+                      <label className="block text-sm font-normal text-gladia-white mb-2">
+                        Area/Town (Optional)
+                      </label>
+                      <select
+                        value={selectedArea}
+                        onChange={(e) => handleAreaChange(e.target.value)}
+                        className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
+                      >
+                        <option value="">Select Area (Optional)</option>
+                        {availableAreas.map((area, idx) => (
+                          <option key={idx} value={area}>{area}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Display Selected Destination */}
+                  {destination && (
+                    <div className="bg-gladia-darkest/50 border border-gladia-purple/20 rounded-lg p-3">
+                      <p className="text-xs text-gladia-white/60 mb-1">Selected Destination:</p>
+                      <p className="text-sm text-white font-normal">{destination}</p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-sm font-normal text-gladia-white mb-2">
+                    Port Destination <span className="text-red-400">*</span>
+                  </label>
                   <select
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
@@ -349,8 +412,8 @@ Note: ${note || 'N/A'}
                       <option key={idx} value={port}>{port}</option>
                     ))}
                   </select>
-                )}
-              </div>
+                </div>
+              )}
 
               {/* Transport Mode */}
               <div>
@@ -567,58 +630,6 @@ Note: ${note || 'N/A'}
         </div>
       )}
 
-      {/* Map Modal for Destination Selection */}
-      {showMapModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
-          onClick={() => setShowMapModal(false)}
-        >
-          <div
-            className="bg-gladia-darkBlue/90 backdrop-blur-md border border-gladia-purple/30 rounded-3xl p-6 md:p-8 max-w-2xl w-full transform animate-zoom-in shadow-2xl shadow-gladia-purple/30"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="text-2xl md:text-3xl font-normal mb-6 text-center bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent">
-              Select Destination
-            </h3>
-
-            <div className="mb-6">
-              <label className="block text-sm font-normal text-gladia-white mb-2">
-                Search Location in India
-              </label>
-              <div
-                ref={autocompleteElementRef}
-                className="w-full"
-              />
-              <p className="text-xs text-gladia-white/60 mt-2">
-                Type to search for cities, states, or landmarks across India
-              </p>
-            </div>
-
-            {tempDestination && (
-              <div className="bg-gladia-darkest/50 border border-gladia-purple/20 rounded-xl p-4 mb-6">
-                <p className="text-sm text-gladia-white/70 mb-1">Selected Location:</p>
-                <p className="text-lg text-white font-normal">{tempDestination}</p>
-              </div>
-            )}
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowMapModal(false)}
-                className="flex-1 bg-gladia-darkest border border-gladia-purple/30 text-gladia-white px-6 py-3 rounded-lg hover:border-gladia-purple transition-all font-normal"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={confirmDestination}
-                disabled={!tempDestination}
-                className="flex-1 bg-gradient-to-r from-gladia-purple to-gladia-purpleBlue text-white px-6 py-3 rounded-lg hover:shadow-lg hover:shadow-gladia-purple/50 transition-all font-normal disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Done
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

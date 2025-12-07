@@ -1,5 +1,4 @@
 import { mineralPrices, partnerMines } from '@/data/commodityPrices';
-import MineralPricingCalculator from '@/components/MineralPricingCalculator';
 import MineImageSlider from '@/components/MineImageSlider';
 
 export const metadata = {
@@ -13,96 +12,63 @@ export default function MineralsPage() {
       {/* Mine Image Slider */}
       <MineImageSlider />
 
-      {/* Minerals Catalog - Now at the top */}
+      {/* Products Section */}
       <section className="py-12 md:py-16 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-6xl font-light text-center mb-4 bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent animate-slide-up">Our Minerals</h1>
+          <h1 className="text-4xl md:text-6xl font-light text-center mb-4 bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent animate-slide-up">Products</h1>
           <p className="text-center text-gladia-white/70 font-light mb-12 max-w-2xl mx-auto animate-slide-up">
             Trade in 20+ premium quality minerals sourced from verified mines across India
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {mineralPrices.map((mineral, index) => (
-              <div
-                key={mineral.name}
-                className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-2xl shadow-md hover:shadow-2xl hover:shadow-gladia-purple/20 transform hover:-translate-y-2 transition-all duration-300 border border-gladia-purple/20 overflow-hidden animate-zoom-in group"
-                style={{animationDelay: `${index * 0.05}s`}}
-              >
-                {/* Mineral Image */}
-                <div className="relative h-48 md:h-56 overflow-hidden">
-                  <img
-                    src={mineral.imageUrl}
-                    alt={mineral.name}
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gladia-darkest/80 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 className="text-2xl md:text-3xl font-light text-white mb-1">{mineral.name}</h3>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-2xl md:text-3xl font-normal text-white">
+          <div className="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-4">
+            {mineralPrices.map((mineral, index) => {
+              const priceChange = (Math.random() * 5 - 2.5).toFixed(2);
+              const isUp = parseFloat(priceChange) > 0;
+              const slug = mineral.name.toLowerCase().replace(/\s+/g, '-');
+
+              return (
+                <a
+                  key={mineral.name}
+                  href={`/minerals/${slug}`}
+                  className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-xl shadow-md hover:shadow-xl hover:shadow-gladia-purple/20 transform hover:-translate-y-1 transition-all duration-300 border border-gladia-purple/20 overflow-hidden group cursor-pointer"
+                  style={{animationDelay: `${index * 0.02}s`}}
+                >
+                  {/* Mineral Image */}
+                  <div className="relative h-24 md:h-32 overflow-hidden">
+                    <img
+                      src={mineral.imageUrl}
+                      alt={mineral.name}
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gladia-darkest/90 to-transparent"></div>
+                  </div>
+
+                  <div className="p-2 md:p-3">
+                    <h3 className="text-xs md:text-sm font-normal text-white mb-1 truncate">{mineral.name}</h3>
+                    <div className="flex items-baseline gap-1 mb-1">
+                      <span className="text-sm md:text-base font-normal text-white">
                         ${mineral.price.toLocaleString()}
                       </span>
-                      <span className="text-xs font-light text-white opacity-90">{mineral.unit}</span>
+                      <span className="text-[10px] font-light text-white/70">/{mineral.unit}</span>
+                    </div>
+                    {/* Price Change Indicator */}
+                    <div className={`flex items-center gap-1 text-xs ${isUp ? 'text-green-400' : 'text-red-400'}`}>
+                      {isUp ? (
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                        </svg>
+                      ) : (
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                      <span className="font-medium">{Math.abs(parseFloat(priceChange))}%</span>
                     </div>
                   </div>
-                </div>
-
-                <div className="p-6">
-                  {/* Description */}
-                  <p className="text-gladia-white/70 font-light text-sm mb-4 leading-relaxed">
-                    {mineral.description}
-                  </p>
-
-                  {/* Specifications */}
-                  <div className="mb-4">
-                    <h4 className="font-normal text-gladia-white mb-2 text-sm">Key Specifications</h4>
-                    <ul className="space-y-1">
-                      {mineral.specifications.slice(0, 3).map((spec, idx) => (
-                        <li key={idx} className="flex items-start text-xs font-light">
-                          <svg className="w-4 h-4 text-gladia-lightBlue mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                          </svg>
-                          <span className="text-gladia-white/70">{spec}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Applications */}
-                  <div className="mb-4">
-                    <h4 className="font-normal text-gladia-white mb-2 text-sm">Applications</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {mineral.applications.slice(0, 3).map((app, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 bg-gladia-darkest/50 text-gladia-white/70 rounded-full text-xs font-light border border-gladia-purple/30"
-                        >
-                          {app}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* CTA */}
-                  <div className="mt-4 pt-4 border-t border-gladia-purple/20">
-                    <a href="#calculator" className="block text-center bg-gradient-to-r from-gladia-purple to-gladia-purpleBlue text-white px-4 py-2 rounded-lg hover:shadow-lg hover:shadow-gladia-purple/30 transition-all duration-300 text-sm font-normal">
-                      Get Quote
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Price Calculator Section - Moved below minerals */}
-      <section id="calculator" className="py-12 md:py-16 bg-gradient-to-br from-gladia-darkBlue via-gladia-darkest to-gladia-darkBlue">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gladia-darkBlue/50 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 border border-gladia-purple/20">
-            <h2 className="text-3xl md:text-4xl font-light text-center mb-8 bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent">Get FOB Price</h2>
-            <MineralPricingCalculator />
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>

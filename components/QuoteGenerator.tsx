@@ -37,20 +37,24 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
 
   // Google Maps autocomplete ref
   const autocompleteInputRef = useRef<HTMLInputElement>(null);
-  const autocompleteRef = useRef<any>(null);
   const [showMapModal, setShowMapModal] = useState(false);
   const [tempDestination, setTempDestination] = useState('');
 
-  // Load Google Maps script and initialize autocomplete
+  // Load Google Maps script with Places Library (new version)
   useEffect(() => {
     const loadGoogleMapsScript = () => {
-      if (typeof window !== 'undefined' && !window.google) {
+      if (typeof window !== 'undefined' && !document.querySelector('script[src*="maps.googleapis.com"]')) {
         const script = document.createElement('script');
-        // Replace with your Google Maps API key or use environment variable
         const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || 'YOUR_GOOGLE_MAPS_API_KEY';
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initAutocomplete`;
         script.async = true;
         script.defer = true;
+
+        // Define callback function
+        (window as any).initAutocomplete = () => {
+          console.log('Google Maps loaded successfully');
+        };
+
         document.head.appendChild(script);
       }
     };
@@ -60,18 +64,18 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
 
   // Initialize autocomplete when modal opens
   useEffect(() => {
-    if (showMapModal && autocompleteInputRef.current && window.google && !autocompleteRef.current) {
-      autocompleteRef.current = new window.google.maps.places.Autocomplete(
+    if (showMapModal && autocompleteInputRef.current && (window as any).google?.maps?.places) {
+      const autocomplete = new (window as any).google.maps.places.Autocomplete(
         autocompleteInputRef.current,
         {
           componentRestrictions: { country: 'in' },
-          fields: ['formatted_address', 'name'],
-          types: ['geocode', 'establishment']
+          fields: ['formatted_address', 'name', 'geometry'],
+          types: ['(cities)']
         }
       );
 
-      autocompleteRef.current.addListener('place_changed', () => {
-        const place = autocompleteRef.current?.getPlace();
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
         if (place && place.formatted_address) {
           setTempDestination(place.formatted_address);
         }
@@ -90,8 +94,6 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   const openMapModal = () => {
     setTempDestination(destination);
     setShowMapModal(true);
-    // Reset autocomplete ref so it reinitializes
-    autocompleteRef.current = null;
   };
 
   const confirmDestination = () => {

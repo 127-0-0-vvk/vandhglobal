@@ -44,6 +44,8 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   const [showQuotations, setShowQuotations] = useState(false);
   const [selectedQuotation, setSelectedQuotation] = useState<Quotation | null>(null);
   const [showInterestForm, setShowInterestForm] = useState(false);
+  const [expandedBreakdown, setExpandedBreakdown] = useState<{[key: number]: {transport: boolean, other: boolean}}>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Interest form fields
   const [name, setName] = useState('');
@@ -97,6 +99,17 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   const updateDestination = (state: string, city: string, area: string) => {
     const parts = [area, city, state].filter(Boolean);
     setDestination(parts.join(', '));
+  };
+
+  // Toggle breakdown display
+  const toggleBreakdown = (index: number, type: 'transport' | 'other') => {
+    setExpandedBreakdown(prev => ({
+      ...prev,
+      [index]: {
+        ...prev[index],
+        [type]: !prev[index]?.[type]
+      }
+    }));
   };
 
   const generateQuotations = () => {
@@ -185,31 +198,78 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
 
   const downloadQuotation = (quotation: Quotation) => {
     const content = `
-QUOTATION - ${mineral.name}
-=====================================
+╔═══════════════════════════════════════════════════════════════╗
+║                     VANDHGLOBAL QUOTATION                     ║
+╚═══════════════════════════════════════════════════════════════╝
 
-Mine: ${quotation.mine.name}
-Location: ${quotation.mine.location}, ${quotation.mine.state}
-Capacity: ${quotation.mine.capacity || 'N/A'}
+QUOTATION FOR: ${mineral.name}
+Date: ${new Date().toLocaleDateString()}
 
-PRODUCT DETAILS
-- Mineral: ${mineral.name}
-- Specification: ${specification}
-- Quantity: ${quantity} ${mineral.unit}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  SUPPLIER INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Mine Name       : ${quotation.mine.name}
+Location        : ${quotation.mine.location}, ${quotation.mine.state}
+Mine Capacity   : ${quotation.mine.capacity || 'N/A'}
 
-ROUTE
-${quotation.route}
-Transport Mode: ${transportMode.toUpperCase()}
-Estimated Delivery: ${quotation.estimatedDays} days
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  PRODUCT DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Mineral         : ${mineral.name}
+Specification   : ${specification}
+Quantity        : ${quantity} ${mineral.unit}
 
-PRICING BREAKDOWN
-- Base Price: $${quotation.basePrice.toLocaleString()}
-- Transport Cost: $${quotation.transportCost.toLocaleString()}
-- Other Costs (Handling, Documentation): $${quotation.otherCosts.toLocaleString()}
-=====================================
-TOTAL PRICE: $${quotation.totalPrice.toLocaleString()}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  LOGISTICS DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Route           : ${quotation.route}
+Distance        : ${quotation.distance} km
+Transport Mode  : ${transportMode.toUpperCase()}
+Est. Delivery   : ${quotation.estimatedDays} days
 
-Contact: vandhglobal@gmail.com
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  COMPREHENSIVE PRICING BREAKDOWN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. BASE PRICE
+   Mineral Cost                                    $${quotation.basePrice.toLocaleString()}
+
+2. TRANSPORT COSTS                                 $${quotation.transportCost.toLocaleString()}
+   ├─ Fuel Cost (${quotation.distance} km)                       $${quotation.transportBreakdown.fuelCost.toLocaleString()}
+   ├─ Driver/Operator Cost                         $${quotation.transportBreakdown.driverCost.toLocaleString()}${quotation.transportBreakdown.tollFees > 0 ? `
+   ├─ Toll Fees                                    $${quotation.transportBreakdown.tollFees.toLocaleString()}` : ''}
+   └─ Vehicle Rent                                 $${quotation.transportBreakdown.vehicleRent.toLocaleString()}
+
+3. OTHER EXPENSES                                  $${quotation.otherCosts.toLocaleString()}
+   ├─ Handling Charges                             $${quotation.otherExpenses.handlingCharges.toLocaleString()}
+   ├─ Documentation Fees                           $${quotation.otherExpenses.documentation.toLocaleString()}
+   ├─ Insurance                                    $${quotation.otherExpenses.insurance.toLocaleString()}
+   ├─ Packaging                                    $${quotation.otherExpenses.packaging.toLocaleString()}
+   ├─ Loading Charges                              $${quotation.otherExpenses.loading.toLocaleString()}
+   └─ Unloading Charges                            $${quotation.otherExpenses.unloading.toLocaleString()}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+╔═══════════════════════════════════════════════════════════════╗
+║  TOTAL QUOTATION PRICE:                  $${quotation.totalPrice.toLocaleString().padStart(20)}  ║
+╚═══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CONTACT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Email           : vandhglobal@gmail.com
+Website         : www.vandhglobal.com
+
+Terms & Conditions:
+• This quotation is valid for 30 days from the date of issue
+• Prices are subject to change based on market conditions
+• 50% advance payment required to confirm the order
+• Delivery timelines may vary based on availability
+• All taxes and duties are extra as applicable
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Thank you for considering VandhGlobal for your commodity needs!
     `.trim();
 
     const blob = new Blob([content], { type: 'text/plain' });
@@ -226,37 +286,69 @@ Contact: vandhglobal@gmail.com
     setShowInterestForm(true);
   };
 
-  const submitInterest = () => {
+  const submitInterest = async () => {
     if (!name || !phone || !email) {
       alert('Please fill all required fields');
       return;
     }
 
-    const subject = `Interest in ${mineral.name} from ${selectedQuotation?.mine.name}`;
-    const body = `
-Name: ${name}
-Phone: ${countryCode} ${phone}
-Email: ${email}
+    if (!selectedQuotation) {
+      alert('No quotation selected');
+      return;
+    }
 
-Mineral: ${mineral.name}
-Specification: ${specification}
-Quantity: ${quantity} ${mineral.unit}
+    setIsSubmitting(true);
 
-Mine: ${selectedQuotation?.mine.name}
-Location: ${selectedQuotation?.mine.location}, ${selectedQuotation?.mine.state}
-Total Price: $${selectedQuotation?.totalPrice.toLocaleString()}
+    try {
+      const response = await fetch('/api/send-inquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          // Customer details
+          name,
+          phone,
+          countryCode,
+          email,
+          note,
+          // Quotation details
+          mineral: mineral.name,
+          specification,
+          quantity,
+          unit: mineral.unit,
+          mine: selectedQuotation.mine,
+          totalPrice: selectedQuotation.totalPrice,
+          basePrice: selectedQuotation.basePrice,
+          transportCost: selectedQuotation.transportCost,
+          otherCosts: selectedQuotation.otherCosts,
+          route: selectedQuotation.route,
+          estimatedDays: selectedQuotation.estimatedDays,
+          distance: selectedQuotation.distance,
+          transportMode,
+          transportBreakdown: selectedQuotation.transportBreakdown,
+          otherExpenses: selectedQuotation.otherExpenses,
+        }),
+      });
 
-Note: ${note || 'N/A'}
-    `.trim();
+      const data = await response.json();
 
-    window.location.href = `mailto:vandhglobal@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    // Reset form
-    setShowInterestForm(false);
-    setName('');
-    setPhone('');
-    setEmail('');
-    setNote('');
+      if (response.ok) {
+        alert('✓ Your inquiry has been sent successfully! We will contact you soon.');
+        // Reset form
+        setShowInterestForm(false);
+        setName('');
+        setPhone('');
+        setEmail('');
+        setNote('');
+      } else {
+        alert(`Failed to send inquiry: ${data.message || 'Unknown error'}\n\nNote: ${data.details || ''}`);
+      }
+    } catch (error: any) {
+      alert(`Error sending inquiry: ${error.message || 'Network error'}\n\nPlease try again or contact us directly at vandhglobal@gmail.com`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -477,18 +569,105 @@ Note: ${note || 'N/A'}
                   </div>
 
                   <div className="space-y-3 mb-6">
+                    {/* Base Price */}
                     <div className="flex justify-between text-sm">
                       <span className="text-gladia-white/70">Base Price:</span>
                       <span className="text-gladia-white font-medium">${quotation.basePrice.toLocaleString()}</span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gladia-white/70">Transport:</span>
-                      <span className="text-gladia-white font-medium">${quotation.transportCost.toLocaleString()}</span>
+
+                    {/* Transport Cost - Expandable */}
+                    <div className="border border-gladia-purple/20 rounded-lg overflow-hidden">
+                      <button
+                        onClick={() => toggleBreakdown(idx, 'transport')}
+                        className="w-full flex justify-between items-center text-sm px-3 py-2 bg-gladia-darkest/30 hover:bg-gladia-darkest/50 transition-colors"
+                      >
+                        <span className="text-gladia-white/70">Transport Cost:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-gladia-white font-medium">${quotation.transportCost.toLocaleString()}</span>
+                          <svg
+                            className={`w-4 h-4 text-gladia-white/70 transition-transform ${expandedBreakdown[idx]?.transport ? 'rotate-180' : ''}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </button>
+                      {expandedBreakdown[idx]?.transport && (
+                        <div className="px-3 py-2 space-y-1.5 text-xs bg-gladia-darkest/20">
+                          <div className="flex justify-between">
+                            <span className="text-gladia-white/60">• Fuel Cost ({quotation.distance} km):</span>
+                            <span className="text-gladia-white/90">${quotation.transportBreakdown.fuelCost.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gladia-white/60">• Driver/Operator Cost:</span>
+                            <span className="text-gladia-white/90">${quotation.transportBreakdown.driverCost.toLocaleString()}</span>
+                          </div>
+                          {quotation.transportBreakdown.tollFees > 0 && (
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Toll Fees:</span>
+                              <span className="text-gladia-white/90">${quotation.transportBreakdown.tollFees.toLocaleString()}</span>
+                            </div>
+                          )}
+                          <div className="flex justify-between">
+                            <span className="text-gladia-white/60">• Vehicle Rent:</span>
+                            <span className="text-gladia-white/90">${quotation.transportBreakdown.vehicleRent.toLocaleString()}</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gladia-white/70">Other Costs:</span>
-                      <span className="text-gladia-white font-medium">${quotation.otherCosts.toLocaleString()}</span>
+
+                    {/* Other Expenses - Expandable */}
+                    <div className="border border-gladia-purple/20 rounded-lg overflow-hidden">
+                      <button
+                        onClick={() => toggleBreakdown(idx, 'other')}
+                        className="w-full flex justify-between items-center text-sm px-3 py-2 bg-gladia-darkest/30 hover:bg-gladia-darkest/50 transition-colors"
+                      >
+                        <span className="text-gladia-white/70">Other Expenses:</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-gladia-white font-medium">${quotation.otherCosts.toLocaleString()}</span>
+                          <svg
+                            className={`w-4 h-4 text-gladia-white/70 transition-transform ${expandedBreakdown[idx]?.other ? 'rotate-180' : ''}`}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </button>
+                      {expandedBreakdown[idx]?.other && (
+                        <div className="px-3 py-2 space-y-1.5 text-xs bg-gladia-darkest/20">
+                          <div className="flex justify-between">
+                            <span className="text-gladia-white/60">• Handling Charges:</span>
+                            <span className="text-gladia-white/90">${quotation.otherExpenses.handlingCharges.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gladia-white/60">• Documentation:</span>
+                            <span className="text-gladia-white/90">${quotation.otherExpenses.documentation.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gladia-white/60">• Insurance:</span>
+                            <span className="text-gladia-white/90">${quotation.otherExpenses.insurance.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gladia-white/60">• Packaging:</span>
+                            <span className="text-gladia-white/90">${quotation.otherExpenses.packaging.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gladia-white/60">• Loading:</span>
+                            <span className="text-gladia-white/90">${quotation.otherExpenses.loading.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gladia-white/60">• Unloading:</span>
+                            <span className="text-gladia-white/90">${quotation.otherExpenses.unloading.toLocaleString()}</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
+
+                    {/* Total */}
                     <div className="border-t border-gladia-purple/30 pt-3">
                       <div className="flex justify-between">
                         <span className="text-gladia-white font-normal">Total:</span>
@@ -614,15 +793,27 @@ Note: ${note || 'N/A'}
               <div className="flex gap-3 pt-4">
                 <button
                   onClick={() => setShowInterestForm(false)}
-                  className="flex-1 bg-gladia-darkest border border-gladia-purple/30 text-gladia-white px-6 py-3 rounded-lg hover:border-gladia-purple transition-all font-normal"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-gladia-darkest border border-gladia-purple/30 text-gladia-white px-6 py-3 rounded-lg hover:border-gladia-purple transition-all font-normal disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={submitInterest}
-                  className="flex-1 bg-gradient-to-r from-gladia-purple to-gladia-purpleBlue text-white px-6 py-3 rounded-lg hover:shadow-lg hover:shadow-gladia-purple/50 transition-all font-normal"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-gradient-to-r from-gladia-purple to-gladia-purpleBlue text-white px-6 py-3 rounded-lg hover:shadow-lg hover:shadow-gladia-purple/50 transition-all font-normal disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  Send Inquiry
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    'Send Inquiry'
+                  )}
                 </button>
               </div>
             </div>

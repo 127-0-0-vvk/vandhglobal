@@ -38,6 +38,8 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   // Google Maps autocomplete ref
   const autocompleteInputRef = useRef<HTMLInputElement>(null);
   const autocompleteRef = useRef<any>(null);
+  const [showMapModal, setShowMapModal] = useState(false);
+  const [tempDestination, setTempDestination] = useState('');
 
   // Load Google Maps script and initialize autocomplete
   useEffect(() => {
@@ -49,37 +51,33 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
         script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
         script.async = true;
         script.defer = true;
-        script.onload = initAutocomplete;
         document.head.appendChild(script);
-      } else if (window.google && autocompleteInputRef.current && !autocompleteRef.current) {
-        initAutocomplete();
       }
     };
 
-    const initAutocomplete = () => {
-      if (autocompleteInputRef.current && window.google) {
-        autocompleteRef.current = new window.google.maps.places.Autocomplete(
-          autocompleteInputRef.current,
-          {
-            componentRestrictions: { country: 'in' },
-            fields: ['formatted_address', 'name'],
-            types: ['geocode', 'establishment']
-          }
-        );
+    loadGoogleMapsScript();
+  }, []);
 
-        autocompleteRef.current.addListener('place_changed', () => {
-          const place = autocompleteRef.current?.getPlace();
-          if (place && place.formatted_address) {
-            setDestination(place.formatted_address);
-          }
-        });
-      }
-    };
+  // Initialize autocomplete when modal opens
+  useEffect(() => {
+    if (showMapModal && autocompleteInputRef.current && window.google && !autocompleteRef.current) {
+      autocompleteRef.current = new window.google.maps.places.Autocomplete(
+        autocompleteInputRef.current,
+        {
+          componentRestrictions: { country: 'in' },
+          fields: ['formatted_address', 'name'],
+          types: ['geocode', 'establishment']
+        }
+      );
 
-    if (destinationType === 'india') {
-      loadGoogleMapsScript();
+      autocompleteRef.current.addListener('place_changed', () => {
+        const place = autocompleteRef.current?.getPlace();
+        if (place && place.formatted_address) {
+          setTempDestination(place.formatted_address);
+        }
+      });
     }
-  }, [destinationType]);
+  }, [showMapModal]);
 
   const ports = [
     "Mundra Port, Gujarat",
@@ -88,6 +86,20 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
     "Visakhapatnam Port, Andhra Pradesh",
     "Chennai Port, Tamil Nadu",
   ];
+
+  const openMapModal = () => {
+    setTempDestination(destination);
+    setShowMapModal(true);
+    // Reset autocomplete ref so it reinitializes
+    autocompleteRef.current = null;
+  };
+
+  const confirmDestination = () => {
+    if (tempDestination) {
+      setDestination(tempDestination);
+    }
+    setShowMapModal(false);
+  };
 
   const generateQuotations = () => {
     if (!specification || !quantity || !destination) {
@@ -287,14 +299,26 @@ Note: ${note || 'N/A'}
                   Destination <span className="text-red-400">*</span>
                 </label>
                 {destinationType === 'india' ? (
-                  <input
-                    ref={autocompleteInputRef}
-                    type="text"
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    placeholder="Start typing city or location (e.g., Mumbai, Maharashtra)"
-                    className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={destination}
+                      readOnly
+                      onClick={openMapModal}
+                      placeholder="Click to select location from map"
+                      className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors cursor-pointer"
+                    />
+                    <button
+                      type="button"
+                      onClick={openMapModal}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gladia-purple hover:text-gladia-purpleBlue transition-colors"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </button>
+                  </div>
                 ) : (
                   <select
                     value={destination}
@@ -519,6 +543,63 @@ Note: ${note || 'N/A'}
                   Send Inquiry
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Map Modal for Destination Selection */}
+      {showMapModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+          onClick={() => setShowMapModal(false)}
+        >
+          <div
+            className="bg-gladia-darkBlue/90 backdrop-blur-md border border-gladia-purple/30 rounded-3xl p-6 md:p-8 max-w-2xl w-full transform animate-zoom-in shadow-2xl shadow-gladia-purple/30"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-2xl md:text-3xl font-normal mb-6 text-center bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent">
+              Select Destination
+            </h3>
+
+            <div className="mb-6">
+              <label className="block text-sm font-normal text-gladia-white mb-2">
+                Search Location in India
+              </label>
+              <input
+                ref={autocompleteInputRef}
+                type="text"
+                value={tempDestination}
+                onChange={(e) => setTempDestination(e.target.value)}
+                placeholder="Start typing city, state, or landmark..."
+                className="w-full px-4 py-3 bg-gladia-darkest border border-gladia-purple/30 rounded-lg text-gladia-white focus:outline-none focus:border-gladia-purple transition-colors"
+              />
+              <p className="text-xs text-gladia-white/60 mt-2">
+                Type to search for cities, states, or landmarks across India
+              </p>
+            </div>
+
+            {tempDestination && (
+              <div className="bg-gladia-darkest/50 border border-gladia-purple/20 rounded-xl p-4 mb-6">
+                <p className="text-sm text-gladia-white/70 mb-1">Selected Location:</p>
+                <p className="text-lg text-white font-normal">{tempDestination}</p>
+              </div>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowMapModal(false)}
+                className="flex-1 bg-gladia-darkest border border-gladia-purple/30 text-gladia-white px-6 py-3 rounded-lg hover:border-gladia-purple transition-all font-normal"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDestination}
+                disabled={!tempDestination}
+                className="flex-1 bg-gradient-to-r from-gladia-purple to-gladia-purpleBlue text-white px-6 py-3 rounded-lg hover:shadow-lg hover:shadow-gladia-purple/50 transition-all font-normal disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Done
+              </button>
             </div>
           </div>
         </div>

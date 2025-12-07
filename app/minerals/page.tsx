@@ -1,5 +1,6 @@
 import { mineralPrices, partnerMines } from '@/data/commodityPrices';
 import MineralPricingCalculator from '@/components/MineralPricingCalculator';
+import MineImageSlider from '@/components/MineImageSlider';
 
 export const metadata = {
   title: 'Minerals Trading | Premium Quality Minerals from Verified Mines | VandhGlobal',
@@ -9,6 +10,9 @@ export const metadata = {
 export default function MineralsPage() {
   return (
     <div className="bg-gladia-darkest min-h-screen pt-28">
+      {/* Mine Image Slider */}
+      <MineImageSlider />
+
       {/* Minerals Catalog - Now at the top */}
       <section className="py-12 md:py-16 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

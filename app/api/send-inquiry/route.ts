@@ -27,7 +27,137 @@ export async function POST(request: NextRequest) {
       transportMode,
       transportBreakdown,
       otherExpenses,
+      basePriceBreakdown,
+      destinationType,
+      fobCharges,
+      cifCharges,
     } = body;
+
+    // Build destination-specific sections
+    let logisticsSection = '';
+    let pricingBreakdown = '';
+
+    if (destinationType === 'india') {
+      // India-to-India logistics
+      logisticsSection = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  LOGISTICS DETAILS (DOMESTIC)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Route           : ${route}
+Distance        : ${distance} km
+Transport Mode  : ${transportMode.toUpperCase()}
+Vehicles Needed : ${transportBreakdown.numTrucks} ${transportMode === 'truck' ? 'Trucks' : 'Wagons'} × ${transportBreakdown.truckCapacity} tons each
+Est. Delivery   : ${estimatedDays} days`;
+
+      pricingBreakdown = `
+1. EX-MINE PRICE (100% TRANSPARENT PRICING)           $${basePrice.toLocaleString()}
+   ├─ Mining & Extraction                             $${basePriceBreakdown.miningCost.toLocaleString()}
+   ├─ Refining & Separation                           $${basePriceBreakdown.extractionCost.toLocaleString()}
+   ├─ Processing & Grading                            $${basePriceBreakdown.processingCost.toLocaleString()}
+   ├─ Quality Testing & Assurance                     $${basePriceBreakdown.qualityTesting.toLocaleString()}
+   └─ VandhGlobal Profit Margin                       $0 (0%)
+
+   ⓘ We operate on 100% transparent pricing. Zero markup on ex-mine costs.
+      Our revenue comes ONLY from handling charges below.
+
+2. TRANSPORT COSTS                                     $${transportCost.toLocaleString()}
+   Using ${transportBreakdown.numTrucks} ${transportMode === 'truck' ? 'Trucks' : 'Wagons'} @ ${transportBreakdown.truckCapacity} tons capacity each
+
+   ├─ Fuel Cost ($${transportBreakdown.fuelCostPerTruck.toLocaleString()}/vehicle × ${transportBreakdown.numTrucks})     $${transportBreakdown.fuelCost.toLocaleString()}
+   ├─ Driver Cost ($${transportBreakdown.driverCostPerTruck.toLocaleString()}/vehicle × ${transportBreakdown.numTrucks})   $${transportBreakdown.driverCost.toLocaleString()}${transportBreakdown.tollFees > 0 ? `
+   ├─ Toll Fees ($${transportBreakdown.tollFeesPerTruck.toLocaleString()}/vehicle × ${transportBreakdown.numTrucks})       $${transportBreakdown.tollFees.toLocaleString()}` : ''}
+   └─ Vehicle Rent ($${transportBreakdown.vehicleRentPerTruck.toLocaleString()}/vehicle × ${transportBreakdown.numTrucks}) $${transportBreakdown.vehicleRent.toLocaleString()}
+
+   Distance: ${distance} km
+
+3. OTHER EXPENSES                                      $${otherCosts.toLocaleString()}
+   ├─ Handling Charges (VandhGlobal Revenue - 1.2%)   $${otherExpenses.handlingCharges.toLocaleString()}
+   ├─ Documentation Fees                               $${otherExpenses.documentation.toLocaleString()}
+   ├─ Insurance Coverage                               $${otherExpenses.insurance.toLocaleString()}
+   ├─ Loading Charges                                  $${otherExpenses.loading.toLocaleString()}
+   └─ Unloading Charges                                $${otherExpenses.unloading.toLocaleString()}
+
+   ⓘ Handling charges (1.2% of ex-mine price) are our ONLY revenue source`;
+
+    } else {
+      // Export logistics (FOB/CIF)
+      const destPort = destinationType === 'fob' ? fobCharges.destinationPort : cifCharges.destinationPort;
+      const originPort = fobCharges?.originPort || cifCharges?.originPort;
+
+      logisticsSection = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  LOGISTICS DETAILS (EXPORT)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Incoterm        : ${destinationType.toUpperCase()}
+Origin Port     : ${originPort}
+Destination Port: ${destPort}
+Est. Delivery   : ${estimatedDays} days`;
+
+      if (destinationType === 'fob') {
+        pricingBreakdown = `
+1. EX-MINE PRICE (100% TRANSPARENT PRICING)           $${basePrice.toLocaleString()}
+   ├─ Mining & Extraction                             $${basePriceBreakdown.miningCost.toLocaleString()}
+   ├─ Refining & Separation                           $${basePriceBreakdown.extractionCost.toLocaleString()}
+   ├─ Processing & Grading                            $${basePriceBreakdown.processingCost.toLocaleString()}
+   ├─ Quality Testing & Assurance                     $${basePriceBreakdown.qualityTesting.toLocaleString()}
+   └─ VandhGlobal Profit Margin                       $0 (0%)
+
+   ⓘ We operate on 100% transparent pricing. Zero markup on ex-mine costs.
+
+2. FOB CHARGES (FREE ON BOARD)                         $${transportCost.toLocaleString()}
+   ├─ Port Handling Charges                           $${fobCharges.portHandling.toLocaleString()}
+   ├─ Customs Clearance                               $${fobCharges.customsClearance.toLocaleString()}
+   ├─ Export Documentation                            $${fobCharges.exportDocumentation.toLocaleString()}
+   ├─ Fumigation Certificate                          $${fobCharges.fumigation.toLocaleString()}
+   ├─ Mine to Port Transport                          $${fobCharges.inlandTransport.toLocaleString()}
+   └─ Terminal Handling Charges                       $${fobCharges.terminalCharges.toLocaleString()}
+
+   Origin Port: ${fobCharges.originPort}
+
+3. OTHER EXPENSES                                      $${otherCosts.toLocaleString()}
+   ├─ Handling Charges (VandhGlobal Revenue - 1.2%)   $${otherExpenses.handlingCharges.toLocaleString()}
+   ├─ Documentation Fees                               $${otherExpenses.documentation.toLocaleString()}
+   ├─ Insurance Coverage                               $${otherExpenses.insurance.toLocaleString()}
+   ├─ Loading Charges                                  $${otherExpenses.loading.toLocaleString()}
+   └─ Unloading Charges                                $${otherExpenses.unloading.toLocaleString()}`;
+
+      } else {
+        // CIF
+        pricingBreakdown = `
+1. EX-MINE PRICE (100% TRANSPARENT PRICING)           $${basePrice.toLocaleString()}
+   ├─ Mining & Extraction                             $${basePriceBreakdown.miningCost.toLocaleString()}
+   ├─ Refining & Separation                           $${basePriceBreakdown.extractionCost.toLocaleString()}
+   ├─ Processing & Grading                            $${basePriceBreakdown.processingCost.toLocaleString()}
+   ├─ Quality Testing & Assurance                     $${basePriceBreakdown.qualityTesting.toLocaleString()}
+   └─ VandhGlobal Profit Margin                       $0 (0%)
+
+   ⓘ We operate on 100% transparent pricing. Zero markup on ex-mine costs.
+
+2. CIF CHARGES (COST, INSURANCE & FREIGHT)            $${transportCost.toLocaleString()}
+
+   FOB Subtotal                                        $${cifCharges.fobTotal.toLocaleString()}
+   ├─ Port Handling                                   $${cifCharges.portHandling.toLocaleString()}
+   ├─ Customs Clearance                               $${cifCharges.customsClearance.toLocaleString()}
+   ├─ Export Documentation                            $${cifCharges.exportDocumentation.toLocaleString()}
+   ├─ Fumigation Certificate                          $${cifCharges.fumigation.toLocaleString()}
+   ├─ Inland Transport                                $${cifCharges.inlandTransport.toLocaleString()}
+   └─ Terminal Charges                                $${cifCharges.terminalCharges.toLocaleString()}
+
+   Ocean Freight & Insurance
+   ├─ Ocean Freight                                   $${cifCharges.oceanFreight.toLocaleString()}
+   ├─ Marine Insurance                                $${cifCharges.marineInsurance.toLocaleString()}
+   └─ Destination Port Charges                        $${cifCharges.destinationPortCharges.toLocaleString()}
+
+   Destination: ${cifCharges.destinationPort}
+
+3. OTHER EXPENSES                                      $${otherCosts.toLocaleString()}
+   ├─ Handling Charges (VandhGlobal Revenue - 1.2%)   $${otherExpenses.handlingCharges.toLocaleString()}
+   ├─ Documentation Fees                               $${otherExpenses.documentation.toLocaleString()}
+   ├─ Insurance Coverage                               $${otherExpenses.insurance.toLocaleString()}
+   ├─ Loading Charges                                  $${otherExpenses.loading.toLocaleString()}
+   └─ Unloading Charges                                $${otherExpenses.unloading.toLocaleString()}`;
+      }
+    }
 
     // Create formatted quotation text
     const quotationText = `
@@ -51,35 +181,12 @@ Mine Capacity   : ${mine.capacity || 'N/A'}
 Mineral         : ${mineral}
 Specification   : ${specification}
 Quantity        : ${quantity} ${unit}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  LOGISTICS DETAILS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Route           : ${route}
-Distance        : ${distance} km
-Transport Mode  : ${transportMode.toUpperCase()}
-Est. Delivery   : ${estimatedDays} days
+${logisticsSection}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   COMPREHENSIVE PRICING BREAKDOWN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. BASE PRICE
-   Mineral Cost                                    $${basePrice.toLocaleString()}
-
-2. TRANSPORT COSTS                                 $${transportCost.toLocaleString()}
-   ├─ Fuel Cost (${distance} km)                       $${transportBreakdown.fuelCost.toLocaleString()}
-   ├─ Driver/Operator Cost                         $${transportBreakdown.driverCost.toLocaleString()}${transportBreakdown.tollFees > 0 ? `
-   ├─ Toll Fees                                    $${transportBreakdown.tollFees.toLocaleString()}` : ''}
-   └─ Vehicle Rent                                 $${transportBreakdown.vehicleRent.toLocaleString()}
-
-3. OTHER EXPENSES                                  $${otherCosts.toLocaleString()}
-   ├─ Handling Charges                             $${otherExpenses.handlingCharges.toLocaleString()}
-   ├─ Documentation Fees                           $${otherExpenses.documentation.toLocaleString()}
-   ├─ Insurance                                    $${otherExpenses.insurance.toLocaleString()}
-   ├─ Packaging                                    $${otherExpenses.packaging.toLocaleString()}
-   ├─ Loading Charges                              $${otherExpenses.loading.toLocaleString()}
-   └─ Unloading Charges                            $${otherExpenses.unloading.toLocaleString()}
+${pricingBreakdown}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -96,6 +203,13 @@ Email           : ${email}
 Additional Note : ${note || 'N/A'}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  TRANSPARENCY COMMITMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+At VandhGlobal, we believe in complete transparency:
+• Zero profit margin on ex-mine prices (100% transparent cost)
+• Our revenue comes only from handling charges (1.2%)
+• All costs are itemized and verifiable
+• No hidden fees or markups
 
 Terms & Conditions:
 • This quotation is valid for 30 days from the date of issue

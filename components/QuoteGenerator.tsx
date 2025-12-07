@@ -84,7 +84,7 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   const [showQuotations, setShowQuotations] = useState(false);
   const [selectedQuotation, setSelectedQuotation] = useState<Quotation | null>(null);
   const [showInterestForm, setShowInterestForm] = useState(false);
-  const [expandedBreakdown, setExpandedBreakdown] = useState<{[key: number]: {transport: boolean, other: boolean}}>({});
+  const [expandedBreakdown, setExpandedBreakdown] = useState<{[key: number]: {base: boolean, transport: boolean, other: boolean, fob: boolean, cif: boolean}}>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Interest form fields
@@ -177,7 +177,7 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   };
 
   // Toggle breakdown display
-  const toggleBreakdown = (index: number, type: 'transport' | 'other') => {
+  const toggleBreakdown = (index: number, type: 'base' | 'transport' | 'other' | 'fob' | 'cif') => {
     setExpandedBreakdown(prev => ({
       ...prev,
       [index]: {
@@ -222,14 +222,15 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
       const distance = Math.floor(Math.random() * 1500) + 500; // 500-2000 km
 
       // ===== BASE PRICE BREAKDOWN =====
-      // Research shows 5-7% profit margin for low-cost trading
-      const miningCost = mineral.price * qty * 0.40; // 40% mining & extraction from ground
-      const extractionCost = mineral.price * qty * 0.25; // 25% refining & separation
-      const processingCost = mineral.price * qty * 0.20; // 20% processing & grading
+      // Transparent pricing: Ex-mine price with NO markup/margin
+      // VandhGlobal revenue comes ONLY from handling charges
+      const miningCost = mineral.price * qty * 0.42; // 42% mining & extraction from ground
+      const extractionCost = mineral.price * qty * 0.26; // 26% refining & separation
+      const processingCost = mineral.price * qty * 0.22; // 22% processing & grading
       const qualityTesting = mineral.price * qty * 0.10; // 10% quality assurance & testing
-      const profitMargin = mineral.price * qty * 0.05; // 5% profit (low margin)
+      const profitMargin = 0; // ZERO margin - transparent pricing model
 
-      const basePrice = miningCost + extractionCost + processingCost + qualityTesting + profitMargin;
+      const basePrice = miningCost + extractionCost + processingCost + qualityTesting; // = 100% of mineral.price
 
       // ===== TRANSPORT CALCULATIONS (India-to-India or India-to-Port) =====
       let transportCost = 0;
@@ -303,12 +304,12 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
       }
 
       // ===== OTHER EXPENSES =====
-      const handlingCharges = basePrice * 0.012; // 1.2% of base price (competitive rate)
+      const handlingCharges = basePrice * 0.012; // 1.2% handling (VandhGlobal's only revenue)
       const documentation = 1200; // Fixed documentation cost (competitive)
       const insurance = basePrice * 0.008; // 0.8% insurance (low margin)
-      const packaging = qty * 45; // ₹45 per unit packaging
-      const loading = qty * 25; // ₹25 per unit loading
-      const unloading = qty * 25; // ₹25 per unit unloading
+      const packaging = 0; // No packaging for bulk minerals (shipped in bulk carriers/containers)
+      const loading = qty * 25; // ₹25 per ton loading
+      const unloading = qty * 25; // ₹25 per ton unloading
 
       const otherCosts = handlingCharges + documentation + insurance + packaging + loading + unloading;
 
@@ -456,6 +457,131 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   };
 
   const downloadQuotation = (quotation: Quotation) => {
+    // Build destination-specific sections
+    let logisticsSection = '';
+    let pricingBreakdown = '';
+
+    if (quotation.destinationType === 'india') {
+      // India-to-India logistics
+      logisticsSection = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  LOGISTICS DETAILS (DOMESTIC)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Route           : ${quotation.route}
+Distance        : ${quotation.distance} km
+Transport Mode  : ${transportMode.toUpperCase()}
+Vehicles Needed : ${quotation.transportBreakdown.numTrucks} ${transportMode === 'truck' ? 'Trucks' : 'Wagons'} × ${quotation.transportBreakdown.truckCapacity} tons each
+Est. Delivery   : ${quotation.estimatedDays} days`;
+
+      pricingBreakdown = `
+1. EX-MINE PRICE (100% TRANSPARENT PRICING)           $${quotation.basePrice.toLocaleString()}
+   ├─ Mining & Extraction                             $${quotation.basePriceBreakdown.miningCost.toLocaleString()}
+   ├─ Refining & Separation                           $${quotation.basePriceBreakdown.extractionCost.toLocaleString()}
+   ├─ Processing & Grading                            $${quotation.basePriceBreakdown.processingCost.toLocaleString()}
+   ├─ Quality Testing & Assurance                     $${quotation.basePriceBreakdown.qualityTesting.toLocaleString()}
+   └─ VandhGlobal Profit Margin                       $0 (0%)
+
+   ⓘ We operate on 100% transparent pricing. Zero markup on ex-mine costs.
+      Our revenue comes ONLY from handling charges below.
+
+2. TRANSPORT COSTS                                     $${quotation.transportCost.toLocaleString()}
+   Using ${quotation.transportBreakdown.numTrucks} ${transportMode === 'truck' ? 'Trucks' : 'Wagons'} @ ${quotation.transportBreakdown.truckCapacity} tons capacity each
+
+   ├─ Fuel Cost ($${quotation.transportBreakdown.fuelCostPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks})     $${quotation.transportBreakdown.fuelCost.toLocaleString()}
+   ├─ Driver Cost ($${quotation.transportBreakdown.driverCostPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks})   $${quotation.transportBreakdown.driverCost.toLocaleString()}${quotation.transportBreakdown.tollFees > 0 ? `
+   ├─ Toll Fees ($${quotation.transportBreakdown.tollFeesPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks})       $${quotation.transportBreakdown.tollFees.toLocaleString()}` : ''}
+   └─ Vehicle Rent ($${quotation.transportBreakdown.vehicleRentPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks}) $${quotation.transportBreakdown.vehicleRent.toLocaleString()}
+
+   Distance: ${quotation.distance} km
+
+3. OTHER EXPENSES                                      $${quotation.otherCosts.toLocaleString()}
+   ├─ Handling Charges (VandhGlobal Revenue - 1.2%)   $${quotation.otherExpenses.handlingCharges.toLocaleString()}
+   ├─ Documentation Fees                               $${quotation.otherExpenses.documentation.toLocaleString()}
+   ├─ Insurance Coverage                               $${quotation.otherExpenses.insurance.toLocaleString()}
+   ├─ Loading Charges                                  $${quotation.otherExpenses.loading.toLocaleString()}
+   └─ Unloading Charges                                $${quotation.otherExpenses.unloading.toLocaleString()}
+
+   ⓘ Handling charges (1.2% of ex-mine price) are our ONLY revenue source`;
+
+    } else {
+      // Export logistics (FOB/CIF)
+      const destPort = quotation.destinationType === 'fob' ? quotation.fobCharges!.destinationPort : quotation.cifCharges!.destinationPort;
+
+      logisticsSection = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  LOGISTICS DETAILS (EXPORT)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Incoterm        : ${quotation.destinationType.toUpperCase()}
+Origin Port     : ${quotation.fobCharges?.originPort || quotation.cifCharges?.originPort}
+Destination Port: ${destPort}
+Est. Delivery   : ${quotation.estimatedDays} days`;
+
+      if (quotation.destinationType === 'fob') {
+        pricingBreakdown = `
+1. EX-MINE PRICE (100% TRANSPARENT PRICING)           $${quotation.basePrice.toLocaleString()}
+   ├─ Mining & Extraction                             $${quotation.basePriceBreakdown.miningCost.toLocaleString()}
+   ├─ Refining & Separation                           $${quotation.basePriceBreakdown.extractionCost.toLocaleString()}
+   ├─ Processing & Grading                            $${quotation.basePriceBreakdown.processingCost.toLocaleString()}
+   ├─ Quality Testing & Assurance                     $${quotation.basePriceBreakdown.qualityTesting.toLocaleString()}
+   └─ VandhGlobal Profit Margin                       $0 (0%)
+
+   ⓘ We operate on 100% transparent pricing. Zero markup on ex-mine costs.
+
+2. FOB CHARGES (FREE ON BOARD)                         $${quotation.transportCost.toLocaleString()}
+   ├─ Port Handling Charges                           $${quotation.fobCharges!.portHandling.toLocaleString()}
+   ├─ Customs Clearance                               $${quotation.fobCharges!.customsClearance.toLocaleString()}
+   ├─ Export Documentation                            $${quotation.fobCharges!.exportDocumentation.toLocaleString()}
+   ├─ Fumigation Certificate                          $${quotation.fobCharges!.fumigation.toLocaleString()}
+   ├─ Mine to Port Transport                          $${quotation.fobCharges!.inlandTransport.toLocaleString()}
+   └─ Terminal Handling Charges                       $${quotation.fobCharges!.terminalCharges.toLocaleString()}
+
+   Origin Port: ${quotation.fobCharges!.originPort}
+
+3. OTHER EXPENSES                                      $${quotation.otherCosts.toLocaleString()}
+   ├─ Handling Charges (VandhGlobal Revenue - 1.2%)   $${quotation.otherExpenses.handlingCharges.toLocaleString()}
+   ├─ Documentation Fees                               $${quotation.otherExpenses.documentation.toLocaleString()}
+   ├─ Insurance Coverage                               $${quotation.otherExpenses.insurance.toLocaleString()}
+   ├─ Loading Charges                                  $${quotation.otherExpenses.loading.toLocaleString()}
+   └─ Unloading Charges                                $${quotation.otherExpenses.unloading.toLocaleString()}`;
+
+      } else {
+        // CIF
+        pricingBreakdown = `
+1. EX-MINE PRICE (100% TRANSPARENT PRICING)           $${quotation.basePrice.toLocaleString()}
+   ├─ Mining & Extraction                             $${quotation.basePriceBreakdown.miningCost.toLocaleString()}
+   ├─ Refining & Separation                           $${quotation.basePriceBreakdown.extractionCost.toLocaleString()}
+   ├─ Processing & Grading                            $${quotation.basePriceBreakdown.processingCost.toLocaleString()}
+   ├─ Quality Testing & Assurance                     $${quotation.basePriceBreakdown.qualityTesting.toLocaleString()}
+   └─ VandhGlobal Profit Margin                       $0 (0%)
+
+   ⓘ We operate on 100% transparent pricing. Zero markup on ex-mine costs.
+
+2. CIF CHARGES (COST, INSURANCE & FREIGHT)            $${quotation.transportCost.toLocaleString()}
+
+   FOB Subtotal                                        $${quotation.cifCharges!.fobTotal.toLocaleString()}
+   ├─ Port Handling                                   $${quotation.cifCharges!.portHandling.toLocaleString()}
+   ├─ Customs Clearance                               $${quotation.cifCharges!.customsClearance.toLocaleString()}
+   ├─ Export Documentation                            $${quotation.cifCharges!.exportDocumentation.toLocaleString()}
+   ├─ Fumigation Certificate                          $${quotation.cifCharges!.fumigation.toLocaleString()}
+   ├─ Inland Transport                                $${quotation.cifCharges!.inlandTransport.toLocaleString()}
+   └─ Terminal Charges                                $${quotation.cifCharges!.terminalCharges.toLocaleString()}
+
+   Ocean Freight & Insurance
+   ├─ Ocean Freight                                   $${quotation.cifCharges!.oceanFreight.toLocaleString()}
+   ├─ Marine Insurance                                $${quotation.cifCharges!.marineInsurance.toLocaleString()}
+   └─ Destination Port Charges                        $${quotation.cifCharges!.destinationPortCharges.toLocaleString()}
+
+   Destination: ${quotation.cifCharges!.destinationPort}
+
+3. OTHER EXPENSES                                      $${quotation.otherCosts.toLocaleString()}
+   ├─ Handling Charges (VandhGlobal Revenue - 1.2%)   $${quotation.otherExpenses.handlingCharges.toLocaleString()}
+   ├─ Documentation Fees                               $${quotation.otherExpenses.documentation.toLocaleString()}
+   ├─ Insurance Coverage                               $${quotation.otherExpenses.insurance.toLocaleString()}
+   ├─ Loading Charges                                  $${quotation.otherExpenses.loading.toLocaleString()}
+   └─ Unloading Charges                                $${quotation.otherExpenses.unloading.toLocaleString()}`;
+      }
+    }
+
     const content = `
 ╔═══════════════════════════════════════════════════════════════╗
 ║                     VANDHGLOBAL QUOTATION                     ║
@@ -477,35 +603,12 @@ Mine Capacity   : ${quotation.mine.capacity || 'N/A'}
 Mineral         : ${mineral.name}
 Specification   : ${specification}
 Quantity        : ${quantity} ${mineral.unit}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  LOGISTICS DETAILS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Route           : ${quotation.route}
-Distance        : ${quotation.distance} km
-Transport Mode  : ${transportMode.toUpperCase()}
-Est. Delivery   : ${quotation.estimatedDays} days
+${logisticsSection}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   COMPREHENSIVE PRICING BREAKDOWN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. BASE PRICE
-   Mineral Cost                                    $${quotation.basePrice.toLocaleString()}
-
-2. TRANSPORT COSTS                                 $${quotation.transportCost.toLocaleString()}
-   ├─ Fuel Cost (${quotation.distance} km)                       $${quotation.transportBreakdown.fuelCost.toLocaleString()}
-   ├─ Driver/Operator Cost                         $${quotation.transportBreakdown.driverCost.toLocaleString()}${quotation.transportBreakdown.tollFees > 0 ? `
-   ├─ Toll Fees                                    $${quotation.transportBreakdown.tollFees.toLocaleString()}` : ''}
-   └─ Vehicle Rent                                 $${quotation.transportBreakdown.vehicleRent.toLocaleString()}
-
-3. OTHER EXPENSES                                  $${quotation.otherCosts.toLocaleString()}
-   ├─ Handling Charges                             $${quotation.otherExpenses.handlingCharges.toLocaleString()}
-   ├─ Documentation Fees                           $${quotation.otherExpenses.documentation.toLocaleString()}
-   ├─ Insurance                                    $${quotation.otherExpenses.insurance.toLocaleString()}
-   ├─ Packaging                                    $${quotation.otherExpenses.packaging.toLocaleString()}
-   ├─ Loading Charges                              $${quotation.otherExpenses.loading.toLocaleString()}
-   └─ Unloading Charges                            $${quotation.otherExpenses.unloading.toLocaleString()}
+${pricingBreakdown}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -518,6 +621,15 @@ Est. Delivery   : ${quotation.estimatedDays} days
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Email           : vandhglobal@gmail.com
 Website         : www.vandhglobal.com
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  TRANSPARENCY COMMITMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+At VandhGlobal, we believe in complete transparency:
+• Zero profit margin on ex-mine prices (100% transparent cost)
+• Our revenue comes only from handling charges (1.2%)
+• All costs are itemized and verifiable
+• No hidden fees or markups
 
 Terms & Conditions:
 • This quotation is valid for 30 days from the date of issue
@@ -587,6 +699,10 @@ Thank you for considering VandhGlobal for your commodity needs!
           transportMode,
           transportBreakdown: selectedQuotation.transportBreakdown,
           otherExpenses: selectedQuotation.otherExpenses,
+          basePriceBreakdown: selectedQuotation.basePriceBreakdown,
+          destinationType: selectedQuotation.destinationType,
+          fobCharges: selectedQuotation.fobCharges,
+          cifCharges: selectedQuotation.cifCharges,
         }),
       });
 
@@ -868,7 +984,11 @@ Thank you for considering VandhGlobal for your commodity needs!
             <h3 className="text-2xl md:text-4xl font-light text-center mb-8 text-gladia-white">
               Available Quotations ({quotations.length})
             </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className={`grid grid-cols-1 gap-6 ${
+              quotations.length === 3 ? 'md:grid-cols-3' :
+              quotations.length === 2 ? 'md:grid-cols-2 max-w-4xl mx-auto' :
+              'md:grid-cols-1 max-w-2xl mx-auto'
+            }`}>
               {quotations.map((quotation, idx) => (
                 <div
                   key={idx}
@@ -880,23 +1000,17 @@ Thank you for considering VandhGlobal for your commodity needs!
                   </div>
 
                   <div className="space-y-3 mb-6">
-                    {/* Base Price */}
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gladia-white/70">Base Price:</span>
-                      <span className="text-gladia-white font-medium">${quotation.basePrice.toLocaleString()}</span>
-                    </div>
-
-                    {/* Transport Cost - Expandable */}
+                    {/* Base Price - Expandable */}
                     <div className="border border-gladia-purple/20 rounded-lg overflow-hidden">
                       <button
-                        onClick={() => toggleBreakdown(idx, 'transport')}
+                        onClick={() => toggleBreakdown(idx, 'base')}
                         className="w-full flex justify-between items-center text-sm px-3 py-2 bg-gladia-darkest/30 hover:bg-gladia-darkest/50 transition-colors"
                       >
-                        <span className="text-gladia-white/70">Transport Cost:</span>
+                        <span className="text-gladia-white/70">Ex-Mine Price (100% transparent):</span>
                         <div className="flex items-center gap-2">
-                          <span className="text-gladia-white font-medium">${quotation.transportCost.toLocaleString()}</span>
+                          <span className="text-gladia-white font-medium">${quotation.basePrice.toLocaleString()}</span>
                           <svg
-                            className={`w-4 h-4 text-gladia-white/70 transition-transform ${expandedBreakdown[idx]?.transport ? 'rotate-180' : ''}`}
+                            className={`w-4 h-4 text-gladia-white/70 transition-transform ${expandedBreakdown[idx]?.base ? 'rotate-180' : ''}`}
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -905,29 +1019,179 @@ Thank you for considering VandhGlobal for your commodity needs!
                           </svg>
                         </div>
                       </button>
-                      {expandedBreakdown[idx]?.transport && (
+                      {expandedBreakdown[idx]?.base && (
                         <div className="px-3 py-2 space-y-1.5 text-xs bg-gladia-darkest/20">
                           <div className="flex justify-between">
-                            <span className="text-gladia-white/60">• Fuel Cost ({quotation.distance} km):</span>
-                            <span className="text-gladia-white/90">${quotation.transportBreakdown.fuelCost.toLocaleString()}</span>
+                            <span className="text-gladia-white/60">• Mining & Extraction:</span>
+                            <span className="text-gladia-white/90">${quotation.basePriceBreakdown.miningCost.toLocaleString()}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-gladia-white/60">• Driver/Operator Cost:</span>
-                            <span className="text-gladia-white/90">${quotation.transportBreakdown.driverCost.toLocaleString()}</span>
+                            <span className="text-gladia-white/60">• Refining & Separation:</span>
+                            <span className="text-gladia-white/90">${quotation.basePriceBreakdown.extractionCost.toLocaleString()}</span>
                           </div>
-                          {quotation.transportBreakdown.tollFees > 0 && (
-                            <div className="flex justify-between">
-                              <span className="text-gladia-white/60">• Toll Fees:</span>
-                              <span className="text-gladia-white/90">${quotation.transportBreakdown.tollFees.toLocaleString()}</span>
-                            </div>
-                          )}
                           <div className="flex justify-between">
-                            <span className="text-gladia-white/60">• Vehicle Rent:</span>
-                            <span className="text-gladia-white/90">${quotation.transportBreakdown.vehicleRent.toLocaleString()}</span>
+                            <span className="text-gladia-white/60">• Processing & Grading:</span>
+                            <span className="text-gladia-white/90">${quotation.basePriceBreakdown.processingCost.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gladia-white/60">• Quality Testing & Certification:</span>
+                            <span className="text-gladia-white/90">${quotation.basePriceBreakdown.qualityTesting.toLocaleString()}</span>
+                          </div>
+                          <div className="flex justify-between border-t border-gladia-purple/20 pt-1.5 mt-1.5">
+                            <span className="text-gladia-lightBlue/80 font-medium">VandhGlobal Margin:</span>
+                            <span className="text-gladia-lightBlue/90 font-medium">$0 (0%)</span>
                           </div>
                         </div>
                       )}
                     </div>
+
+                    {/* Transport Cost - Expandable */}
+                    {quotation.destinationType === 'india' && (
+                      <div className="border border-gladia-purple/20 rounded-lg overflow-hidden">
+                        <button
+                          onClick={() => toggleBreakdown(idx, 'transport')}
+                          className="w-full flex justify-between items-center text-sm px-3 py-2 bg-gladia-darkest/30 hover:bg-gladia-darkest/50 transition-colors"
+                        >
+                          <span className="text-gladia-white/70">Transport Cost:</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-gladia-white font-medium">${quotation.transportCost.toLocaleString()}</span>
+                            <svg
+                              className={`w-4 h-4 text-gladia-white/70 transition-transform ${expandedBreakdown[idx]?.transport ? 'rotate-180' : ''}`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                        </button>
+                        {expandedBreakdown[idx]?.transport && (
+                          <div className="px-3 py-2 space-y-1.5 text-xs bg-gladia-darkest/20">
+                            <div className="flex justify-between font-medium text-gladia-lightBlue/90 border-b border-gladia-purple/20 pb-1.5 mb-1.5">
+                              <span>{quotation.transportBreakdown.numTrucks} {transportMode === 'truck' ? 'Trucks' : 'Wagons'} × {quotation.transportBreakdown.truckCapacity} tons each</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Fuel (${quotation.transportBreakdown.fuelCostPerTruck.toLocaleString()}/vehicle × {quotation.transportBreakdown.numTrucks}):</span>
+                              <span className="text-gladia-white/90">${quotation.transportBreakdown.fuelCost.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Driver (${quotation.transportBreakdown.driverCostPerTruck.toLocaleString()}/vehicle × {quotation.transportBreakdown.numTrucks}):</span>
+                              <span className="text-gladia-white/90">${quotation.transportBreakdown.driverCost.toLocaleString()}</span>
+                            </div>
+                            {quotation.transportBreakdown.tollFees > 0 && (
+                              <div className="flex justify-between">
+                                <span className="text-gladia-white/60">• Tolls (${quotation.transportBreakdown.tollFeesPerTruck.toLocaleString()}/vehicle × {quotation.transportBreakdown.numTrucks}):</span>
+                                <span className="text-gladia-white/90">${quotation.transportBreakdown.tollFees.toLocaleString()}</span>
+                              </div>
+                            )}
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Vehicle Rent (${quotation.transportBreakdown.vehicleRentPerTruck.toLocaleString()}/vehicle × {quotation.transportBreakdown.numTrucks}):</span>
+                              <span className="text-gladia-white/90">${quotation.transportBreakdown.vehicleRent.toLocaleString()}</span>
+                            </div>
+                            <div className="text-xs text-gladia-white/50 mt-2 pt-2 border-t border-gladia-purple/10">
+                              Distance: {quotation.distance} km
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* FOB Charges - Expandable (if FOB or CIF) */}
+                    {(quotation.destinationType === 'fob' || quotation.destinationType === 'cif') && quotation.fobCharges && (
+                      <div className="border border-gladia-purple/20 rounded-lg overflow-hidden">
+                        <button
+                          onClick={() => toggleBreakdown(idx, 'fob')}
+                          className="w-full flex justify-between items-center text-sm px-3 py-2 bg-gladia-darkest/30 hover:bg-gladia-darkest/50 transition-colors"
+                        >
+                          <span className="text-gladia-white/70">FOB Charges:</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-gladia-white font-medium">${quotation.fobCharges.totalFOB.toLocaleString()}</span>
+                            <svg
+                              className={`w-4 h-4 text-gladia-white/70 transition-transform ${expandedBreakdown[idx]?.fob ? 'rotate-180' : ''}`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                        </button>
+                        {expandedBreakdown[idx]?.fob && (
+                          <div className="px-3 py-2 space-y-1.5 text-xs bg-gladia-darkest/20">
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Port Handling:</span>
+                              <span className="text-gladia-white/90">${quotation.fobCharges.portHandling.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Customs Clearance:</span>
+                              <span className="text-gladia-white/90">${quotation.fobCharges.customsClearance.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Export Documentation:</span>
+                              <span className="text-gladia-white/90">${quotation.fobCharges.exportDocumentation.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Fumigation Certificate:</span>
+                              <span className="text-gladia-white/90">${quotation.fobCharges.fumigation.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Mine to Port Transport:</span>
+                              <span className="text-gladia-white/90">${quotation.fobCharges.portToPortTransport.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Terminal Charges:</span>
+                              <span className="text-gladia-white/90">${quotation.fobCharges.terminalCharges.toLocaleString()}</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* CIF Charges - Expandable (if CIF) */}
+                    {quotation.destinationType === 'cif' && quotation.cifCharges && (
+                      <div className="border border-gladia-purple/20 rounded-lg overflow-hidden">
+                        <button
+                          onClick={() => toggleBreakdown(idx, 'cif')}
+                          className="w-full flex justify-between items-center text-sm px-3 py-2 bg-gladia-darkest/30 hover:bg-gladia-darkest/50 transition-colors"
+                        >
+                          <span className="text-gladia-white/70">CIF Charges (International):</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-gladia-white font-medium">${quotation.cifCharges.totalCIF.toLocaleString()}</span>
+                            <svg
+                              className={`w-4 h-4 text-gladia-white/70 transition-transform ${expandedBreakdown[idx]?.cif ? 'rotate-180' : ''}`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </div>
+                        </button>
+                        {expandedBreakdown[idx]?.cif && (
+                          <div className="px-3 py-2 space-y-1.5 text-xs bg-gladia-darkest/20">
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• FOB Total:</span>
+                              <span className="text-gladia-white/90">${quotation.cifCharges.fobTotal.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Ocean Freight:</span>
+                              <span className="text-gladia-white/90">${quotation.cifCharges.oceanFreight.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Marine Insurance:</span>
+                              <span className="text-gladia-white/90">${quotation.cifCharges.marinInsurance.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gladia-white/60">• Destination Port Charges:</span>
+                              <span className="text-gladia-white/90">${quotation.cifCharges.destinationPortCharges.toLocaleString()}</span>
+                            </div>
+                            <div className="text-xs text-gladia-white/50 mt-2 pt-2 border-t border-gladia-purple/10">
+                              To: {quotation.cifCharges.destinationPort}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     {/* Other Expenses - Expandable */}
                     <div className="border border-gladia-purple/20 rounded-lg overflow-hidden">
@@ -950,9 +1214,9 @@ Thank you for considering VandhGlobal for your commodity needs!
                       </button>
                       {expandedBreakdown[idx]?.other && (
                         <div className="px-3 py-2 space-y-1.5 text-xs bg-gladia-darkest/20">
-                          <div className="flex justify-between">
-                            <span className="text-gladia-white/60">• Handling Charges:</span>
-                            <span className="text-gladia-white/90">${quotation.otherExpenses.handlingCharges.toLocaleString()}</span>
+                          <div className="flex justify-between border-b border-gladia-purple/20 pb-1.5 mb-1.5">
+                            <span className="text-gladia-lightBlue/80 font-medium">• Handling (VandhGlobal Revenue):</span>
+                            <span className="text-gladia-lightBlue/90 font-medium">${quotation.otherExpenses.handlingCharges.toLocaleString()}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gladia-white/60">• Documentation:</span>
@@ -961,10 +1225,6 @@ Thank you for considering VandhGlobal for your commodity needs!
                           <div className="flex justify-between">
                             <span className="text-gladia-white/60">• Insurance:</span>
                             <span className="text-gladia-white/90">${quotation.otherExpenses.insurance.toLocaleString()}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-gladia-white/60">• Packaging:</span>
-                            <span className="text-gladia-white/90">${quotation.otherExpenses.packaging.toLocaleString()}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gladia-white/60">• Loading:</span>
@@ -979,9 +1239,9 @@ Thank you for considering VandhGlobal for your commodity needs!
                     </div>
 
                     {/* Total */}
-                    <div className="border-t border-gladia-purple/30 pt-3">
+                    <div className="border-t-2 border-gladia-purple/40 pt-3">
                       <div className="flex justify-between">
-                        <span className="text-gladia-white font-normal">Total:</span>
+                        <span className="text-gladia-white font-normal">Total Price:</span>
                         <span className="text-2xl font-normal text-gladia-lightBlue">${quotation.totalPrice.toLocaleString()}</span>
                       </div>
                     </div>
@@ -1008,6 +1268,105 @@ Thank you for considering VandhGlobal for your commodity needs!
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* End-to-End Trade Process Documentation */}
+            <div className="mt-12 max-w-5xl mx-auto">
+              <div className="bg-gladia-darkest/40 border border-gladia-purple/20 rounded-lg p-6">
+                <h3 className="text-xl font-normal text-gladia-white mb-4 flex items-center gap-2">
+                  <svg className="w-6 h-6 text-gladia-lightBlue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Complete Trade Process - From Inquiry to Delivery
+                </h3>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Left Column */}
+                  <div className="space-y-4">
+                    <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
+                      <h4 className="text-gladia-lightBlue font-medium mb-1">Step 1: Letter of Interest (LOI)</h4>
+                      <p className="text-sm text-gladia-white/70">Click "Interested" button to submit your inquiry. We'll review your requirements and respond within 24 hours with a formal LOI template.</p>
+                    </div>
+
+                    <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
+                      <h4 className="text-gladia-lightBlue font-medium mb-1">Step 2: Commercial Discussion</h4>
+                      <p className="text-sm text-gladia-white/70">Our team will discuss pricing, delivery terms, payment structure, and any specific requirements. All costs remain transparent as shown in quotation.</p>
+                    </div>
+
+                    <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
+                      <h4 className="text-gladia-lightBlue font-medium mb-1">Step 3: Sample & Testing (Optional)</h4>
+                      <p className="text-sm text-gladia-white/70">We can provide samples for quality verification. Third-party testing at SGS or similar labs can be arranged at buyer's request.</p>
+                    </div>
+
+                    <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
+                      <h4 className="text-gladia-lightBlue font-medium mb-1">Step 4: Purchase Order (PO)</h4>
+                      <p className="text-sm text-gladia-white/70">Once terms are agreed, you'll issue a PO with specifications, quantity, delivery schedule, and payment terms. We confirm acceptance within 48 hours.</p>
+                    </div>
+                  </div>
+
+                  {/* Right Column */}
+                  <div className="space-y-4">
+                    <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
+                      <h4 className="text-gladia-lightBlue font-medium mb-1">Step 5: Advance Payment & Documentation</h4>
+                      <p className="text-sm text-gladia-white/70">50% advance payment via wire transfer. We provide proforma invoice, tax invoice, and begin procurement from our verified mine sources.</p>
+                    </div>
+
+                    <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
+                      <h4 className="text-gladia-lightBlue font-medium mb-1">Step 6: Quality Assurance & Packaging</h4>
+                      <p className="text-sm text-gladia-white/70">Material undergoes final quality checks as per agreed specifications. Proper packaging for transit protection (bulk commodities shipped as-is in containers/trucks).</p>
+                    </div>
+
+                    <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
+                      <h4 className="text-gladia-lightBlue font-medium mb-1">Step 7: Dispatch & Tracking</h4>
+                      <p className="text-sm text-gladia-white/70">Material dispatched via agreed transport mode. Real-time tracking details shared. For exports: complete customs documentation, fumigation certificates, and shipping bills provided.</p>
+                    </div>
+
+                    <div className="border-l-2 border-gladia-lightBlue/50 pl-4">
+                      <h4 className="text-gladia-lightBlue font-medium mb-1">Step 8: Delivery & Final Payment</h4>
+                      <p className="text-sm text-gladia-white/70">Delivery at your location as per timeline. Final inspection and handover. Remaining 50% payment due upon delivery. All documentation (delivery challan, test certificates) provided.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Key Documents Section */}
+                <div className="mt-6 pt-6 border-t border-gladia-purple/20">
+                  <h4 className="text-gladia-white font-medium mb-3">Key Documents Provided:</h4>
+                  <div className="grid md:grid-cols-3 gap-3 text-sm">
+                    <div className="bg-gladia-darkest/60 border border-gladia-purple/10 rounded px-3 py-2">
+                      <span className="text-gladia-lightBlue">✓</span> Proforma Invoice
+                    </div>
+                    <div className="bg-gladia-darkest/60 border border-gladia-purple/10 rounded px-3 py-2">
+                      <span className="text-gladia-lightBlue">✓</span> Tax Invoice (GST)
+                    </div>
+                    <div className="bg-gladia-darkest/60 border border-gladia-purple/10 rounded px-3 py-2">
+                      <span className="text-gladia-lightBlue">✓</span> Quality Test Certificates
+                    </div>
+                    <div className="bg-gladia-darkest/60 border border-gladia-purple/10 rounded px-3 py-2">
+                      <span className="text-gladia-lightBlue">✓</span> Delivery Challan
+                    </div>
+                    <div className="bg-gladia-darkest/60 border border-gladia-purple/10 rounded px-3 py-2">
+                      <span className="text-gladia-lightBlue">✓</span> Transport Documents
+                    </div>
+                    <div className="bg-gladia-darkest/60 border border-gladia-purple/10 rounded px-3 py-2">
+                      <span className="text-gladia-lightBlue">✓</span> Export Docs (if applicable)
+                    </div>
+                  </div>
+                </div>
+
+                {/* Timeline Notice */}
+                <div className="mt-6 bg-gladia-purple/10 border border-gladia-purple/30 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-gladia-lightBlue mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                      <p className="text-sm text-gladia-white/90">
+                        <strong className="text-gladia-lightBlue">Typical Timeline:</strong> From LOI to delivery typically takes 15-30 days depending on quantity, location, and customs clearance (for exports). Rush orders can be accommodated with additional coordination.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

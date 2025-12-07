@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { partnerMines } from '@/data/commodityPrices';
-import { indianStates, getAreasForCity } from '@/data/indianLocations';
+import { indianStates, getAreasForCity, getDistrictsForState, getCitiesForDistrict } from '@/data/indianLocations';
 
 interface QuoteGeneratorProps {
   mineral: any;
@@ -16,13 +16,33 @@ interface Quotation {
   otherCosts: number;
   route: string;
   estimatedDays: number;
-  // Detailed breakdown
+  distance: number;
+  destinationType: 'india' | 'fob' | 'cif';
+
+  // Base Price Breakdown
+  basePriceBreakdown: {
+    miningCost: number;
+    extractionCost: number;
+    processingCost: number;
+    qualityTesting: number;
+    profitMargin: number;
+  };
+
+  // Transport Breakdown (for India-to-India)
   transportBreakdown: {
+    numTrucks: number;
+    truckCapacity: number; // in tons
+    fuelCostPerTruck: number;
     fuelCost: number;
+    driverCostPerTruck: number;
     driverCost: number;
+    tollFeesPerTruck: number;
     tollFees: number;
+    vehicleRentPerTruck: number;
     vehicleRent: number;
   };
+
+  // Other Expenses
   otherExpenses: {
     handlingCharges: number;
     documentation: number;
@@ -31,13 +51,33 @@ interface Quotation {
     loading: number;
     unloading: number;
   };
-  distance: number;
+
+  // FOB-specific charges
+  fobCharges?: {
+    portHandling: number;
+    customsClearance: number;
+    exportDocumentation: number;
+    fumigation: number;
+    portToPortTransport: number;
+    terminalCharges: number;
+    totalFOB: number;
+  };
+
+  // CIF-specific charges (includes FOB + Ocean Freight + Insurance)
+  cifCharges?: {
+    fobTotal: number;
+    oceanFreight: number;
+    marinInsurance: number;
+    destinationPortCharges: number;
+    totalCIF: number;
+    destinationPort: string;
+  };
 }
 
 export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   const [specification, setSpecification] = useState('');
   const [quantity, setQuantity] = useState('');
-  const [destinationType, setDestinationType] = useState<'india' | 'fob'>('india');
+  const [destinationType, setDestinationType] = useState<'india' | 'fob' | 'cif'>('india');
   const [destination, setDestination] = useState('');
   const [transportMode, setTransportMode] = useState<'truck' | 'rail'>('truck');
   const [quotations, setQuotations] = useState<Quotation[]>([]);
@@ -56,28 +96,63 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
 
   // Location selection for India
   const [selectedState, setSelectedState] = useState('');
+  const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedArea, setSelectedArea] = useState('');
+  const [availableDistricts, setAvailableDistricts] = useState<any[]>([]);
   const [availableCities, setAvailableCities] = useState<string[]>([]);
   const [availableAreas, setAvailableAreas] = useState<string[]>([]);
 
-  const ports = [
+  // Port selection for FOB/CIF
+  const [selectedPort, setSelectedPort] = useState('');
+  const [destinationPort, setDestinationPort] = useState(''); // For CIF
+
+  const indianPorts = [
     "Mundra Port, Gujarat",
     "JNPT (Nhava Sheva), Maharashtra",
     "Paradip Port, Odisha",
     "Visakhapatnam Port, Andhra Pradesh",
     "Chennai Port, Tamil Nadu",
+    "Kolkata Port, West Bengal",
+    "Tuticorin Port, Tamil Nadu",
+    "Cochin Port, Kerala"
+  ];
+
+  const internationalPorts = [
+    "Port of Shanghai, China",
+    "Port of Singapore",
+    "Port of Rotterdam, Netherlands",
+    "Port of Hamburg, Germany",
+    "Port of Dubai, UAE",
+    "Port of Jebel Ali, UAE",
+    "Port of New York, USA",
+    "Port of Los Angeles, USA",
+    "Port of Felixstowe, UK",
+    "Port of Antwerp, Belgium"
   ];
 
   // Handle state selection
   const handleStateChange = (state: string) => {
     setSelectedState(state);
+    setSelectedDistrict('');
     setSelectedCity('');
     setSelectedArea('');
-    const stateData = indianStates.find(s => s.name === state);
-    setAvailableCities(stateData?.cities || []);
+    const districts = getDistrictsForState(state);
+    setAvailableDistricts(districts);
+    setAvailableCities([]);
     setAvailableAreas([]);
-    updateDestination(state, '', '');
+    updateDestination(state, '', '', '');
+  };
+
+  // Handle district selection
+  const handleDistrictChange = (district: string) => {
+    setSelectedDistrict(district);
+    setSelectedCity('');
+    setSelectedArea('');
+    const cities = getCitiesForDistrict(selectedState, district);
+    setAvailableCities(cities);
+    setAvailableAreas([]);
+    updateDestination(selectedState, district, '', '');
   };
 
   // Handle city selection
@@ -86,18 +161,18 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
     setSelectedArea('');
     const areas = getAreasForCity(city);
     setAvailableAreas(areas);
-    updateDestination(selectedState, city, '');
+    updateDestination(selectedState, selectedDistrict, city, '');
   };
 
   // Handle area selection
   const handleAreaChange = (area: string) => {
     setSelectedArea(area);
-    updateDestination(selectedState, selectedCity, area);
+    updateDestination(selectedState, selectedDistrict, selectedCity, area);
   };
 
   // Update destination string
-  const updateDestination = (state: string, city: string, area: string) => {
-    const parts = [area, city, state].filter(Boolean);
+  const updateDestination = (state: string, district: string, city: string, area: string) => {
+    const parts = [area, city, district, state].filter(Boolean);
     setDestination(parts.join(', '));
   };
 
@@ -113,8 +188,24 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
   };
 
   const generateQuotations = () => {
-    if (!specification || !quantity || !destination) {
+    // Validation
+    if (!specification || !quantity) {
       alert('Please fill all required fields');
+      return;
+    }
+
+    if (destinationType === 'india' && !destination) {
+      alert('Please select destination location');
+      return;
+    }
+
+    if ((destinationType === 'fob' || destinationType === 'cif') && !selectedPort) {
+      alert('Please select a port');
+      return;
+    }
+
+    if (destinationType === 'cif' && !destinationPort) {
+      alert('Please select destination port for CIF');
       return;
     }
 
@@ -128,43 +219,206 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
 
     const generatedQuotations: Quotation[] = selectedMines.map((mine) => {
       const qty = parseFloat(quantity);
-      const basePrice = mineral.price * qty;
-      const distance = Math.floor(Math.random() * 1500) + 500; // Random distance 500-2000 km
+      const distance = Math.floor(Math.random() * 1500) + 500; // 500-2000 km
 
-      // Detailed Transport Cost Breakdown
-      const fuelCostPerKm = transportMode === 'truck' ? 0.45 : 0.30;
-      const fuelCost = distance * fuelCostPerKm * qty;
+      // ===== BASE PRICE BREAKDOWN =====
+      // Research shows 5-7% profit margin for low-cost trading
+      const miningCost = mineral.price * qty * 0.40; // 40% mining & extraction from ground
+      const extractionCost = mineral.price * qty * 0.25; // 25% refining & separation
+      const processingCost = mineral.price * qty * 0.20; // 20% processing & grading
+      const qualityTesting = mineral.price * qty * 0.10; // 10% quality assurance & testing
+      const profitMargin = mineral.price * qty * 0.05; // 5% profit (low margin)
 
-      const driverCost = transportMode === 'truck'
-        ? Math.ceil(distance / 400) * 2000  // ₹2000 per day for truck driver
-        : Math.ceil(distance / 300) * 1500; // ₹1500 per day for rail operator
+      const basePrice = miningCost + extractionCost + processingCost + qualityTesting + profitMargin;
 
-      const tollFees = transportMode === 'truck'
-        ? Math.floor(distance / 100) * 300  // ₹300 per 100km toll
-        : 0; // No tolls for rail
+      // ===== TRANSPORT CALCULATIONS (India-to-India or India-to-Port) =====
+      let transportCost = 0;
+      let transportBreakdown: any = {
+        numTrucks: 0,
+        truckCapacity: 0,
+        fuelCostPerTruck: 0,
+        fuelCost: 0,
+        driverCostPerTruck: 0,
+        driverCost: 0,
+        tollFeesPerTruck: 0,
+        tollFees: 0,
+        vehicleRentPerTruck: 0,
+        vehicleRent: 0
+      };
 
-      const vehicleRent = transportMode === 'truck'
-        ? Math.ceil(distance / 400) * 5000  // ₹5000 per day truck rent
-        : Math.ceil(distance / 300) * 8000; // ₹8000 per day rail wagon rent
+      if (destinationType === 'india' || destinationType === 'fob' || destinationType === 'cif') {
+        if (transportMode === 'truck') {
+          // Standard bulk mineral truck capacity: 25 tons (based on research)
+          const truckCapacity = 25; // tons
+          const numTrucks = Math.ceil(qty / truckCapacity);
 
-      const transportCost = fuelCost + driverCost + tollFees + vehicleRent;
+          // Per-truck costs based on research: ₹35/km average for bulk cargo
+          const fuelCostPerTruck = distance * 15; // ₹15/km fuel per truck (researched rates)
+          const driverCostPerTruck = Math.ceil(distance / 400) * 2200; // ₹2200/day, 400km/day
+          const tollFeesPerTruck = Math.floor(distance / 100) * 300; // ₹300 per 100km
+          const vehicleRentPerTruck = Math.ceil(distance / 400) * 5500; // ₹5500/day truck rent
 
-      // Detailed Other Expenses Breakdown
-      const handlingCharges = basePrice * 0.015; // 1.5% of base price
-      const documentation = 1500; // Fixed documentation cost
-      const insurance = basePrice * 0.01; // 1% insurance
-      const packaging = qty * 50; // ₹50 per unit packaging
-      const loading = qty * 30; // ₹30 per unit loading
-      const unloading = qty * 30; // ₹30 per unit unloading
+          // Total costs
+          const fuelCost = fuelCostPerTruck * numTrucks;
+          const driverCost = driverCostPerTruck * numTrucks;
+          const tollFees = tollFeesPerTruck * numTrucks;
+          const vehicleRent = vehicleRentPerTruck * numTrucks;
+
+          transportCost = fuelCost + driverCost + tollFees + vehicleRent;
+
+          transportBreakdown = {
+            numTrucks,
+            truckCapacity,
+            fuelCostPerTruck,
+            fuelCost,
+            driverCostPerTruck,
+            driverCost,
+            tollFeesPerTruck,
+            tollFees,
+            vehicleRentPerTruck,
+            vehicleRent
+          };
+        } else {
+          // Rail transport (cheaper per ton-km)
+          const wagonsNeeded = Math.ceil(qty / 40); // 40 tons per wagon
+          const fuelCost = distance * 0.25 * qty; // ₹0.25 per ton-km for rail
+          const operatorCost = Math.ceil(distance / 300) * 1800 * wagonsNeeded; // ₹1800/day per wagon
+          const vehicleRent = Math.ceil(distance / 300) * 8000 * wagonsNeeded; // ₹8000/day wagon rent
+
+          transportCost = fuelCost + operatorCost + vehicleRent;
+
+          transportBreakdown = {
+            numTrucks: wagonsNeeded,
+            truckCapacity: 40,
+            fuelCostPerTruck: distance * 0.25 * 40,
+            fuelCost,
+            driverCostPerTruck: Math.ceil(distance / 300) * 1800,
+            driverCost: operatorCost,
+            tollFeesPerTruck: 0,
+            tollFees: 0,
+            vehicleRentPerTruck: Math.ceil(distance / 300) * 8000,
+            vehicleRent
+          };
+        }
+      }
+
+      // ===== OTHER EXPENSES =====
+      const handlingCharges = basePrice * 0.012; // 1.2% of base price (competitive rate)
+      const documentation = 1200; // Fixed documentation cost (competitive)
+      const insurance = basePrice * 0.008; // 0.8% insurance (low margin)
+      const packaging = qty * 45; // ₹45 per unit packaging
+      const loading = qty * 25; // ₹25 per unit loading
+      const unloading = qty * 25; // ₹25 per unit unloading
 
       const otherCosts = handlingCharges + documentation + insurance + packaging + loading + unloading;
 
-      const totalPrice = basePrice + transportCost + otherCosts;
-      const estimatedDays = transportMode === 'truck'
-        ? Math.ceil(distance / 400)
-        : Math.ceil(distance / 300);
+      // ===== FOB CHARGES (if FOB or CIF) =====
+      let fobCharges = undefined;
+      if (destinationType === 'fob' || destinationType === 'cif') {
+        // Distance from mine to port
+        const portDistance = Math.floor(Math.random() * 800) + 300; // 300-1100 km to port
 
-      const route = `${mine.location}, ${mine.state} → ${destination}`;
+        const portHandling = qty * 80; // ₹80 per ton port handling
+        const customsClearance = basePrice * 0.01 + 2500; // 1% + fixed fee
+        const exportDocumentation = 3500; // Fixed export doc cost
+
+        // Fumigation based on quantity (researched rates)
+        const fumigation = qty < 50 ? 3000 : qty < 200 ? 4500 : 6000;
+
+        const portToPortTransport = portDistance * (transportMode === 'truck' ? 35 : 25); // Per km rate
+        const terminalCharges = 4500; // Port terminal charges
+
+        const totalFOB = portHandling + customsClearance + exportDocumentation + fumigation +
+                         portToPortTransport + terminalCharges;
+
+        fobCharges = {
+          portHandling,
+          customsClearance,
+          exportDocumentation,
+          fumigation,
+          portToPortTransport,
+          terminalCharges,
+          totalFOB
+        };
+      }
+
+      // ===== CIF CHARGES (if CIF) =====
+      let cifCharges = undefined;
+      if (destinationType === 'cif' && fobCharges) {
+        // Ocean freight based on destination (researched 2024 rates)
+        let oceanFreight = 50000; // Base ocean freight in rupees
+
+        // Adjust based on destination port
+        if (destinationPort.includes('China') || destinationPort.includes('Singapore')) {
+          oceanFreight = 55000; // Closer Asian ports
+        } else if (destinationPort.includes('Dubai') || destinationPort.includes('UAE')) {
+          oceanFreight = 75000; // Middle East
+        } else if (destinationPort.includes('Europe') || destinationPort.includes('UK')) {
+          oceanFreight = 125000; // Europe
+        } else if (destinationPort.includes('USA')) {
+          oceanFreight = 145000; // USA
+        }
+
+        // Scale by quantity (per TEU equivalent)
+        const teuEquivalent = Math.ceil(qty / 20); // ~20 tons per TEU for minerals
+        oceanFreight = oceanFreight * teuEquivalent;
+
+        const marinInsurance = (basePrice + fobCharges.totalFOB) * 0.015; // 1.5% marine insurance
+        const destinationPortCharges = qty * 120; // ₹120 per ton destination charges
+
+        const totalCIF = fobCharges.totalFOB + oceanFreight + marinInsurance + destinationPortCharges;
+
+        cifCharges = {
+          fobTotal: fobCharges.totalFOB,
+          oceanFreight,
+          marinInsurance,
+          destinationPortCharges,
+          totalCIF,
+          destinationPort
+        };
+      }
+
+      // ===== TOTAL PRICE CALCULATION =====
+      let totalPrice = basePrice + otherCosts;
+
+      if (destinationType === 'india') {
+        totalPrice += transportCost;
+      } else if (destinationType === 'fob' && fobCharges) {
+        totalPrice += transportCost + fobCharges.totalFOB;
+      } else if (destinationType === 'cif' && cifCharges) {
+        totalPrice += transportCost + cifCharges.totalCIF;
+      }
+
+      // ===== DELIVERY TIME =====
+      const estimatedDays = (() => {
+        if (destinationType === 'india') {
+          return transportMode === 'truck' ? Math.ceil(distance / 400) : Math.ceil(distance / 300);
+        } else if (destinationType === 'fob') {
+          return transportMode === 'truck' ? Math.ceil(distance / 400) + 2 : Math.ceil(distance / 300) + 2;
+        } else {
+          // CIF includes ocean transit
+          const landDays = transportMode === 'truck' ? Math.ceil(distance / 400) : Math.ceil(distance / 300);
+          let oceanDays = 15; // Base ocean days
+          if (destinationPort.includes('China') || destinationPort.includes('Singapore')) {
+            oceanDays = 12;
+          } else if (destinationPort.includes('Europe') || destinationPort.includes('UK')) {
+            oceanDays = 25;
+          } else if (destinationPort.includes('USA')) {
+            oceanDays = 30;
+          }
+          return landDays + oceanDays + 3; // +3 for customs/port handling
+        }
+      })();
+
+      // ===== ROUTE =====
+      let route = '';
+      if (destinationType === 'india') {
+        route = `${mine.location}, ${mine.state} → ${destination}`;
+      } else if (destinationType === 'fob') {
+        route = `${mine.location}, ${mine.state} → ${selectedPort} (FOB)`;
+      } else {
+        route = `${mine.location}, ${mine.state} → ${selectedPort} → ${destinationPort} (CIF)`;
+      }
 
       return {
         mine,
@@ -174,21 +428,26 @@ export default function QuoteGenerator({ mineral }: QuoteGeneratorProps) {
         otherCosts,
         route,
         estimatedDays,
-        transportBreakdown: {
-          fuelCost,
-          driverCost,
-          tollFees,
-          vehicleRent,
+        distance,
+        destinationType,
+        basePriceBreakdown: {
+          miningCost,
+          extractionCost,
+          processingCost,
+          qualityTesting,
+          profitMargin
         },
+        transportBreakdown,
         otherExpenses: {
           handlingCharges,
           documentation,
           insurance,
           packaging,
           loading,
-          unloading,
+          unloading
         },
-        distance,
+        fobCharges,
+        cifCharges
       };
     });
 

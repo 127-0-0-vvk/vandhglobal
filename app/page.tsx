@@ -34,10 +34,10 @@ export default function Home() {
       </div>
 
       {/* Minerals Grid - Mobile First */}
-      <div className="px-4 sm:px-6 lg:px-8 pb-16">
+      <div className="px-2 sm:px-4 lg:px-8 pb-16">
         <div className="max-w-7xl mx-auto">
-          {/* Grid: 2 columns on mobile, 3 on tablet, 4 on desktop */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+          {/* Grid: 4 columns on mobile, 4 on tablet, 6 on desktop */}
+          <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
             {mineralPrices.map((mineral) => {
               const slug = mineral.name.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '');
               const symbol = mineralSymbols[mineral.name] || "?";
@@ -48,7 +48,7 @@ export default function Home() {
                   href={`/minerals/${slug}`}
                   className="group"
                 >
-                  <div className="bg-gladia-darkest/60 backdrop-blur-sm border border-gladia-purple/20 rounded-lg overflow-hidden hover:border-gladia-lightBlue/50 hover:shadow-lg hover:shadow-gladia-purple/20 transition-all duration-300 h-full">
+                  <div className="bg-gladia-darkest/60 backdrop-blur-sm border border-gladia-purple/20 rounded-md sm:rounded-lg overflow-hidden hover:border-gladia-lightBlue/50 hover:shadow-lg hover:shadow-gladia-purple/20 transition-all duration-300 h-full">
                     {/* Image Section */}
                     <div className="relative w-full aspect-square overflow-hidden bg-gladia-darkBlue/30">
                       <Image
@@ -56,38 +56,38 @@ export default function Home() {
                         alt={mineral.name}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-300"
-                        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                        sizes="(max-width: 640px) 25vw, (max-width: 768px) 25vw, (max-width: 1024px) 20vw, 16vw"
                       />
                       {/* Gradient overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-gladia-darkest via-transparent to-transparent opacity-60"></div>
                     </div>
 
                     {/* Content Section - Periodic Table Style */}
-                    <div className="p-3 sm:p-4">
+                    <div className="p-1.5 sm:p-2 md:p-3">
                       {/* Chemical Symbol - Large and prominent */}
-                      <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-2 bg-gradient-to-br from-gladia-lightBlue to-gladia-purple bg-clip-text text-transparent">
+                      <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-1 bg-gradient-to-br from-gladia-lightBlue to-gladia-purple bg-clip-text text-transparent">
                         {symbol}
                       </div>
 
                       {/* Mineral Name */}
-                      <h3 className="text-xs sm:text-sm md:text-base font-medium text-gladia-white text-center mb-2 line-clamp-2 uppercase tracking-wide">
+                      <h3 className="text-[9px] sm:text-[10px] md:text-xs font-medium text-gladia-white text-center mb-1 line-clamp-2 uppercase tracking-wide leading-tight">
                         {mineral.name}
                       </h3>
 
                       {/* Price */}
                       <div className="text-center">
-                        <div className="text-lg sm:text-xl md:text-2xl font-semibold text-gladia-lightBlue">
+                        <div className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-gladia-lightBlue">
                           ${mineral.price}
                         </div>
-                        <div className="text-xs text-gladia-white/40">
-                          per {mineral.unit.split('/')[1] || 'MT'}
+                        <div className="text-[8px] sm:text-[9px] md:text-[10px] text-gladia-white/40">
+                          /{mineral.unit.split('/')[1] || 'MT'}
                         </div>
                       </div>
 
-                      {/* Hover indicator */}
-                      <div className="mt-3 text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <span className="text-xs text-gladia-purple">
-                          View Details →
+                      {/* Hover indicator - hidden on very small screens */}
+                      <div className="mt-1 sm:mt-2 text-center opacity-0 group-hover:opacity-100 transition-opacity hidden sm:block">
+                        <span className="text-[9px] md:text-xs text-gladia-purple">
+                          View →
                         </span>
                       </div>
                     </div>

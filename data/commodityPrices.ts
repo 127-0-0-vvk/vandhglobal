@@ -1,6 +1,8 @@
 // Commodity prices based on research (December 2025)
 // Prices are in USD per metric ton unless otherwise specified
 
+export type MineralCategory = 'Metallic Minerals' | 'Non-Metallic Minerals' | 'Energy Minerals';
+
 export interface MineralPrice {
   name: string;
   price: number;
@@ -10,6 +12,7 @@ export interface MineralPrice {
   applications: string[];
   lastUpdated: string;
   imageUrl: string;
+  category: MineralCategory;
 }
 
 export interface AgriPrice {
@@ -75,7 +78,8 @@ export const mineralPrices: MineralPrice[] = [
       "Pellet production"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1586891522271-f5b5f7e11913?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1586891522271-f5b5f7e11913?auto=format&fit=crop&w=800&q=80",
+    category: "Metallic Minerals"
   },
   {
     name: "Bauxite",
@@ -96,7 +100,8 @@ export const mineralPrices: MineralPrice[] = [
       "Chemical industry"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1611070026005-c6e67be2a2d1?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1611070026005-c6e67be2a2d1?auto=format&fit=crop&w=800&q=80",
+    category: "Metallic Minerals"
   },
   {
     name: "Copper Ore",
@@ -116,7 +121,8 @@ export const mineralPrices: MineralPrice[] = [
       "Industrial machinery"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80",
+    category: "Metallic Minerals"
   },
   {
     name: "Coal (Thermal)",
@@ -136,7 +142,8 @@ export const mineralPrices: MineralPrice[] = [
       "Industrial heating"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1548186310-6bb4c1b19632?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1548186310-6bb4c1b19632?auto=format&fit=crop&w=800&q=80",
+    category: "Energy Minerals"
   },
   {
     name: "Coal (Metallurgical)",
@@ -156,7 +163,8 @@ export const mineralPrices: MineralPrice[] = [
       "Blast furnace operations"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80",
+    category: "Energy Minerals"
   },
   {
     name: "Limestone",
@@ -176,7 +184,8 @@ export const mineralPrices: MineralPrice[] = [
       "Chemical industry"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1564689157417-3f2784e13e5e?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1564689157417-3f2784e13e5e?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   },
   {
     name: "Manganese Ore",
@@ -195,7 +204,8 @@ export const mineralPrices: MineralPrice[] = [
       "Chemical industry"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1609766975227-8316cd84d8fb?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1609766975227-8316cd84d8fb?auto=format&fit=crop&w=800&q=80",
+    category: "Metallic Minerals"
   },
   {
     name: "Chromite",
@@ -214,7 +224,8 @@ export const mineralPrices: MineralPrice[] = [
       "Chemical industry"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=800&q=80",
+    category: "Metallic Minerals"
   },
   {
     name: "Zinc Ore",
@@ -234,7 +245,8 @@ export const mineralPrices: MineralPrice[] = [
       "Chemical industry"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1610056494052-6a4f83f76c3f?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1610056494052-6a4f83f76c3f?auto=format&fit=crop&w=800&q=80",
+    category: "Metallic Minerals"
   },
   {
     name: "Lead Ore",
@@ -254,7 +266,8 @@ export const mineralPrices: MineralPrice[] = [
       "Alloys production"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?auto=format&fit=crop&w=800&q=80",
+    category: "Metallic Minerals"
   },
   {
     name: "Gypsum",
@@ -274,7 +287,8 @@ export const mineralPrices: MineralPrice[] = [
       "Agricultural gypsum"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1568607689150-17e625c1586e?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1568607689150-17e625c1586e?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   },
   {
     name: "Dolomite",
@@ -294,7 +308,8 @@ export const mineralPrices: MineralPrice[] = [
       "Construction aggregate"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1601574334580-3ab0e4be4fa1?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1601574334580-3ab0e4be4fa1?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   },
   {
     name: "Silica Sand",
@@ -314,7 +329,8 @@ export const mineralPrices: MineralPrice[] = [
       "Water filtration"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   },
   {
     name: "Feldspar",
@@ -334,7 +350,8 @@ export const mineralPrices: MineralPrice[] = [
       "Filler applications"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1588672495706-b4ec0a00a49f?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1588672495706-b4ec0a00a49f?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   },
   {
     name: "Mica",
@@ -354,7 +371,8 @@ export const mineralPrices: MineralPrice[] = [
       "Plastics filler"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1618477247222-acbdb0e159b3?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1618477247222-acbdb0e159b3?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   },
   {
     name: "Talc",
@@ -374,7 +392,8 @@ export const mineralPrices: MineralPrice[] = [
       "Plastics industry"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1583324113626-70df0f4deaab?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1583324113626-70df0f4deaab?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   },
   {
     name: "Graphite",
@@ -394,7 +413,8 @@ export const mineralPrices: MineralPrice[] = [
       "Pencil production"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1598452963314-b09f397a5c48?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1598452963314-b09f397a5c48?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   },
   {
     name: "Bentonite",
@@ -414,7 +434,8 @@ export const mineralPrices: MineralPrice[] = [
       "Civil engineering"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1611689342806-0863700ce1e4?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1611689342806-0863700ce1e4?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   },
   {
     name: "China Clay (Kaolin)",
@@ -434,7 +455,8 @@ export const mineralPrices: MineralPrice[] = [
       "Paints and coatings"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1604762512354-009984d2baf9?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1604762512354-009984d2baf9?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   },
   {
     name: "Quartz",
@@ -454,7 +476,8 @@ export const mineralPrices: MineralPrice[] = [
       "Semiconductor industry"
     ],
     lastUpdated: "2025-12-04",
-    imageUrl: "https://images.unsplash.com/photo-1518709594023-6eab9bab7b23?auto=format&fit=crop&w=800&q=80"
+    imageUrl: "https://images.unsplash.com/photo-1518709594023-6eab9bab7b23?auto=format&fit=crop&w=800&q=80",
+    category: "Non-Metallic Minerals"
   }
 ];
 

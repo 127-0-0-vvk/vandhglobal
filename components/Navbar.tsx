@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 w-full z-50 bg-gladia-darkest/95 backdrop-blur-lg border-b border-gladia-purple/20 shadow-lg">
+    <nav className="fixed top-0 w-full z-50 bg-mineral-dark/95 backdrop-blur-lg border-b border-mineral-yellow/20 shadow-lg shadow-mineral-orange/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-center h-20 sm:h-24 md:h-28">
           {/* Centered Logo */}

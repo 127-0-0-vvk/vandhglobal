@@ -34,8 +34,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['Montserrat', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        heading: ['Montserrat', 'sans-serif'],
+        sans: ['Helvetica Now', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        heading: ['Helvetica Now', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
       },
       fontWeight: {
         thin: '100',

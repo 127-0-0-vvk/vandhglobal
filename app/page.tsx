@@ -1,195 +1,135 @@
 import Link from 'next/link';
-import HeroSlider from '@/components/HeroSlider';
-import PriceTicker from '@/components/PriceTicker';
-import WhyUsSection from '@/components/WhyUsSection';
+import Image from 'next/image';
+import { mineralPrices } from '@/data/commodityPrices';
+
+// Add chemical symbols for periodic table-style cards
+const mineralSymbols: { [key: string]: string } = {
+  "Iron Ore": "Fe",
+  "Bauxite": "Al",
+  "Copper Ore": "Cu",
+  "Coal (Thermal)": "C",
+  "Coal (Metallurgical)": "C",
+  "Manganese Ore": "Mn",
+  "Chromite": "Cr",
+  "Zinc Ore": "Zn",
+  "Lead Ore": "Pb",
+  "Dolomite": "Mg",
+  "Graphite": "C",
+  "Bentonite": "Si"
+};
 
 export default function Home() {
   return (
-    <div className="bg-gladia-darkest">
-      {/* Price Ticker */}
-      <div className="pt-28">
-        <PriceTicker />
+    <div className="min-h-screen bg-gladia-darkest">
+      {/* Dashboard Header */}
+      <div className="pt-24 pb-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-light text-center mb-3 bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent">
+            Commodity Trading Dashboard
+          </h1>
+          <p className="text-center text-gladia-white/60 text-sm sm:text-base">
+            Real-time pricing • Verified sources • Global delivery
+          </p>
+        </div>
       </div>
 
-      {/* Hero Slider Section */}
-      <HeroSlider />
+      {/* Minerals Grid - Mobile First */}
+      <div className="px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="max-w-7xl mx-auto">
+          {/* Grid: 2 columns on mobile, 3 on tablet, 4 on desktop */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+            {mineralPrices.map((mineral) => {
+              const slug = mineral.name.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '');
+              const symbol = mineralSymbols[mineral.name] || "?";
 
-      {/* Why Us Section */}
-      <WhyUsSection />
-
-      {/* Why Choose VandhGlobal Section */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-gladia-darkBlue via-gladia-darkest to-gladia-darkBlue">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl md:text-5xl font-light text-center mb-12 bg-gradient-to-r from-gladia-purple via-gladia-purpleBlue to-gladia-lightBlue bg-clip-text text-transparent">Why Choose VandhGlobal?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gladia-darkest/60 backdrop-blur-sm border border-gladia-lightBlue/20 rounded-2xl p-8 text-center hover:border-gladia-lightBlue/50 transition-all duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-gladia-lightBlue to-gladia-blue rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-normal mb-3 text-gladia-white">Verified Partnerships</h3>
-              <p className="text-gladia-white/60 font-light">
-                Tied up with leading mines and agro-based industries. Every partner undergoes rigorous due diligence.
-              </p>
-            </div>
-
-            <div className="bg-gladia-darkest/60 backdrop-blur-sm border border-gladia-purple/20 rounded-2xl p-8 text-center hover:border-gladia-purple/50 transition-all duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-gladia-purple to-gladia-lightPurple rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-normal mb-3 text-gladia-white">Transparent Pricing</h3>
-              <p className="text-gladia-white/60 font-light">
-                Real-time pricing calculators with FOB rates, logistics costs, and complete transparency in every transaction.
-              </p>
-            </div>
-
-            <div className="bg-gladia-darkest/60 backdrop-blur-sm border border-gladia-purpleBlue/20 rounded-2xl p-8 text-center hover:border-gladia-purpleBlue/50 transition-all duration-300">
-              <div className="w-16 h-16 bg-gradient-to-br from-gladia-purpleBlue to-gladia-purple rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-normal mb-3 text-gladia-white">Global Reach</h3>
-              <p className="text-gladia-white/60 font-light">
-                Connecting buyers and sellers worldwide with comprehensive logistics support from source to port.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="py-16 md:py-24 bg-gradient-to-br from-gladia-darkest via-gladia-darkBlue to-gladia-darkest">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="animate-slide-in-left">
-              <h2 className="section-heading">About VandhGlobal</h2>
-              <p className="text-lg text-gray-700 mb-4">
-                VandhGlobal is a leading commodity trading company with extensive partnerships across the mining and agricultural sectors. Our commitment to quality, transparency, and customer satisfaction sets us apart in the global marketplace.
-              </p>
-              <p className="text-lg text-gray-700 mb-6">
-                We have established strong relationships with premier mines and agro-based industries, ensuring that every commodity meets international quality standards and certifications.
-              </p>
-              <Link href="/#contact" className="btn-primary">
-                Get In Touch
-              </Link>
-            </div>
-            <div className="bg-gradient-to-br from-primary-blue to-primary-dark rounded-xl p-8 text-white animate-slide-in-right">
-              <h3 className="text-2xl font-bold mb-6">Our Commitment</h3>
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <svg className="w-6 h-6 text-primary-lightblue mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <div>
-                    <h4 className="font-semibold">Comprehensive Due Diligence</h4>
-                    <p className="text-sm text-primary-cream">Rigorous verification of all partners</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <svg className="w-6 h-6 text-primary-lightblue mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <div>
-                    <h4 className="font-semibold">Quality Assurance</h4>
-                    <p className="text-sm text-primary-cream">International standards compliance</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <svg className="w-6 h-6 text-primary-lightblue mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <div>
-                    <h4 className="font-semibold">Logistics Excellence</h4>
-                    <p className="text-sm text-primary-cream">End-to-end logistics support</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-16 md:py-24 bg-gradient-to-br from-gladia-darkBlue via-gladia-darkest to-gladia-darkBlue">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="section-heading text-center mb-4">Get In Touch</h2>
-          <p className="text-center text-gray-600 mb-12 text-lg">
-            Ready to start trading? Contact us for pricing, samples, or any inquiries.
-          </p>
-          <div className="card">
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-primary-dark mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-blue focus:border-transparent outline-none"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-primary-dark mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-blue focus:border-transparent outline-none"
-                    placeholder="john@example.com"
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="company" className="block text-sm font-medium text-primary-dark mb-2">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-blue focus:border-transparent outline-none"
-                  placeholder="Your Company Ltd."
-                />
-              </div>
-              <div>
-                <label htmlFor="commodity" className="block text-sm font-medium text-primary-dark mb-2">
-                  Commodity Interest
-                </label>
-                <select
-                  id="commodity"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-blue focus:border-transparent outline-none"
+              return (
+                <Link
+                  key={mineral.name}
+                  href={`/minerals/${slug}`}
+                  className="group"
                 >
-                  <option value="">Select a commodity category</option>
-                  <option value="minerals">Minerals</option>
-                  <option value="rice">Rice</option>
-                  <option value="spices">Spices & Powders</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-primary-dark mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  rows={5}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-blue focus:border-transparent outline-none"
-                  placeholder="Tell us about your requirements..."
-                ></textarea>
-              </div>
-              <button type="submit" className="btn-primary w-full">
-                Send Message
-              </button>
-            </form>
+                  <div className="bg-gladia-darkest/60 backdrop-blur-sm border border-gladia-purple/20 rounded-lg overflow-hidden hover:border-gladia-lightBlue/50 hover:shadow-lg hover:shadow-gladia-purple/20 transition-all duration-300 h-full">
+                    {/* Image Section */}
+                    <div className="relative w-full aspect-square overflow-hidden bg-gladia-darkBlue/30">
+                      <Image
+                        src={mineral.imageUrl}
+                        alt={mineral.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                      />
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-gladia-darkest via-transparent to-transparent opacity-60"></div>
+                    </div>
+
+                    {/* Content Section - Periodic Table Style */}
+                    <div className="p-3 sm:p-4">
+                      {/* Chemical Symbol - Large and prominent */}
+                      <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-2 bg-gradient-to-br from-gladia-lightBlue to-gladia-purple bg-clip-text text-transparent">
+                        {symbol}
+                      </div>
+
+                      {/* Mineral Name */}
+                      <h3 className="text-xs sm:text-sm md:text-base font-medium text-gladia-white text-center mb-2 line-clamp-2 uppercase tracking-wide">
+                        {mineral.name}
+                      </h3>
+
+                      {/* Price */}
+                      <div className="text-center">
+                        <div className="text-lg sm:text-xl md:text-2xl font-semibold text-gladia-lightBlue">
+                          ${mineral.price}
+                        </div>
+                        <div className="text-xs text-gladia-white/40">
+                          per {mineral.unit.split('/')[1] || 'MT'}
+                        </div>
+                      </div>
+
+                      {/* Hover indicator */}
+                      <div className="mt-3 text-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-xs text-gladia-purple">
+                          View Details →
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* Footer Info */}
+      <div className="border-t border-gladia-purple/20 py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+            <div>
+              <div className="text-2xl sm:text-3xl font-bold text-gladia-lightBlue mb-1">
+                {mineralPrices.length}+
+              </div>
+              <div className="text-sm text-gladia-white/60">
+                Commodities
+              </div>
+            </div>
+            <div>
+              <div className="text-2xl sm:text-3xl font-bold text-gladia-purple mb-1">
+                100%
+              </div>
+              <div className="text-sm text-gladia-white/60">
+                Transparent Pricing
+              </div>
+            </div>
+            <div>
+              <div className="text-2xl sm:text-3xl font-bold text-gladia-purpleBlue mb-1">
+                24/7
+              </div>
+              <div className="text-sm text-gladia-white/60">
+                Global Support
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

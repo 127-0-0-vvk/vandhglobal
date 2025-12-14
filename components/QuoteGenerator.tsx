@@ -491,34 +491,38 @@ Vehicles Needed : ${quotation.transportBreakdown.numTrucks} ${transportMode === 
 Est. Delivery   : ${quotation.estimatedDays} days`;
 
       pricingBreakdown = `
-1. EX-MINE PRICE (100% TRANSPARENT PRICING)           $${quotation.basePrice.toLocaleString()}
-   ├─ Mining & Extraction                             $${quotation.basePriceBreakdown.miningCost.toLocaleString()}
-   ├─ Refining & Separation                           $${quotation.basePriceBreakdown.extractionCost.toLocaleString()}
-   ├─ Processing & Grading                            $${quotation.basePriceBreakdown.processingCost.toLocaleString()}
-   ├─ Quality Testing & Assurance                     $${quotation.basePriceBreakdown.qualityTesting.toLocaleString()}
-   └─ VandhGlobal Profit Margin                       $0 (0%)
+COMPREHENSIVE PRICING BREAKDOWN
 
-   ⓘ We operate on 100% transparent pricing. Zero markup on ex-mine costs.
-      Our revenue comes ONLY from handling charges below.
+1. Ex-Mine Price
+   $${quotation.basePriceBreakdown.pricePerMT.toLocaleString()}/MT × ${quotation.basePriceBreakdown.quantity.toLocaleString()} tons = $${quotation.basePrice.toLocaleString()}
 
-2. TRANSPORT COSTS                                     $${quotation.transportCost.toLocaleString()}
+2. Loading Charges at Mine
+   ${quotation.basePriceBreakdown.quantity.toLocaleString()} tons × $75/ton = $${quotation.loadingCharges.toLocaleString()}
+
+3. Transport (${quotation.distance} km)
    Using ${quotation.transportBreakdown.numTrucks} ${transportMode === 'truck' ? 'Trucks' : 'Wagons'} @ ${quotation.transportBreakdown.truckCapacity} tons capacity each
 
-   ├─ Fuel Cost ($${quotation.transportBreakdown.fuelCostPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks})     $${quotation.transportBreakdown.fuelCost.toLocaleString()}
-   ├─ Driver Cost ($${quotation.transportBreakdown.driverCostPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks})   $${quotation.transportBreakdown.driverCost.toLocaleString()}${quotation.transportBreakdown.tollFees > 0 ? `
-   ├─ Toll Fees ($${quotation.transportBreakdown.tollFeesPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks})       $${quotation.transportBreakdown.tollFees.toLocaleString()}` : ''}
-   └─ Vehicle Rent ($${quotation.transportBreakdown.vehicleRentPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks}) $${quotation.transportBreakdown.vehicleRent.toLocaleString()}
+   • Fuel Cost: $${quotation.transportBreakdown.fuelCostPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.fuelCost.toLocaleString()}
+   • Driver Cost: $${quotation.transportBreakdown.driverCostPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.driverCost.toLocaleString()}${quotation.transportBreakdown.tollFees > 0 ? `
+   • Toll Fees: $${quotation.transportBreakdown.tollFeesPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.tollFees.toLocaleString()}` : ''}
+   • Vehicle Rent: $${quotation.transportBreakdown.vehicleRentPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.vehicleRent.toLocaleString()}
 
-   Distance: ${quotation.distance} km
+   Total Transport: $${quotation.transportCost.toLocaleString()}
 
-3. OTHER EXPENSES                                      $${quotation.otherCosts.toLocaleString()}
-   ├─ Handling Charges (VandhGlobal Revenue - 1.2%)   $${quotation.otherExpenses.handlingCharges.toLocaleString()}
-   ├─ Documentation Fees                               $${quotation.otherExpenses.documentation.toLocaleString()}
-   ├─ Insurance Coverage                               $${quotation.otherExpenses.insurance.toLocaleString()}
-   ├─ Loading Charges                                  $${quotation.otherExpenses.loading.toLocaleString()}
-   └─ Unloading Charges                                $${quotation.otherExpenses.unloading.toLocaleString()}
+4. Unloading Charges at Destination
+   ${quotation.basePriceBreakdown.quantity.toLocaleString()} tons × $75/ton = $${quotation.unloadingCharges.toLocaleString()}
 
-   ⓘ Handling charges (1.2% of ex-mine price) are our ONLY revenue source`;
+5. Documentation
+   E-way bill, delivery challan, GST invoice = $${quotation.documentation.toLocaleString()}
+
+6. Transit Insurance
+   ${(quotation.insurance / quotation.basePrice * 100).toFixed(2)}% of base price = $${quotation.insurance.toLocaleString()}
+
+7. Handling Charges (VandhGlobal Revenue)
+   1.2% of ex-mine price = $${quotation.handlingCharges.toLocaleString()}
+
+   ⓘ This 1.2% handling charge is our ONLY revenue source.
+      We take ZERO profit margin on ex-mine prices.`;
 
     } else {
       // Export logistics (FOB/CIF)
@@ -532,7 +536,46 @@ Est. Delivery   : ${quotation.estimatedDays} days`;
 Incoterm        : FOB (Free On Board)
 Port            : ${originPort}
 Est. Delivery   : ${quotation.estimatedDays} days`;
+
+        pricingBreakdown = `
+COMPREHENSIVE PRICING BREAKDOWN
+
+1. Ex-Mine Price
+   $${quotation.basePriceBreakdown.pricePerMT.toLocaleString()}/MT × ${quotation.basePriceBreakdown.quantity.toLocaleString()} tons = $${quotation.basePrice.toLocaleString()}
+
+2. Loading Charges at Mine
+   ${quotation.basePriceBreakdown.quantity.toLocaleString()} tons × $75/ton = $${quotation.loadingCharges.toLocaleString()}
+
+3. Transport to Port (${quotation.distance} km)
+   Using ${quotation.transportBreakdown.numTrucks} ${transportMode === 'truck' ? 'Trucks' : 'Wagons'} @ ${quotation.transportBreakdown.truckCapacity} tons capacity each
+
+   • Fuel Cost: $${quotation.transportBreakdown.fuelCostPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.fuelCost.toLocaleString()}
+   • Driver Cost: $${quotation.transportBreakdown.driverCostPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.driverCost.toLocaleString()}${quotation.transportBreakdown.tollFees > 0 ? `
+   • Toll Fees: $${quotation.transportBreakdown.tollFeesPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.tollFees.toLocaleString()}` : ''}
+   • Vehicle Rent: $${quotation.transportBreakdown.vehicleRentPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.vehicleRent.toLocaleString()}
+
+   Total Transport: $${quotation.transportCost.toLocaleString()}
+
+4. Customs Entry
+   Customs clearance charges = $${quotation.fobCharges!.customsEntry.toLocaleString()}
+
+5. Export Documentation
+   Shipping bill, bill of lading, certificate of origin = $${quotation.fobCharges!.exportDocumentation.toLocaleString()}
+
+6. Container Stuffing
+   ${quotation.fobCharges!.numContainers} containers × $4,000 = $${quotation.fobCharges!.containerStuffing.toLocaleString()}
+
+7. Port Dues
+   Port entry/exit dues = $${quotation.fobCharges!.portDues.toLocaleString()}
+
+8. Export Insurance
+   1% of base price = $${quotation.insurance.toLocaleString()}
+
+9. Handling Charges (VandhGlobal Revenue)
+   1.2% of ex-mine price = $${quotation.handlingCharges.toLocaleString()}`;
+
       } else {
+        // CIF
         logisticsSection = `
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   LOGISTICS DETAILS (EXPORT - CIF)
@@ -541,20 +584,53 @@ Incoterm        : CIF (Cost, Insurance & Freight)
 Origin Port     : ${originPort}
 Destination Port: ${quotation.cifCharges!.destinationPort}
 Est. Delivery   : ${quotation.estimatedDays} days`;
-      }
 
-      if (quotation.destinationType === 'fob') {
         pricingBreakdown = `
-1. EX-MINE PRICE (100% TRANSPARENT PRICING)           $${quotation.basePrice.toLocaleString()}
-   ├─ Mining & Extraction                             $${quotation.basePriceBreakdown.miningCost.toLocaleString()}
-   ├─ Refining & Separation                           $${quotation.basePriceBreakdown.extractionCost.toLocaleString()}
-   ├─ Processing & Grading                            $${quotation.basePriceBreakdown.processingCost.toLocaleString()}
-   ├─ Quality Testing & Assurance                     $${quotation.basePriceBreakdown.qualityTesting.toLocaleString()}
-   └─ VandhGlobal Profit Margin                       $0 (0%)
+COMPREHENSIVE PRICING BREAKDOWN
 
-   ⓘ We operate on 100% transparent pricing. Zero markup on ex-mine costs.
+1. Ex-Mine Price
+   $${quotation.basePriceBreakdown.pricePerMT.toLocaleString()}/MT × ${quotation.basePriceBreakdown.quantity.toLocaleString()} tons = $${quotation.basePrice.toLocaleString()}
 
-2. FOB CHARGES (FREE ON BOARD)                         $${quotation.transportCost.toLocaleString()}
+2. Loading Charges at Mine
+   ${quotation.basePriceBreakdown.quantity.toLocaleString()} tons × $75/ton = $${quotation.loadingCharges.toLocaleString()}
+
+3. Transport to Port (${quotation.distance} km)
+   Using ${quotation.transportBreakdown.numTrucks} ${transportMode === 'truck' ? 'Trucks' : 'Wagons'} @ ${quotation.transportBreakdown.truckCapacity} tons capacity each
+
+   • Fuel Cost: $${quotation.transportBreakdown.fuelCostPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.fuelCost.toLocaleString()}
+   • Driver Cost: $${quotation.transportBreakdown.driverCostPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.driverCost.toLocaleString()}${quotation.transportBreakdown.tollFees > 0 ? `
+   • Toll Fees: $${quotation.transportBreakdown.tollFeesPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.tollFees.toLocaleString()}` : ''}
+   • Vehicle Rent: $${quotation.transportBreakdown.vehicleRentPerTruck.toLocaleString()}/vehicle × ${quotation.transportBreakdown.numTrucks} = $${quotation.transportBreakdown.vehicleRent.toLocaleString()}
+
+   Total Transport: $${quotation.transportCost.toLocaleString()}
+
+4. Customs Entry
+   Customs clearance charges = $${quotation.cifCharges!.customsEntry.toLocaleString()}
+
+5. Export Documentation
+   Shipping bill, bill of lading, certificate of origin = $${quotation.cifCharges!.exportDocumentation.toLocaleString()}
+
+6. Container Stuffing
+   ${quotation.cifCharges!.numContainers} containers × $4,000 = $${quotation.cifCharges!.containerStuffing.toLocaleString()}
+
+7. Port Dues
+   Port entry/exit dues = $${quotation.cifCharges!.portDues.toLocaleString()}
+
+8. Ocean Freight
+   ${quotation.cifCharges!.numContainers} containers to ${quotation.cifCharges!.destinationPort} = $${quotation.cifCharges!.oceanFreight.toLocaleString()}
+
+9. Marine Insurance
+   1.5% of (base + FOB costs) = $${quotation.cifCharges!.marineInsurance.toLocaleString()}
+
+10. Destination Port Charges
+    ${quotation.basePriceBreakdown.quantity.toLocaleString()} tons × $120/ton = $${quotation.cifCharges!.destinationPortCharges.toLocaleString()}
+
+11. Handling Charges (VandhGlobal Revenue)
+    1.2% of ex-mine price = $${quotation.handlingCharges.toLocaleString()}`;
+      }
+    }
+
+    const content = `
    ├─ Port Handling Charges                           $${quotation.fobCharges!.portHandling.toLocaleString()}
    ├─ Customs Clearance                               $${quotation.fobCharges!.customsClearance.toLocaleString()}
    ├─ Export Documentation                            $${quotation.fobCharges!.exportDocumentation.toLocaleString()}

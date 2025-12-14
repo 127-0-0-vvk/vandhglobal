@@ -30,7 +30,7 @@ const config: Config = {
           light: '#e9e9e9',
           dark: '#2e2e2e',
           yellow: '#faf5b2',
-          orange: '#fe5e0e',
+          orange: '#947bfd',
         },
       },
       fontFamily: {

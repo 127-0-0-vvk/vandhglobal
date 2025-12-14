@@ -164,7 +164,7 @@ export default function Home() {
       </div>
 
       {/* Footer Info */}
-      <div className="py-8 px-4" style={{ backgroundColor: '#fe5e0e' }}>
+      <div className="py-8 px-4" style={{ backgroundColor: '#947bfd' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
             <div>

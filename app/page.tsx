@@ -45,12 +45,12 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#dcdcdc' }}>
       {/* Dashboard Header */}
-      <div className="pt-24 pb-6 px-4 sm:px-6 lg:px-8">
+      <div className="pt-24 pb-6 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#947bfd' }}>
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-3 text-mineral-dark leading-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-3 text-white leading-tight">
             Market-Leading Prices on Essential Industrial Minerals
           </h1>
-          <p className="text-center text-mineral-dark/70 text-sm sm:text-base">
+          <p className="text-center text-white/90 text-sm sm:text-base">
             Real-time pricing • Verified sources • Integrated logistics solutions
           </p>
         </div>

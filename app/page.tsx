@@ -48,11 +48,11 @@ export default function Home() {
       {/* Dashboard Header */}
       <div className="pt-24 pb-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-3 text-mineral-dark">
-            Minerals & Natural Resources
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-3 text-mineral-dark leading-tight">
+            Market-Leading Prices on Essential Industrial Minerals
           </h1>
           <p className="text-center text-mineral-dark/70 text-sm sm:text-base">
-            Real-time pricing • Verified sources • Global delivery
+            Real-time pricing • Verified sources • Integrated logistics solutions
           </p>
         </div>
       </div>
@@ -60,22 +60,27 @@ export default function Home() {
       {/* Category Filter Buttons */}
       <div className="px-4 sm:px-6 lg:px-8 pb-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {categories.map((category) => (
               <button
                 key={category.name}
                 onClick={() => setSelectedCategory(category.name)}
                 className={`
-                  relative overflow-hidden rounded-lg p-3 sm:p-4 transition-all duration-300
+                  relative overflow-hidden rounded-2xl p-4 sm:p-5 md:p-6 transition-all duration-300 transform
                   ${selectedCategory === category.name
-                    ? 'bg-mineral-dark text-mineral-light shadow-lg shadow-mineral-dark/30 scale-105'
-                    : 'bg-white/60 text-mineral-dark hover:bg-white/80 border border-mineral-dark/10'
+                    ? 'bg-mineral-dark text-mineral-light shadow-2xl scale-105 -translate-y-1'
+                    : 'bg-white/80 text-mineral-dark hover:bg-white hover:shadow-xl hover:-translate-y-0.5 shadow-md border border-mineral-dark/5'
                   }
                 `}
+                style={{
+                  boxShadow: selectedCategory === category.name
+                    ? '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05)'
+                    : undefined
+                }}
               >
-                <div className="flex flex-col items-center gap-1.5 sm:gap-2">
-                  <span className="text-2xl sm:text-3xl">{category.icon}</span>
-                  <span className="text-xs sm:text-sm md:text-base font-medium text-center leading-tight">
+                <div className="flex flex-col items-center gap-2 sm:gap-2.5">
+                  <span className="text-3xl sm:text-4xl md:text-5xl">{category.icon}</span>
+                  <span className="text-xs sm:text-sm md:text-base font-semibold text-center leading-tight">
                     {category.name}
                   </span>
                 </div>
